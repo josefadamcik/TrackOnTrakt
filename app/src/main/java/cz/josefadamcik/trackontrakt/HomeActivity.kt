@@ -1,5 +1,7 @@
 package cz.josefadamcik.trackontrakt
 
+import android.content.SharedPreferences
+import android.location.LocationManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -8,14 +10,29 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.Menu
 import android.view.MenuItem
+import javax.inject.Inject
+import javax.inject.Named
 
 class HomeActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var preferences: SharedPreferences
+
+    @field:[Inject Named("something")]
+    lateinit var something: String
+
+    @field:[Inject Named("somethingElse")]
+    lateinit var somethingElse: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
+
+        TrackOnTraktApplication.graph.inject(this)
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { view ->
