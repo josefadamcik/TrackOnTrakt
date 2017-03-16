@@ -20,10 +20,7 @@ package cz.josefadamcik.trackontrakt
 import android.app.Application
 
 class TrackOnTraktApplication : Application() {
-    companion object {
-        //platformStatic allow access it from java code
-        @JvmStatic lateinit var graph: ApplicationComponent
-    }
+    lateinit var graph: ApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -32,9 +29,6 @@ class TrackOnTraktApplication : Application() {
                 .applicationModule(ApplicationModule(this))
                 .build()
         graph.inject(this)
-
-
-
     }
 }
 

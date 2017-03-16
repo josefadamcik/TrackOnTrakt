@@ -1,4 +1,4 @@
-package cz.josefadamcik.trackontrakt
+package cz.josefadamcik.trackontrakt.home
 
 import android.content.SharedPreferences
 import android.location.LocationManager
@@ -10,6 +10,8 @@ import android.support.v7.widget.Toolbar
 import android.view.View
 import android.view.Menu
 import android.view.MenuItem
+import cz.josefadamcik.trackontrakt.R
+import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -32,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-        TrackOnTraktApplication.graph.inject(this)
+        (application as TrackOnTraktApplication).graph.inject(this)
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
         fab.setOnClickListener { view ->

@@ -15,6 +15,7 @@
 */
 package cz.josefadamcik.trackontrakt
 
+import cz.josefadamcik.trackontrakt.home.HomeActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -22,7 +23,6 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(ApplicationModule::class))
 interface ApplicationComponent {
     fun inject(application: TrackOnTraktApplication)
-
     fun inject(mainActivity: HomeActivity)
 }
 
