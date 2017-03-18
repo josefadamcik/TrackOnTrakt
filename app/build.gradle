@@ -15,6 +15,11 @@ def gitTimestamp = 'git log -n 1 --format=%at'.execute([], rootDir).text.trim()
 
 def packagename = "cz.josefadamcik.trackontrakt"
 
+kapt {
+    generateStubs = true
+}
+
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion

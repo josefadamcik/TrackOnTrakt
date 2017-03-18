@@ -1,7 +1,6 @@
 package cz.josefadamcik.trackontrakt.home
 
 import android.content.SharedPreferences
-import android.location.LocationManager
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
@@ -13,19 +12,12 @@ import android.view.MenuItem
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import javax.inject.Inject
-import javax.inject.Named
+
 
 class HomeActivity : AppCompatActivity() {
 
     @Inject
     lateinit var preferences: SharedPreferences
-
-    @field:[Inject Named("something")]
-    lateinit var something: String
-
-    @field:[Inject Named("somethingElse")]
-    lateinit var somethingElse: String
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -18,10 +18,14 @@ package cz.josefadamcik.trackontrakt
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.location.LocationManager
-
+import com.squareup.moshi.Moshi
+import cz.josefadamcik.trackontrakt.data.api.TraktApi
+import cz.josefadamcik.trackontrakt.data.api.TraktApiConfig
 import dagger.Module
 import dagger.Provides
+import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -40,19 +44,39 @@ class ApplicationModule(private val app: TrackOnTraktApplication) {
         return app.getSharedPreferences("trackontrackt", Context.MODE_PRIVATE);
     }
 
-
     @Provides
     @Singleton
-    @Named("something")
-    fun provideSomething(): String {
-        return "something"
+    fun provideMoshi(): Moshi {
+        return Moshi.Builder()
+            .build()
     }
 
     @Provides
     @Singleton
-    @Named("somethingElse")
-    fun provideSomethingElse(): String {
-        return "somethingElse"
+    fun provideRetrofit(traktApiConfig: TraktApiConfig): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(traktApiConfig.apiBaseUrl)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideTraktApi(retrofit: Retrofit): TraktApi {
+        return retrofit.create(TraktApi::class.java)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideTraktApiConfig(): TraktApiConfig {
+        return TraktApiConfig(
+            clientId = BuildConfig.TRAKT_CLIENT_ID,
+            clientSecret = BuildConfig.TRAKT_CLIENT_SECRET,
+            oauthRedirectUrl = BuildConfig.TRAKT_OAUTH_REDIRECT_URL,
+            apiBaseUrl = BuildConfig.TRAKT_BASE_API_URL
+        )
     }
 
 }

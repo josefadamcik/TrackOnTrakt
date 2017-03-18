@@ -13,21 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt
+package cz.josefadamcik.trackontrakt.data.api
 
-import cz.josefadamcik.trackontrakt.home.HomeActivity
-import cz.josefadamcik.trackontrakt.traktauth.AuthorizationProvider
-import cz.josefadamcik.trackontrakt.traktauth.TraktAuthActivity
-import dagger.Component
-import javax.inject.Singleton
-
-@Singleton
-@Component(modules = arrayOf(ApplicationModule::class))
-interface ApplicationComponent {
-    fun inject(authorizationProvider: AuthorizationProvider)
-    fun inject(application: TrackOnTraktApplication)
-    fun inject(activity: HomeActivity)
-    fun inject(activity: TraktAuthActivity)
-}
-
-
+data class TraktApiConfig (
+    val clientId: String,
+    val clientSecret: String,
+    val oauthRedirectUrl: String,
+    val apiBaseUrl: String
+)
