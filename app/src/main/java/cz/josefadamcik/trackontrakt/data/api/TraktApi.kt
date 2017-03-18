@@ -13,27 +13,22 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
+package cz.josefadamcik.trackontrakt.data.api
 
-package cz.josefadamcik.trackontrakt
+import io.reactivex.Single
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
 
+/**
+ * Trakt API interface for retrofit.
+ *
+ * http://docs.trakt.apiary.io/
+ *
+ * Contains only calls need for the application.
+ */
+interface TraktApi {
 
-import android.app.Application
-import timber.log.Timber
-
-class TrackOnTraktApplication : Application() {
-    lateinit var graph: ApplicationComponent
-
-    override fun onCreate() {
-        super.onCreate()
-
-        graph = DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
-        graph.inject(this)
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
-    }
+    @POST("/oauth/token")
+    fun oauthToken(@Body data: OauthTokenRequest): Single<Response<OauthTokenResponse>>
 }
-

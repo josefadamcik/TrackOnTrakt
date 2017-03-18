@@ -30,6 +30,12 @@ android {
         buildConfigField 'String', 'GIT_SHA', "\"${gitSha}\""
         buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp}"
 
+        buildConfigField "String", "TRAKT_CLIENT_ID", "\"591b0ee4f99a3b168208dd0feafaa28f227e5403670fefe15c9bfaa86a26ada2\""
+        buildConfigField "String", "TRAKT_CLIENT_SECRET", "\"b2ee3a2adc7a4ec1f401f53dee9b5c6d6552b052184b22ed5a4c579e98fcd4ee\""
+        buildConfigField "String", "TRAKT_OAUTH_REDIRECT_URL", "\"tot://authorized\""
+        buildConfigField "String", "TRAKT_BASE_API_URL", "\"https://api.trakt.tv\""
+
+
     }
 
     buildTypes {
@@ -95,16 +101,20 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-
+    //support, design, etc
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:support-vector-drawable:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
 
 //    internalCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
 //    productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+
+    //basic utils
+    compile 'com.jakewharton.timber:timber:4.5.1'
 
     //dagger 2
     compile 'com.google.dagger:dagger:2.9'
@@ -115,6 +125,16 @@ dependencies {
     //rx
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxkotlin:2.0.0-RC3'
+
+    //api, networking
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile "com.squareup.retrofit2:retrofit:2.2.0"
+    compile "com.squareup.retrofit2:converter-moshi:2.2.0"
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+
+
+
+
 }
 repositories {
     mavenCentral()

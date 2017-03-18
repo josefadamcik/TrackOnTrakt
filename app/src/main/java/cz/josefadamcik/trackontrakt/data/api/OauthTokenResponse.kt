@@ -13,27 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
+package cz.josefadamcik.trackontrakt.data.api
 
-package cz.josefadamcik.trackontrakt
-
-
-import android.app.Application
-import timber.log.Timber
-
-class TrackOnTraktApplication : Application() {
-    lateinit var graph: ApplicationComponent
-
-    override fun onCreate() {
-        super.onCreate()
-
-        graph = DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
-        graph.inject(this)
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
-    }
-}
-
+data class OauthTokenResponse(
+    val access_token: String,
+    val token_type: String,
+    val expires_in: Int,
+    val refresh_token: String,
+    val scope: String,
+    val created_at: Int
+)

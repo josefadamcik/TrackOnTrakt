@@ -14,26 +14,12 @@
  limitations under the License.
 */
 
-package cz.josefadamcik.trackontrakt
+package cz.josefadamcik.trackontrakt.data.api
 
-
-import android.app.Application
-import timber.log.Timber
-
-class TrackOnTraktApplication : Application() {
-    lateinit var graph: ApplicationComponent
-
-    override fun onCreate() {
-        super.onCreate()
-
-        graph = DaggerApplicationComponent.builder()
-                .applicationModule(ApplicationModule(this))
-                .build()
-        graph.inject(this)
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
-    }
-}
-
+data class OauthTokenRequest(
+    val code: String,
+    val client_id: String,
+    val client_secret: String,
+    val redirect_uri: String,
+    val grant_type: String = "authorization_code"
+)
