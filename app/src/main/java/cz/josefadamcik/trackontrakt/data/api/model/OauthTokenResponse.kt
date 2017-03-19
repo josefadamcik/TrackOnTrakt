@@ -13,29 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt
+package cz.josefadamcik.trackontrakt.data.api.model
 
-import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
-
-@Module
-class ApplicationModule(private val app: TrackOnTraktApplication) {
-
-    @Provides
-    @ApplicationScope
-    fun provideApplication(): Application {
-        return app
-    }
-
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(): SharedPreferences {
-        return app.getSharedPreferences("trackontrackt", Context.MODE_PRIVATE);
-    }
-
-
-}
+data class OauthTokenResponse(
+    val access_token: String,
+    val token_type: String,
+    val expires_in: Int,
+    val refresh_token: String,
+    val scope: String,
+    val created_at: Int
+)

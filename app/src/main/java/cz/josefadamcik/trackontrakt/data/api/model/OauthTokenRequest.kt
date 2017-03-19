@@ -13,13 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt.data.api
 
-data class OauthTokenResponse(
-    val access_token: String,
-    val token_type: String,
-    val expires_in: Int,
-    val refresh_token: String,
-    val scope: String,
-    val created_at: Int
+package cz.josefadamcik.trackontrakt.data.api.model
+
+data class OauthTokenRequest(
+    val code: String,
+    val client_id: String,
+    val client_secret: String,
+    val redirect_uri: String,
+    val grant_type: String = "authorization_code"
 )

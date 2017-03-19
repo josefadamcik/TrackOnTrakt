@@ -13,13 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
+package cz.josefadamcik.trackontrakt.traktauth
 
-package cz.josefadamcik.trackontrakt.data.api
-
-data class OauthTokenRequest(
-    val code: String,
-    val client_id: String,
-    val client_secret: String,
-    val redirect_uri: String,
-    val grant_type: String = "authorization_code"
-)
+data class TraktAuthorisationResult(val success: Boolean, val token: String?) {
+}

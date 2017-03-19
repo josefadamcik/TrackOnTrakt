@@ -15,6 +15,7 @@
 */
 package cz.josefadamcik.trackontrakt
 
+import cz.josefadamcik.trackontrakt.data.api.ApiModule
 import cz.josefadamcik.trackontrakt.home.HomeActivity
 import cz.josefadamcik.trackontrakt.traktauth.AuthorizationProvider
 import cz.josefadamcik.trackontrakt.traktauth.TraktAuthActivity
@@ -22,7 +23,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(ApplicationModule::class))
+@Component(modules = arrayOf(ApplicationModule::class, ApiModule::class))
 interface ApplicationComponent {
     fun inject(authorizationProvider: AuthorizationProvider)
     fun inject(application: TrackOnTraktApplication)

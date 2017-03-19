@@ -21,10 +21,12 @@ import android.content.SharedPreferences
 import android.net.Uri
 import com.squareup.moshi.Moshi
 import cz.josefadamcik.trackontrakt.BuildConfig
-import cz.josefadamcik.trackontrakt.data.api.OauthTokenRequest
-import cz.josefadamcik.trackontrakt.data.api.OauthTokenResponse
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktApiConfig
+import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenRequest
+import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenResponse
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -38,10 +40,9 @@ constructor(
     val traktApi: TraktApi,
     val preferences: SharedPreferences,
     val traktApiConfig: TraktApiConfig,
+    val traktAuthTokenHolder: TraktAuthTokenHolder,
     val moshi: Moshi
 ) {
-    private val prefKeyResponse = "trakt.oauth.response"
-    private val prefKeyAuthToken = "trakt.oauth.token"
 
 
     fun getOauthAuthorizationUrl(): String {
@@ -52,7 +53,7 @@ constructor(
         return oauthUrl;
     }
 
-    fun onTraktAuthRedirect(url: String) {
+    fun onTraktAuthRedirect(url: String): Single<TraktAuthorisationResult> {
         val uri = Uri.parse(url)
         Timber.i("Parsed uri %s", uri);
         val code = uri.getQueryParameter("code")
@@ -60,28 +61,31 @@ constructor(
             Timber.d("auth code: %s", code)
         }
 
-        traktApi.oauthToken(
+        return traktApi.oauthToken(
             OauthTokenRequest(code, traktApiConfig.clientId, traktApiConfig.clientSecret, traktApiConfig.oauthRedirectUrl)
         )
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { res ->
-                    if (res.isSuccessful) {
-                        val response = res.body()
-                        Timber.d("obtained access_token %s; response %s", response.access_token, response)
-                        val json = moshi.adapter(OauthTokenResponse::class.java).toJson(response);
-                        preferences.edit()
-                            .putString(prefKeyAuthToken, response.access_token)
-                            .putString(prefKeyResponse, json)
-                            .apply()
+            .flatMap { res ->
+                if (res.isSuccessful) {
+                    val response = res.body()
+                    Timber.d("obtained access_token %s; response %s", response.access_token, response)
+                    val json = moshi.adapter(OauthTokenResponse::class.java).toJson(response)
 
-                    } else {
-                        Timber.w("failed %s : %s", res.code(), res.message())
-                    }
-                },
-                { t -> Timber.e(t, "Failed") }
-            )
+                    traktAuthTokenHolder.token = response.access_token
+
+                    preferences.edit()
+                        .putString(TraktAuthTokenHolder.PREF_KEY_TOKEN, response.access_token)
+                        .putString(TraktAuthTokenHolder.PREF_KEY_RESPONSE, json)
+                        .apply()
+
+                    Single.just(TraktAuthorisationResult(true, response.access_token))
+                } else {
+                    Timber.w("failed %s : %s", res.code(), res.message())
+                    Single.just(TraktAuthorisationResult(false, null))
+                }
+
+            }
+            .observeOn(AndroidSchedulers.mainThread())
 
 
     }

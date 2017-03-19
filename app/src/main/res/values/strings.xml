@@ -91,4 +91,7 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello, World!</string>
+    <string name="title_authorize">Login on trakt</string>
+    <string name="err_trakt_auth_failed">Trakt.tv authorisation failed.</string>
+    <string name="action_retry">Retry</string>
 </resources>

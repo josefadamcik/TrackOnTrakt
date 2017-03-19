@@ -15,9 +15,14 @@
 */
 package cz.josefadamcik.trackontrakt.data.api
 
+import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenRequest
+import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenResponse
+import cz.josefadamcik.trackontrakt.data.api.model.UserSettings
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 /**
@@ -31,4 +36,8 @@ interface TraktApi {
 
     @POST("/oauth/token")
     fun oauthToken(@Body data: OauthTokenRequest): Single<Response<OauthTokenResponse>>
+
+    @GET("/users/settings")
+    fun userSettings(@Header("Authorization") authorization: String): Single<UserSettings>
+
 }
