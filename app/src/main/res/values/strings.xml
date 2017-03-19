@@ -95,4 +95,5 @@
     <string name="err_trakt_auth_failed">Trakt.tv authorisation failed.</string>
     <string name="action_retry">Retry</string>
     <string name="err_data_retrieval_failed">Unable to retrieve data</string>
+    <string name="err_uknown">Unknown error</string>
 </resources>

@@ -27,5 +27,21 @@ data class HistoryItem(
     val episode: Episode?,
     val show: Show?
 ) {
+    val title: String
+        get() {
+            return when (type) {
+                MediaType.episode -> String.format("%s - S %s, Ep %s", show?.title, episode?.season, episode?.number)
+                MediaType.movie -> movie?.title ?: ""
+                else -> ""
+            }
+        }
+
+    val subtitle: String
+        get() {
+            return when (type) {
+                MediaType.episode -> episode?.title ?: ""
+                else -> ""
+            }
+        }
 }
 
