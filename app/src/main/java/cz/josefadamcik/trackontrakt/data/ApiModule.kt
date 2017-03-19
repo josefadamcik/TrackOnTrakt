@@ -13,17 +13,22 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt.data.api
+package cz.josefadamcik.trackontrakt.data
 
 import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import cz.josefadamcik.trackontrakt.BuildConfig
+import cz.josefadamcik.trackontrakt.data.api.TraktApi
+import cz.josefadamcik.trackontrakt.data.api.TraktApiConfig
+import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import timber.log.Timber
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -57,7 +62,7 @@ class ApiModule {
     @Singleton
     @Named("traktokhttp")
     fun provideOkHttpForTraktApi(traktApiConfig: TraktApiConfig): OkHttpClient {
-        val client = OkHttpClient.Builder()
+        val builder = OkHttpClient.Builder()
             .addInterceptor { chain ->
                 val original = chain.request()
                 val request = original.newBuilder()
@@ -67,8 +72,16 @@ class ApiModule {
                     .build()
                 chain.proceed(request)
             }
-            .build()
-        return client
+
+        if (BuildConfig.DEBUG) {
+            val loggingInterceptor = HttpLoggingInterceptor({
+                Timber.tag("OkHttp").d(it);
+            })
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            builder.addInterceptor(loggingInterceptor)
+        }
+
+        return builder.build();
     }
 
     @Provides

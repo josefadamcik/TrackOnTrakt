@@ -130,12 +130,16 @@ dependencies {
     // MVP + ViewState + LCE Views http://hannesdorfmann.com/mosby/
     compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0'
 
+    compile 'com.jakewharton:butterknife:8.5.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.5.1'
+
     //rx
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxkotlin:2.0.0-RC3'
 
     //api, networking
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile "com.squareup.retrofit2:retrofit:2.2.0"
     compile "com.squareup.retrofit2:converter-moshi:2.2.0"
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'

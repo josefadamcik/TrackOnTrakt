@@ -22,28 +22,9 @@ package cz.josefadamcik.trackontrakt.data.api.model
  * TODO: add sharing related stuff, avatar and so on
  *
  */
-data class UserSettings(
-    val username: String,
-    val private: Boolean,
-    val vip: Boolean,
-    val vip_ep: Boolean,
-    val ids: UserSettingsIds,
-    val images: Map<String, Image>,
-    val account: UserAccount
-) {
-    companion object {
-        const val IMAGES_KEY_AVATAR = "avatar"
-    }
-}
 
-data class UserSettingsIds(
-    val slug: String
+data class Settings(
+    val user: User,
+    val account: Account
 )
 
-data class Image(
-    val full: String
-)
-
-data class UserAccount(
-    val cover_image: String
-)
