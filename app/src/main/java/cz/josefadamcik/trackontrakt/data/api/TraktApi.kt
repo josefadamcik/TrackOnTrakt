@@ -15,15 +15,13 @@
 */
 package cz.josefadamcik.trackontrakt.data.api
 
+import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenRequest
 import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenResponse
 import cz.josefadamcik.trackontrakt.data.api.model.Settings
 import io.reactivex.Single
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * Trakt API interface for retrofit.
@@ -41,5 +39,9 @@ interface TraktApi {
     fun userSettings(@Header("Authorization") authorization: String): Single<Settings>
 
 
+    @GET("/users/me/history")
+    fun myHistory(@Header("Authorization") authorization: String,
+                  @Query("page") page: Int,
+                  @Query("limit") limit: Int): Single<List<HistoryItem>>
 
 }

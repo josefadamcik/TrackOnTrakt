@@ -115,8 +115,8 @@ dependencies {
     compile "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
 
-//    internalCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
-//    productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    internalCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
 
     //basic utils
     compile 'com.jakewharton.timber:timber:4.5.1'
@@ -124,14 +124,7 @@ dependencies {
     //dagger 2
     compile 'com.google.dagger:dagger:2.9'
     kapt 'com.google.dagger:dagger-compiler:2.9'
-//    annotationProcessor 'com.google.dagger:dagger-compiler:2.9'
     provided 'org.glassfish:javax.annotation:10.0-b28'
-
-    // MVP + ViewState + LCE Views http://hannesdorfmann.com/mosby/
-    compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0'
-
-    compile 'com.jakewharton:butterknife:8.5.1'
-    kapt 'com.jakewharton:butterknife-compiler:8.5.1'
 
     //rx
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -141,12 +134,18 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile "com.squareup.retrofit2:retrofit:2.2.0"
+    compile 'com.squareup.moshi:moshi:1.4.0'
+    compile 'com.squareup.moshi:moshi-adapters:1.4.0'
     compile "com.squareup.retrofit2:converter-moshi:2.2.0"
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
 
-
+    //ui & view
+    // MVP + ViewState + LCE Views http://hannesdorfmann.com/mosby/
+    compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.5.1'
 
 }
 repositories {

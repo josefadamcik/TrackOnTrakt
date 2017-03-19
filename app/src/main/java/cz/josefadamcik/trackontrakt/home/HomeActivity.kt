@@ -50,6 +50,16 @@ class HomeActivity : AppCompatActivity() {
         super.onStart()
 
         loadUserProfile()
+        loadUserHistory()
+    }
+
+    private fun loadUserHistory() {
+        userAccountManager.loadUserHistory()
+            .subscribe(
+                { history -> history.forEach { Timber.i("%s", it) } },
+                { t -> Timber.e(t, "error loading history") }
+            )
+
     }
 
     private fun loadUserProfile() {

@@ -17,6 +17,7 @@ package cz.josefadamcik.trackontrakt.data
 
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.Settings
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -39,6 +40,16 @@ class UserAccountManager
             return Single.error(IllegalStateException("Missing authorisation token"));
         } else {
             return traktApi.userSettings(traktAuthTokenHolder.httpAuth())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+        }
+    }
+
+    fun loadUserHistory(): Single<List<HistoryItem>> {
+        if (traktAuthTokenHolder.hasToken().not()) {
+            return Single.error(IllegalStateException("Missing authorisation token"));
+        } else {
+            return traktApi.myHistory(traktAuthTokenHolder.httpAuth(), 1, 10)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
         }
