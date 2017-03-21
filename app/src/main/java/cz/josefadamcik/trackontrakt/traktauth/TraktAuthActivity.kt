@@ -8,6 +8,10 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.Unbinder
+import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
@@ -17,48 +21,43 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * TODO: introduce presenter
  * todo: progress, error view (fullscreen)
  * todo: check if already authorized on start
  * todo: refresh token
  */
-class TraktAuthActivity : AppCompatActivity() {
+class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), TraktAuthView {
 
-    @Inject lateinit var authorizationProvider: AuthorizationProvider
-    val disposable = CompositeDisposable()
-    lateinit var webview: WebView
+    @Inject lateinit var traktAuthPresenter: TraktAuthPresenter
+    @BindView(R.id.webview) lateinit var webview: WebView
+
+    private var unbinder: Unbinder = Unbinder.EMPTY
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_trakt_auth)
-
-        supportActionBar?.setTitle(R.string.title_authorize)
-
         (application as TrackOnTraktApplication).graph.inject(this)
+        setContentView(R.layout.activity_trakt_auth)
+        unbinder = ButterKnife.bind(this)
+
+        super.onCreate(savedInstanceState)
+        supportActionBar?.setTitle(R.string.title_authorize)
 
         webview = findViewById(R.id.webview) as WebView
 
-        startTraktAuth();
-
-
     }
+
+    override fun createPresenter(): TraktAuthPresenter {
+        return traktAuthPresenter
+    }
+
 
 
     override fun onDestroy() {
         super.onDestroy()
-
-        disposable.clear()
+        unbinder.unbind()
     }
 
-
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun startTraktAuth() {
-        val oauthUrl = authorizationProvider.getOauthAuthorizationUrl()
-
-
+    override fun requestLoginToTraktInBrowser(url: String) {
         webview.settings.javaScriptEnabled = true
-
         webview.setWebViewClient(object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
@@ -67,35 +66,24 @@ class TraktAuthActivity : AppCompatActivity() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Timber.d("shouldOverrideUrlLoading %s", url)
-                if (url != null && url.startsWith(BuildConfig.TRAKT_OAUTH_REDIRECT_URL)) {
-                    onTraktAuthRedirect(url)
-                    return true;
+                if (url == null || !presenter.onBrowserRedirected(url)) {
+                    return super.shouldOverrideUrlLoading(view, url)
+                } else {
+                    return true
                 }
-                return super.shouldOverrideUrlLoading(view, url)
             }
         })
-
-        webview.loadUrl(oauthUrl)
-
-
+        webview.loadUrl(url)
     }
 
-    private fun onTraktAuthRedirect(url: String) {
-        disposable.add(
-            authorizationProvider.onTraktAuthRedirect(url)
-                .subscribe(
-                    { res -> continueToHome() },
-                    { t ->
-                        val snackbar = Snackbar.make(findViewById(R.id.webview), R.string.err_trakt_auth_failed, Snackbar.LENGTH_INDEFINITE)
-                        snackbar.setAction(R.string.action_retry, View.OnClickListener { startTraktAuth() })
-                        snackbar.show()
-                    }
-                )
-        )
-    }
-
-    private fun continueToHome() {
+    override fun continueNavigation() {
         startActivity(Intent(this, HomeActivity::class.java))
+    }
+
+    override fun showErrorMessageWithRetry(messageId: Int) {
+        val snackbar = Snackbar.make(webview, messageId, Snackbar.LENGTH_INDEFINITE)
+        snackbar.setAction(R.string.action_retry, View.OnClickListener { presenter.retry() })
+        snackbar.show()
     }
 
 

@@ -80,7 +80,7 @@ class ApiModule {
             val loggingInterceptor = HttpLoggingInterceptor({
                 Timber.tag("OkHttp").d(it);
             })
-            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
             builder.addInterceptor(loggingInterceptor)
         }
 
@@ -95,8 +95,8 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideTraktAuthTokenHolder(preferences: SharedPreferences): TraktAuthTokenHolder {
-        val instance = TraktAuthTokenHolder(preferences)
+    fun provideTraktAuthTokenHolder(preferences: SharedPreferences, moshi: Moshi): TraktAuthTokenHolder {
+        val instance = TraktAuthTokenHolder(preferences, moshi)
         instance.readFromPreferences()
         return instance
     }

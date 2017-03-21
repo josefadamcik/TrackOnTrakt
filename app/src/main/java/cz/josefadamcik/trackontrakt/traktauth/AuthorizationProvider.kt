@@ -38,15 +38,14 @@ class AuthorizationProvider
 @Inject
 constructor(
     val traktApi: TraktApi,
-    val preferences: SharedPreferences,
     val traktApiConfig: TraktApiConfig,
-    val traktAuthTokenHolder: TraktAuthTokenHolder,
-    val moshi: Moshi
+    val traktAuthTokenHolder: TraktAuthTokenHolder
 ) {
 
 
     fun getOauthAuthorizationUrl(): String {
-        val oauthUrl = String.format("https://trakt.tv/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s",
+        val oauthUrl = String.format(
+            BuildConfig.TRAKT_LOGIN_URL,
             BuildConfig.TRAKT_CLIENT_ID,
             BuildConfig.TRAKT_OAUTH_REDIRECT_URL
         )
@@ -62,23 +61,18 @@ constructor(
         }
 
         return traktApi.oauthToken(
-            OauthTokenRequest(code, traktApiConfig.clientId, traktApiConfig.clientSecret, traktApiConfig.oauthRedirectUrl)
+            OauthTokenRequest(code,
+                traktApiConfig.clientId,
+                traktApiConfig.clientSecret,
+                traktApiConfig.oauthRedirectUrl)
         )
             .subscribeOn(Schedulers.io())
             .flatMap { res ->
                 if (res.isSuccessful) {
                     val response = res.body()
                     Timber.d("obtained access_token %s; response %s", response.access_token, response)
-                    val json = moshi.adapter(OauthTokenResponse::class.java).toJson(response)
-
-                    traktAuthTokenHolder.token = response.access_token
-
-                    preferences.edit()
-                        .putString(TraktAuthTokenHolder.PREF_KEY_TOKEN, response.access_token)
-                        .putString(TraktAuthTokenHolder.PREF_KEY_RESPONSE, json)
-                        .apply()
-
-                    Single.just(TraktAuthorisationResult(true, response.access_token))
+                    traktAuthTokenHolder.fillFromResponse(response)
+                    Single.just(TraktAuthorisationResult(true, traktAuthTokenHolder.token))
                 } else {
                     Timber.w("failed %s : %s", res.code(), res.message())
                     Single.just(TraktAuthorisationResult(false, null))
@@ -88,5 +82,9 @@ constructor(
             .observeOn(AndroidSchedulers.mainThread())
 
 
+    }
+
+    fun shouldHandleRedirectUrl(url: String): Boolean {
+        return url.startsWith(BuildConfig.TRAKT_OAUTH_REDIRECT_URL)
     }
 }

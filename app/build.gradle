@@ -30,6 +30,7 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField 'String', 'GIT_SHA', "\"${gitSha}\""
@@ -39,6 +40,7 @@ android {
         buildConfigField "String", "TRAKT_CLIENT_SECRET", "\"b2ee3a2adc7a4ec1f401f53dee9b5c6d6552b052184b22ed5a4c579e98fcd4ee\""
         buildConfigField "String", "TRAKT_OAUTH_REDIRECT_URL", "\"tot://authorized\""
         buildConfigField "String", "TRAKT_BASE_API_URL", "\"https://api.trakt.tv\""
+        buildConfigField "String", "TRAKT_LOGIN_URL", "\"https://trakt.tv/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s\""
 
 
     }
@@ -146,6 +148,8 @@ dependencies {
     compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0'
     compile 'com.jakewharton:butterknife:8.5.1'
     kapt 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    compile 'me.zhanghai.android.materialprogressbar:library:1.3.0'
 
 }
 repositories {

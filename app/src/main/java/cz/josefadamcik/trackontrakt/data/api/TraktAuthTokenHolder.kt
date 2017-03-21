@@ -17,22 +17,44 @@
 package cz.josefadamcik.trackontrakt.data.api
 
 import android.content.SharedPreferences
+import com.squareup.moshi.Moshi
+import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenResponse
 import timber.log.Timber
+import java.util.*
 
 /**
  * Singleton holding auth token
  */
-class TraktAuthTokenHolder(val preferences: SharedPreferences) {
+class TraktAuthTokenHolder(val preferences: SharedPreferences, val moshi: Moshi) {
     companion object {
-        const val PREF_KEY_TOKEN = "trakt.oauth.token"
         const val PREF_KEY_RESPONSE = "trakt.oauth.response"
     }
 
-    var token: String? = null
+    private var oauthTokenResponse: OauthTokenResponse? = null
+
+    val token get() = oauthTokenResponse?.access_token
+
 
     fun readFromPreferences() {
-        token = preferences.getString(PREF_KEY_TOKEN, null)
-        Timber.i("Loading auth token %s", token)
+        val serialized = preferences.getString(PREF_KEY_RESPONSE, null)
+        if (serialized != null) {
+            oauthTokenResponse = moshi.adapter(OauthTokenResponse::class.java).fromJson(serialized)
+        }
+        Timber.i("Loading oauth token response %s", oauthTokenResponse)
+        logOauthResponse(oauthTokenResponse)
+    }
+
+    private fun logOauthResponse(response: OauthTokenResponse?) {
+        if (response != null) {
+            Timber.i("created %s expired (%s at %s) issued before %s min (%s h)",
+                Date(response.created_at * 1000),
+                response.expired,
+                response.expiresAt,
+                response.createdBefore / 60,
+                response.createdBefore / 3600
+            )
+
+        }
     }
 
     fun httpAuth(): String {
@@ -45,10 +67,22 @@ class TraktAuthTokenHolder(val preferences: SharedPreferences) {
 
     fun forgetToken() {
         Timber.i("Forgetting auth token")
-        token = null
+        oauthTokenResponse = null
         preferences.edit()
             .remove(PREF_KEY_RESPONSE)
-            .remove(PREF_KEY_TOKEN)
             .apply()
+    }
+
+
+
+
+    fun fillFromResponse(response: OauthTokenResponse) {
+        oauthTokenResponse = response
+        val json = moshi.adapter(OauthTokenResponse::class.java).toJson(response)
+
+        preferences.edit()
+            .putString(TraktAuthTokenHolder.PREF_KEY_RESPONSE, json)
+            .apply()
+
     }
 }
