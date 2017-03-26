@@ -33,7 +33,7 @@ class HomePresenter @Inject constructor(
         view = view
     }
 
-    fun loadData(forceRefresh: Boolean) {
+    fun loadHomeStreamData(forceRefresh: Boolean) {
         view?.showLoading(forceRefresh)
         //todo handle disposable
         userAccountManager.loadUserHistory()

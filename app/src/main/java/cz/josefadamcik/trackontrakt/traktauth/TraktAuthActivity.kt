@@ -24,9 +24,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * todo: progress, error view (fullscreen)
- * todo: check if already authorized on start
- * todo: refresh token
+ * OAuth authorisation, token refresh.
  */
 class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), TraktAuthView {
 

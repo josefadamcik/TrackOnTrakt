@@ -38,6 +38,7 @@ TODO
 * [Moshi](https://www.moshi.com/)
 * [MaterialProgressBar](https://github.com/DreaminginCodeZH/MaterialProgressBar)
 * [ThreeTenABP](https://github.com/JakeWharton/ThreeTenABP)
+* [SearchView](https://github.com/lapism/SearchView)
 
 
 

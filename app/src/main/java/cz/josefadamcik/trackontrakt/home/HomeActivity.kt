@@ -2,9 +2,8 @@ package cz.josefadamcik.trackontrakt.home
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CollapsingToolbarLayout
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -13,55 +12,90 @@ import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import com.bumptech.glide.Glide
 import com.hannesdorfmann.mosby3.mvp.lce.MvpLceActivity
+import com.lapism.searchview.SearchAdapter
+import com.lapism.searchview.SearchFilter
+import com.lapism.searchview.SearchItem
+import com.lapism.searchview.SearchView
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.data.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
-class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView {
+class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchView.OnQueryTextListener, SearchView.OnOpenCloseListener, SearchView.OnVoiceClickListener {
     @Inject lateinit var preferences: SharedPreferences
     @Inject lateinit var userAccountManager: UserAccountManager
     @Inject lateinit var homePresenter: HomePresenter
 
+    @BindView(R.id.app_bar) lateinit var appbar: AppBarLayout
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
-    @BindView(R.id.fab) lateinit var fab: FloatingActionButton
     @BindView(R.id.toolbar_image) lateinit var toolbarImage: ImageView
     @BindView(R.id.recyclerView) lateinit var recyclerView: RecyclerView
+    @BindView(R.id.search_view) lateinit var searchView: SearchView
     private lateinit var unbinder: Unbinder
-
-
     private lateinit var adapter: HistoryAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as TrackOnTraktApplication).graph.inject(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         unbinder = ButterKnife.bind(this)
+        toolbar.navigationContentDescription = getString(R.string.app_name)
         setSupportActionBar(toolbar)
-
-
 
         contentView.setOnRefreshListener(this)
 
+        initList()
+        initSearchView()
+
+        loadData(false)
+
+    }
+
+    private fun initList() {
         adapter = HistoryAdapter(LayoutInflater.from(this))
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
+    }
 
-        loadData(false)
+    private fun initSearchView() {
+        searchView.hint = getString(R.string.search)
+        //searchView.setArrowOnly(true)
+        searchView.setOnQueryTextListener(this)
+        searchView.setOnOpenCloseListener(this)
+        searchView.setOnVoiceClickListener(this)
 
+        val suggestionsList = ArrayList<SearchItem>()
+        suggestionsList.add(SearchItem("search1"))
+        suggestionsList.add(SearchItem("search2"))
+        suggestionsList.add(SearchItem("search3"))
+
+        val searchAdapter = SearchAdapter(this, suggestionsList)
+        searchAdapter.addOnItemClickListener { view, position ->
+            val textView = view.findViewById(R.id.textView_item_text) as TextView
+            val query = textView.text.toString()
+            searchView.close(false)
+        }
+        searchView.setAdapter(searchAdapter)
+
+        val filter = listOf(
+            SearchFilter(getString(R.string.filter_movies), true),
+            SearchFilter(getString(R.string.filter_shows), true)
+        )
+        searchView.setFilters(filter)
     }
 
     override fun createPresenter(): HomePresenter {
@@ -69,7 +103,7 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
     }
 
     override fun loadData(pullToRefresh: Boolean) {
-        presenter.loadData(pullToRefresh);
+        presenter.loadHomeStreamData(pullToRefresh)
     }
 
     override fun getErrorMessage(e: Throwable?, pullToRefresh: Boolean): String {
@@ -94,8 +128,6 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
 
     override fun onStart() {
         super.onStart()
-
-        loadUserProfile()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -105,16 +137,45 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
+        if (id == R.id.action_search) {
+            appbar.setExpanded(true, true)
+            searchView.open(true, item)
 
-
-        if (id == R.id.action_settings) {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        Timber.d("oQueryTextSubmit %s", query)
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        Timber.d("onQueryTextChange %s", newText)
+        return false
+    }
+
+    /**
+     * searchView open
+     */
+    override fun onOpen(): Boolean {
+        Timber.d("onOpen searchView")
+        return true
+    }
+
+    /**
+     * searchView close
+     */
+    override fun onClose(): Boolean {
+        Timber.d("onClose searchView")
+        return true
+    }
+
+    override fun onVoiceClick() {
+        Timber.d("onVoiceClick todo: permission on 6+")
     }
 
     private fun hidePullToRefreshRefreshing() {
@@ -123,25 +184,5 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
         }
     }
 
-    private fun loadUserProfile() {
-        userAccountManager.obtainUserSettings()
-            .subscribe(
-                { settings ->
-                    Timber.d("%s", settings)
-                    supportActionBar?.title = settings.user.name
-                    toolbarLayout.title = settings.user.name
-                    //toolbar.title = settings.user.name
-                    settings.account.cover_image?.apply {
-                        Glide.with(this@HomeActivity).load(this).into(toolbarImage)
-                    }
-                },
-                { t ->
-                    Timber.e(t, "unable to load user profile")
-                    val snackbar = Snackbar.make(findViewById(R.id.webview), R.string.err_data_retrieval_failed, Snackbar.LENGTH_INDEFINITE)
-                    snackbar.setAction(R.string.action_retry, View.OnClickListener { loadUserProfile() })
-                    snackbar.show()
-                }
 
-            )
-    }
 }

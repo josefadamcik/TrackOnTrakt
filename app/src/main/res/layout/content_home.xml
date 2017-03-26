@@ -17,6 +17,7 @@
         android:indeterminate="true"
         android:visibility="gone" />
 
+
     <!-- Content View -->
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/contentView"
