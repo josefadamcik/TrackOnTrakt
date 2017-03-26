@@ -7,6 +7,17 @@ Android application for tracking of watched movies and shows on [trakt.tv](https
 Main motivation is to develop nontrivial application where I can experiment with some technologies 
 and practices I'd like to try. The application can also serve as my personal reference project. 
 
+
+## Setup
+
+Make copy of keys.properties.example file named keys.properties.
+ 
+### Trakt API key
+
+You'll need to [create a trakt application](https://trakt.tv/oauth/applications/new) and copy 
+client id and client secret into the file mentioned above.
+
+
 ## Running the tests
 
 TODO
@@ -15,15 +26,18 @@ TODO
 ## Built With
 
 * [Kotlin](https://kotlinlang.org/)
-* [RxJava2]() 
+* [RxJava2](https://github.com/ReactiveX/RxJava), [RxAndriod](https://github.com/ReactiveX/RxAndroid), 
+[RxKotlin](https://github.com/ReactiveX/RxKotlin)
 * [Mosby](http://hannesdorfmann.com/mosby/)
-* [Dagger2]()
-* [Retrofit]()
-* [OkHttp]()
-* [Glide]()
-* [LoganSquare](https://github.com/bluelinelabs/LoganSquare)
-* [Timber]()
-
+* [Dagger2](https://google.github.io/dagger/)
+* [Retrofit](https://square.github.io/retrofit/)
+* [OkHttp](https://github.com/square/okhttp)
+* [Glide](https://github.com/bumptech/glide)
+* [Timber](https://github.com/JakeWharton/timber)
+* [Butterknife](https://jakewharton.github.io/butterknife/)
+* [Moshi](https://www.moshi.com/)
+* [MaterialProgressBar](https://github.com/DreaminginCodeZH/MaterialProgressBar)
+* [ThreeTenABP](https://github.com/JakeWharton/ThreeTenABP)
 
 
 

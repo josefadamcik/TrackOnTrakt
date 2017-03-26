@@ -24,4 +24,8 @@ interface TraktAuthView : MvpView {
      * Goto next activity.
      */
     fun continueNavigation()
+
+    fun showErrorView()
+    fun showProgress()
+    fun hideProgress()
 }

@@ -38,4 +38,8 @@ data class OauthTokenResponse(
 
     val expiresAt: Date
         get() = Date((created_at + expires_in) * 1000)
+
+    fun expiresSoonerThanDays(days: Int): Boolean {
+        return expiresAt.before(Date(Date().time + days * 24 * 60 * 60 * 1000))
+    }
 }

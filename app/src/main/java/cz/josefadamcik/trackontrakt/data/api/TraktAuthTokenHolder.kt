@@ -25,7 +25,10 @@ import java.util.*
 /**
  * Singleton holding auth token
  */
-class TraktAuthTokenHolder(val preferences: SharedPreferences, val moshi: Moshi) {
+class TraktAuthTokenHolder(
+    private val preferences: SharedPreferences,
+    private val moshi: Moshi
+) {
     companion object {
         const val PREF_KEY_RESPONSE = "trakt.oauth.response"
     }
@@ -33,6 +36,7 @@ class TraktAuthTokenHolder(val preferences: SharedPreferences, val moshi: Moshi)
     private var oauthTokenResponse: OauthTokenResponse? = null
 
     val token get() = oauthTokenResponse?.access_token
+    val tokenInfo get() = oauthTokenResponse
 
 
     fun readFromPreferences() {
@@ -84,5 +88,9 @@ class TraktAuthTokenHolder(val preferences: SharedPreferences, val moshi: Moshi)
             .putString(TraktAuthTokenHolder.PREF_KEY_RESPONSE, json)
             .apply()
 
+    }
+
+    fun expiresSoonerThanDays(days: Int): Boolean {
+        return tokenInfo?.expiresSoonerThanDays(days) ?: false
     }
 }

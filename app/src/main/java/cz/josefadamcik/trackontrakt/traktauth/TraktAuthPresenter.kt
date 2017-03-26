@@ -24,8 +24,8 @@ import javax.inject.Inject
 
 
 class TraktAuthPresenter @Inject constructor(
-    val authorizationProvider: AuthorizationProvider,
-    val traktAuthTokenHolder: TraktAuthTokenHolder
+    private val authorizationProvider: AuthorizationProvider,
+    private val traktAuthTokenHolder: TraktAuthTokenHolder
 ) : MvpPresenter<TraktAuthView> {
 
     private var view: TraktAuthView? = null
@@ -48,9 +48,12 @@ class TraktAuthPresenter @Inject constructor(
                 authorizationProvider.onTraktAuthRedirect(url)
                     .subscribe(
                         { res ->
+                            view?.hideProgress()
                             view?.continueNavigation()
                         },
                         { t ->
+                            view?.hideProgress()
+                            view?.showErrorView()
                             view?.showErrorMessageWithRetry(R.string.err_trakt_auth_failed)
                         }
                     )
@@ -66,14 +69,17 @@ class TraktAuthPresenter @Inject constructor(
 
 
     private fun checkOrStartAuth() {
-//        if (traktAuthTokenHolder.hasToken()) {
-//            Timber.d("has token: %s", traktAuthTokenHolder.token)
-//        } else {
+        if (traktAuthTokenHolder.hasToken() && !traktAuthTokenHolder.expiresSoonerThanDays(30)) {
+            Timber.d("has token: %s", traktAuthTokenHolder.token)
+            view?.continueNavigation()
+        } else {
+
             initiateOauth()
-//        }
+        }
     }
 
     private fun initiateOauth() {
+        view?.showProgress()
         val oauthUrl = authorizationProvider.getOauthAuthorizationUrl()
         view?.requestLoginToTraktInBrowser(oauthUrl)
     }
