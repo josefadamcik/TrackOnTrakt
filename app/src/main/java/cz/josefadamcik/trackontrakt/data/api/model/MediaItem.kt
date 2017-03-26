@@ -15,15 +15,27 @@
 */
 package cz.josefadamcik.trackontrakt.data.api.model
 
+interface MediaItem {
+    val type: MediaType
+    val movie: Movie?
+    val episode: Episode?
+    val show: Show?
 
-import java.util.*
+    val title: String
+        get() {
+            return when (type) {
+                MediaType.episode -> String.format("%s - S %s, Ep %s", show?.title, episode?.season, episode?.number)
+                MediaType.movie -> movie?.title ?: ""
+                else -> ""
+            }
+        }
 
-data class HistoryItem(
-    val id: Long,
-    val watched_at: Date,
-    val action: Action,
-    override val type: MediaType,
-    override val movie: Movie?,
-    override val episode: Episode?,
-    override val show: Show?
-) : MediaItem
+    val subtitle: String
+        get() {
+            return when (type) {
+                MediaType.episode -> episode?.title ?: ""
+                else -> ""
+            }
+        }
+
+}

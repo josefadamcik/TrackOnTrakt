@@ -31,6 +31,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -66,6 +67,9 @@ class ApiModule {
     @Named("traktokhttp")
     fun provideOkHttpForTraktApi(traktApiConfig: TraktApiConfig): OkHttpClient {
         val builder = OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .writeTimeout(10, TimeUnit.SECONDS)
             .addInterceptor { chain ->
                 val original = chain.request()
                 val request = original.newBuilder()
@@ -80,7 +84,7 @@ class ApiModule {
             val loggingInterceptor = HttpLoggingInterceptor({
                 Timber.tag("OkHttp").d(it);
             })
-            loggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             builder.addInterceptor(loggingInterceptor)
         }
 

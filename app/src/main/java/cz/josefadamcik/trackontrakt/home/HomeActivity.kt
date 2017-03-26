@@ -27,7 +27,6 @@ import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.data.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 
@@ -42,8 +41,18 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
     @BindView(R.id.toolbar_image) lateinit var toolbarImage: ImageView
     @BindView(R.id.recyclerView) lateinit var recyclerView: RecyclerView
     @BindView(R.id.search_view) lateinit var searchView: SearchView
+
     private lateinit var unbinder: Unbinder
     private lateinit var adapter: HistoryAdapter
+    private lateinit var suggestionAdapter: SearchAdapter
+
+    private val suggestionList: MutableList<SearchItem> = mutableListOf()
+    var searchSuggestions: List<String> = emptyList()
+        set(items: List<String>) {
+            suggestionList.clear()
+            items.mapTo(suggestionList, ::SearchItem)
+            suggestionAdapter.suggestionsList = suggestionList
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as TrackOnTraktApplication).graph.inject(this)
@@ -71,6 +80,7 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
         recyclerView.adapter = adapter
     }
 
+
     private fun initSearchView() {
         searchView.hint = getString(R.string.search)
         //searchView.setArrowOnly(true)
@@ -78,18 +88,16 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
         searchView.setOnOpenCloseListener(this)
         searchView.setOnVoiceClickListener(this)
 
-        val suggestionsList = ArrayList<SearchItem>()
-        suggestionsList.add(SearchItem("search1"))
-        suggestionsList.add(SearchItem("search2"))
-        suggestionsList.add(SearchItem("search3"))
 
-        val searchAdapter = SearchAdapter(this, suggestionsList)
-        searchAdapter.addOnItemClickListener { view, position ->
+        suggestionAdapter = SearchAdapter(this, suggestionList)
+
+        suggestionAdapter.addOnItemClickListener { view, position ->
             val textView = view.findViewById(R.id.textView_item_text) as TextView
             val query = textView.text.toString()
+            doSearchForQuery(query)
             searchView.close(false)
         }
-        searchView.setAdapter(searchAdapter)
+        searchView.adapter = suggestionAdapter
 
         val filter = listOf(
             SearchFilter(getString(R.string.filter_movies), true),
@@ -97,6 +105,12 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
         )
         searchView.setFilters(filter)
     }
+
+    private fun doSearchForQuery(query: String) {
+        searchView.close(true)
+        presenter.search(query, searchView.filtersStates[0], searchView.filtersStates[1])
+    }
+
 
     override fun createPresenter(): HomePresenter {
         return homePresenter
@@ -149,12 +163,15 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
 
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        Timber.d("oQueryTextSubmit %s", query)
+        Timber.d("oQueryTextSubmit $query")
+        if (query != null && query.isNotBlank()) {
+            doSearchForQuery(query)
+        }
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        Timber.d("onQueryTextChange %s", newText)
+        Timber.d("onQueryTextChange $newText")
         return false
     }
 

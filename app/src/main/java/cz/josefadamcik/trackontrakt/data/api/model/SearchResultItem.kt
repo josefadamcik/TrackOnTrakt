@@ -13,15 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
+
 package cz.josefadamcik.trackontrakt.data.api.model
 
-
-import java.util.*
-
-data class HistoryItem(
-    val id: Long,
-    val watched_at: Date,
-    val action: Action,
+data class SearchResultItem(
+    val score: Double?,
     override val type: MediaType,
     override val movie: Movie?,
     override val episode: Episode?,

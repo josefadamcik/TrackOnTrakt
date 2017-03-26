@@ -17,13 +17,22 @@ package cz.josefadamcik.trackontrakt.home
 
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import cz.josefadamcik.trackontrakt.data.UserAccountManager
+import cz.josefadamcik.trackontrakt.data.api.TraktApi
+import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 
 class HomePresenter @Inject constructor(
-    val userAccountManager: UserAccountManager
+    val userAccountManager: UserAccountManager,
+    val traktApi: TraktApi,
+    val tokenHolder: TraktAuthTokenHolder
 ) : MvpPresenter<HomeView> {
     var view: HomeView? = null
+    val disposable = CompositeDisposable()
 
     override fun attachView(view: HomeView?) {
         this.view = view
@@ -31,20 +40,51 @@ class HomePresenter @Inject constructor(
 
     override fun detachView(retainInstance: Boolean) {
         view = view
+        disposable.clear()
+
     }
 
     fun loadHomeStreamData(forceRefresh: Boolean) {
         view?.showLoading(forceRefresh)
-        //todo handle disposable
-        userAccountManager.loadUserHistory()
-            .subscribe(
-                { history ->
-                    view?.setData(history)
-                    view?.showContent()
-                },
-                { t ->
-                    view?.showError(t, forceRefresh)
-                }
-            )
+        disposable.add(
+            userAccountManager.loadUserHistory()
+                .subscribe(
+                    { history ->
+                        view?.setData(history)
+                        view?.showContent()
+                    },
+                    { t ->
+                        view?.showError(t, forceRefresh)
+                    }
+                )
+        )
+    }
+
+    fun search(query: String, movies: Boolean, shows: Boolean) {
+        Timber.d("search $query")
+        if (!movies && !shows) {
+            throw IllegalArgumentException("at least on of movies, shows should be true")
+        }
+        val types = mutableListOf<String>()
+        if (movies) types.add("movie")
+        if (shows) types.add("show")
+
+        view?.showLoading(false)
+        disposable.add(
+            traktApi.search(tokenHolder.httpAuth(), types.joinToString(","), query, TraktApi.ExtendedInfo.metadata)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { results ->
+                        view?.showContent()
+                        results.forEach { Timber.d("result $it") }
+                    },
+                    { t ->
+                        Timber.e(t, "search for $query failed")
+                        view?.showError(t, false)
+                    }
+                )
+
+        )
     }
 }

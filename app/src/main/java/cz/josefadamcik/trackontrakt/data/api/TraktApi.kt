@@ -15,10 +15,7 @@
 */
 package cz.josefadamcik.trackontrakt.data.api
 
-import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
-import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenRequest
-import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenResponse
-import cz.josefadamcik.trackontrakt.data.api.model.Settings
+import cz.josefadamcik.trackontrakt.data.api.model.*
 import io.reactivex.Single
 import retrofit2.Response
 import retrofit2.http.*
@@ -31,6 +28,9 @@ import retrofit2.http.*
  * Contains only calls need for the application.
  */
 interface TraktApi {
+    enum class ExtendedInfo {
+        full, metadata
+    }
 
     @POST("/oauth/token")
     fun oauthToken(@Body data: OauthTokenRequest): Single<Response<OauthTokenResponse>>
@@ -41,7 +41,15 @@ interface TraktApi {
 
     @GET("/users/me/history")
     fun myHistory(@Header("Authorization") authorization: String,
-                  @Query("page") page: Int,
-                  @Query("limit") limit: Int): Single<List<HistoryItem>>
+                  @Query("page") page: Int = 1,
+                  @Query("limit") limit: Int = 10): Single<List<HistoryItem>>
+
+    @GET("/search/{type}")
+    fun search(@Header("Authorization") authorization: String,
+               @Path("type") type: String,
+               @Query("query") query: String,
+               @Query("extended") extended: ExtendedInfo = ExtendedInfo.metadata,
+               @Query("page") page: Int = 1,
+               @Query("limit") limit: Int = 10): Single<List<SearchResultItem>>
 
 }
