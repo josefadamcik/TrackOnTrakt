@@ -36,6 +36,8 @@ class HomePresenter @Inject constructor(
 
     override fun attachView(view: HomeView?) {
         this.view = view
+
+        loadHomeStreamData(false)
     }
 
     override fun detachView(retainInstance: Boolean) {
@@ -45,16 +47,15 @@ class HomePresenter @Inject constructor(
     }
 
     fun loadHomeStreamData(forceRefresh: Boolean) {
-        view?.showLoading(forceRefresh)
+        view?.showLoading()
         disposable.add(
             userAccountManager.loadUserHistory()
                 .subscribe(
                     { history ->
-                        view?.setData(history)
-                        view?.showContent()
+                        view?.showHistory(history)
                     },
                     { t ->
-                        view?.showError(t, forceRefresh)
+                        view?.showError(t)
                     }
                 )
         )
@@ -69,19 +70,19 @@ class HomePresenter @Inject constructor(
         if (movies) types.add("movie")
         if (shows) types.add("show")
 
-        view?.showLoading(false)
+        view?.showLoading()
         disposable.add(
             traktApi.search(tokenHolder.httpAuth(), types.joinToString(","), query, TraktApi.ExtendedInfo.metadata)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                     { results ->
-                        view?.showContent()
-                        results.forEach { Timber.d("result $it") }
+                        view?.showSearchResults(results)
+
                     },
                     { t ->
                         Timber.e(t, "search for $query failed")
-                        view?.showError(t, false)
+                        view?.showError(t)
                     }
                 )
 

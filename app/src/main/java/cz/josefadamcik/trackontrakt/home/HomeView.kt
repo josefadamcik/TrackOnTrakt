@@ -15,8 +15,14 @@
 */
 package cz.josefadamcik.trackontrakt.home
 
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceView
+import com.hannesdorfmann.mosby3.mvp.MvpView
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
+import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
 
-interface HomeView : MvpLceView<List<HistoryItem>> {
+interface HomeView : MvpView {
+    fun showHistory(items: List<HistoryItem>)
+    fun showSearchResults(items: List<SearchResultItem>)
+    fun showLoading()
+    fun hideLoading()
+    fun showError(e: Throwable?)
 }

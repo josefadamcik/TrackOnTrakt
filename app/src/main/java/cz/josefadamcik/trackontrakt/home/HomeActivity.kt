@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CollapsingToolbarLayout
+import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -12,12 +13,14 @@ import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
-import com.hannesdorfmann.mosby3.mvp.lce.MvpLceActivity
+import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import com.lapism.searchview.SearchAdapter
 import com.lapism.searchview.SearchFilter
 import com.lapism.searchview.SearchItem
@@ -26,11 +29,17 @@ import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.data.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
+import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
 import timber.log.Timber
 import javax.inject.Inject
 
 
-class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchView.OnQueryTextListener, SearchView.OnOpenCloseListener, SearchView.OnVoiceClickListener {
+class HomeActivity : MvpActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchView.OnQueryTextListener, SearchView.OnOpenCloseListener, SearchView.OnVoiceClickListener {
+    enum class Mode {
+        History,
+        Search
+    }
+
     @Inject lateinit var preferences: SharedPreferences
     @Inject lateinit var userAccountManager: UserAccountManager
     @Inject lateinit var homePresenter: HomePresenter
@@ -39,12 +48,19 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
     @BindView(R.id.toolbar_image) lateinit var toolbarImage: ImageView
-    @BindView(R.id.recyclerView) lateinit var recyclerView: RecyclerView
+    @BindView(R.id.list) lateinit var recyclerView: RecyclerView
+    @BindView(R.id.progress) lateinit var progress: ProgressBar
+    @BindView(R.id.swipe_refresh) lateinit var swipeRefreshLayout: SwipeRefreshLayout
     @BindView(R.id.search_view) lateinit var searchView: SearchView
 
+
     private lateinit var unbinder: Unbinder
-    private lateinit var adapter: HistoryAdapter
+    private lateinit var historyAdapter: HistoryAdapter
+    private lateinit var searchAdapter: SearchResultAdapter
     private lateinit var suggestionAdapter: SearchAdapter
+
+    private var currentMode: Mode = Mode.History
+
 
     private val suggestionList: MutableList<SearchItem> = mutableListOf()
     var searchSuggestions: List<String> = emptyList()
@@ -56,28 +72,35 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as TrackOnTraktApplication).graph.inject(this)
-
-        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
         unbinder = ButterKnife.bind(this)
+
         toolbar.navigationContentDescription = getString(R.string.app_name)
         setSupportActionBar(toolbar)
 
-        contentView.setOnRefreshListener(this)
+        swipeRefreshLayout.setOnRefreshListener(this)
 
         initList()
         initSearchView()
 
-        loadData(false)
-
+        super.onCreate(savedInstanceState)
     }
 
     private fun initList() {
-        adapter = HistoryAdapter(LayoutInflater.from(this))
+        historyAdapter = HistoryAdapter(LayoutInflater.from(this))
+        searchAdapter = SearchResultAdapter(LayoutInflater.from(this))
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = adapter
+
+        setAdapterForMode()
+    }
+
+    private fun setAdapterForMode() {
+        recyclerView.adapter = when (currentMode) {
+            Mode.History -> historyAdapter
+            Mode.Search -> searchAdapter
+        }
     }
 
 
@@ -116,28 +139,39 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
         return homePresenter
     }
 
-    override fun loadData(pullToRefresh: Boolean) {
-        presenter.loadHomeStreamData(pullToRefresh)
+
+    override fun showHistory(items: List<HistoryItem>) {
+        hideLoading()
+        currentMode = Mode.History
+        historyAdapter.items = items
+        setAdapterForMode()
     }
 
-    override fun getErrorMessage(e: Throwable?, pullToRefresh: Boolean): String {
-        return e?.message ?: getString(R.string.err_uknown)
+    override fun showSearchResults(items: List<SearchResultItem>) {
+        hideLoading()
+        currentMode = Mode.Search
+        searchAdapter.items = items
+        setAdapterForMode()
     }
 
-    override fun setData(data: List<HistoryItem>?) {
-        if (data != null) {
-            adapter.items = data
-        }
-        hidePullToRefreshRefreshing()
+    override fun showLoading() {
+        progress.visibility = View.VISIBLE
     }
 
-    override fun showError(e: Throwable?, pullToRefresh: Boolean) {
-        super.showError(e, pullToRefresh)
+    override fun hideLoading() {
+        progress.visibility = View.GONE
+    }
+
+    override fun showError(e: Throwable?) {
+        //TODO: show error
+        Snackbar.make(progress, e?.message ?: getString(R.string.err_uknown), Snackbar.LENGTH_LONG).show()
+
         hidePullToRefreshRefreshing()
     }
 
     override fun onRefresh() {
-        loadData(true)
+        Timber.d("onRefresh ")
+        //fixme: implement pull to refresh
     }
 
     override fun onStart() {
@@ -196,8 +230,8 @@ class HomeActivity : MvpLceActivity<SwipeRefreshLayout, List<HistoryItem>, HomeV
     }
 
     private fun hidePullToRefreshRefreshing() {
-        if (contentView.isRefreshing) {
-            contentView.isRefreshing = false
+        if (swipeRefreshLayout.isRefreshing) {
+            swipeRefreshLayout.isRefreshing = false
         }
     }
 
