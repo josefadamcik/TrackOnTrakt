@@ -17,6 +17,7 @@ package cz.josefadamcik.trackontrakt
 
 import cz.josefadamcik.trackontrakt.data.ApiModule
 import cz.josefadamcik.trackontrakt.home.HomeActivity
+import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
 import cz.josefadamcik.trackontrakt.traktauth.AuthorizationProvider
 import cz.josefadamcik.trackontrakt.traktauth.TraktAuthActivity
 import dagger.Component
@@ -29,6 +30,7 @@ interface ApplicationComponent {
     fun inject(application: TrackOnTraktApplication)
     fun inject(activity: HomeActivity)
     fun inject(activity: TraktAuthActivity)
+    fun inject(activity: SearchResultsActivity)
 }
 
 

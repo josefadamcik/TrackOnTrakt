@@ -13,13 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt.home
+package cz.josefadamcik.trackontrakt.search
 
 import com.hannesdorfmann.mosby3.mvp.MvpView
-import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
+import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
 
-interface HomeView : MvpView {
-    fun showHistory(items: List<HistoryItem>)
+interface SearchResultsView : MvpView {
+
+    fun showSearchResults(items: List<SearchResultItem>)
     fun showLoading()
     fun hideLoading()
     fun showError(e: Throwable?)

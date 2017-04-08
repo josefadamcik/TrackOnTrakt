@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt.home
+package cz.josefadamcik.trackontrakt.search
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -24,7 +24,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
-import cz.josefadamcik.trackontrakt.home.SearchResultAdapter.ViewHolder
+import cz.josefadamcik.trackontrakt.search.SearchResultAdapter.ViewHolder
 import java.text.DateFormat
 
 

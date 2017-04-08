@@ -1,5 +1,7 @@
 package cz.josefadamcik.trackontrakt.home
 
+import android.app.SearchManager
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
@@ -16,25 +18,21 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
-import butterknife.Unbinder
-import com.hannesdorfmann.mosby3.mvp.MvpActivity
-import com.lapism.searchview.SearchAdapter
-import com.lapism.searchview.SearchFilter
-import com.lapism.searchview.SearchItem
 import com.lapism.searchview.SearchView
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
+import cz.josefadamcik.trackontrakt.base.BaseActivity
+import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
 import cz.josefadamcik.trackontrakt.data.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
-import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
+import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
 import timber.log.Timber
 import javax.inject.Inject
 
 
-class HomeActivity : MvpActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchView.OnQueryTextListener, SearchView.OnOpenCloseListener, SearchView.OnVoiceClickListener {
+class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchViewWrapper.SearchCallback {
     enum class Mode {
         History,
         Search
@@ -54,21 +52,12 @@ class HomeActivity : MvpActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.
     @BindView(R.id.search_view) lateinit var searchView: SearchView
 
 
-    private lateinit var unbinder: Unbinder
+
     private lateinit var historyAdapter: HistoryAdapter
-    private lateinit var searchAdapter: SearchResultAdapter
-    private lateinit var suggestionAdapter: SearchAdapter
+    private lateinit var searchViewWrapper: SearchViewWrapper
 
     private var currentMode: Mode = Mode.History
 
-
-    private val suggestionList: MutableList<SearchItem> = mutableListOf()
-    var searchSuggestions: List<String> = emptyList()
-        set(items: List<String>) {
-            suggestionList.clear()
-            items.mapTo(suggestionList, ::SearchItem)
-            suggestionAdapter.suggestionsList = suggestionList
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as TrackOnTraktApplication).graph.inject(this)
@@ -81,14 +70,13 @@ class HomeActivity : MvpActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.
         swipeRefreshLayout.setOnRefreshListener(this)
 
         initList()
-        initSearchView()
+        searchViewWrapper = SearchViewWrapper(this, searchView, this)
 
         super.onCreate(savedInstanceState)
     }
 
     private fun initList() {
         historyAdapter = HistoryAdapter(LayoutInflater.from(this))
-        searchAdapter = SearchResultAdapter(LayoutInflater.from(this))
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.setHasFixedSize(true)
@@ -97,41 +85,17 @@ class HomeActivity : MvpActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.
     }
 
     private fun setAdapterForMode() {
-        recyclerView.adapter = when (currentMode) {
-            Mode.History -> historyAdapter
-            Mode.Search -> searchAdapter
-        }
+        recyclerView.adapter = historyAdapter
     }
 
 
-    private fun initSearchView() {
-        searchView.hint = getString(R.string.search)
-        //searchView.setArrowOnly(true)
-        searchView.setOnQueryTextListener(this)
-        searchView.setOnOpenCloseListener(this)
-        searchView.setOnVoiceClickListener(this)
-
-
-        suggestionAdapter = SearchAdapter(this, suggestionList)
-
-        suggestionAdapter.addOnItemClickListener { view, position ->
-            val textView = view.findViewById(R.id.textView_item_text) as TextView
-            val query = textView.text.toString()
-            doSearchForQuery(query)
-            searchView.close(false)
-        }
-        searchView.adapter = suggestionAdapter
-
-        val filter = listOf(
-            SearchFilter(getString(R.string.filter_movies), true),
-            SearchFilter(getString(R.string.filter_shows), true)
-        )
-        searchView.setFilters(filter)
-    }
-
-    private fun doSearchForQuery(query: String) {
+    override fun doSearchForQuery(query: String) {
         searchView.close(true)
-        presenter.search(query, searchView.filtersStates[0], searchView.filtersStates[1])
+
+        val intent = Intent(this, SearchResultsActivity::class.java)
+        intent.action = Intent.ACTION_SEARCH
+        intent.putExtra(SearchManager.QUERY, query)
+        startActivity(intent)
     }
 
 
@@ -147,12 +111,6 @@ class HomeActivity : MvpActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.
         setAdapterForMode()
     }
 
-    override fun showSearchResults(items: List<SearchResultItem>) {
-        hideLoading()
-        currentMode = Mode.Search
-        searchAdapter.items = items
-        setAdapterForMode()
-    }
 
     override fun showLoading() {
         progress.visibility = View.VISIBLE
@@ -196,38 +154,8 @@ class HomeActivity : MvpActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.
     }
 
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
-        Timber.d("oQueryTextSubmit $query")
-        if (query != null && query.isNotBlank()) {
-            doSearchForQuery(query)
-        }
-        return true
-    }
 
-    override fun onQueryTextChange(newText: String?): Boolean {
-        Timber.d("onQueryTextChange $newText")
-        return false
-    }
 
-    /**
-     * searchView open
-     */
-    override fun onOpen(): Boolean {
-        Timber.d("onOpen searchView")
-        return true
-    }
-
-    /**
-     * searchView close
-     */
-    override fun onClose(): Boolean {
-        Timber.d("onClose searchView")
-        return true
-    }
-
-    override fun onVoiceClick() {
-        Timber.d("onVoiceClick todo: permission on 6+")
-    }
 
     private fun hidePullToRefreshRefreshing() {
         if (swipeRefreshLayout.isRefreshing) {

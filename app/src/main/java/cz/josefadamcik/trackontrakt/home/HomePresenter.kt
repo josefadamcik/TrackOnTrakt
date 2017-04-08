@@ -19,10 +19,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import cz.josefadamcik.trackontrakt.data.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -61,31 +58,5 @@ class HomePresenter @Inject constructor(
         )
     }
 
-    fun search(query: String, movies: Boolean, shows: Boolean) {
-        Timber.d("search $query")
-        if (!movies && !shows) {
-            throw IllegalArgumentException("at least on of movies, shows should be true")
-        }
-        val types = mutableListOf<String>()
-        if (movies) types.add("movie")
-        if (shows) types.add("show")
 
-        view?.showLoading()
-        disposable.add(
-            traktApi.search(tokenHolder.httpAuth(), types.joinToString(","), query, TraktApi.ExtendedInfo.metadata)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { results ->
-                        view?.showSearchResults(results)
-
-                    },
-                    { t ->
-                        Timber.e(t, "search for $query failed")
-                        view?.showError(t)
-                    }
-                )
-
-        )
-    }
 }
