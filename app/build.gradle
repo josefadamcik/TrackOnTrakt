@@ -39,6 +39,7 @@ android {
 
         buildConfigField 'String', 'GIT_SHA', "\"${gitSha}\""
         buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp}"
+        buildConfigField 'String', 'BUILD_DATE', "\"2017-04-09\""
 
         buildConfigField "String", "TRAKT_CLIENT_ID", "\"${traktclientid}\""
         buildConfigField "String", "TRAKT_CLIENT_SECRET", "\"${traktclientsecret}\""

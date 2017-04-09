@@ -13,17 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt.detail
+package cz.josefadamcik.trackontrakt.data.api.model
 
-import com.hannesdorfmann.mosby3.mvp.MvpView
+data class CheckinRequest(
+    val movie: Movie?,
+    val app_version: String,
+    val app_date: String,
+    val message: String?,
+    val sharing: Sharing?
 
-interface MediaDetailView : MvpView {
-    fun showTitle(name: String)
-    fun itemCheckInactionVisible(visible: Boolean)
-    fun itemCheckInactionEnabled(visible: Boolean)
-    fun showLoading()
-    fun hideLoading()
-    fun showError(e: Throwable?)
-    fun showTextInfo(tagline: String?, overview: String?)
-    fun showCheckingSuccess()
+) {
+    data class Sharing(val facebook: Boolean, val twitter: Boolean, val thumblr: Boolean)
 }

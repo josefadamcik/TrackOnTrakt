@@ -59,7 +59,10 @@ interface TraktApi {
         @Header("Authorization") authorization: String,
         @Path("id") id: Long,
         @Query("extended") extended: ExtendedInfo = ExtendedInfo.full
-    )
-        : Single<MovieDetail>
+    ): Single<MovieDetail>
 
+    @POST("/checkin")
+    fun checkin(@Header("Authorization") authorization: String,
+                @Body data: CheckinRequest
+    ): Single<Response<CheckinResponse>>
 }

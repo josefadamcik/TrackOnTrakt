@@ -65,8 +65,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     }
 
     @OnClick(R.id.fab) fun onFabClick(view: View) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show()
+        presenter.checkinActionClicked()
     }
 
 
@@ -75,8 +74,12 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         toolbarLayout.title = name
     }
 
-    override fun showItemCheckInActionVisible(visible: Boolean) {
+    override fun itemCheckInactionVisible(visible: Boolean) {
         fab.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    override fun itemCheckInactionEnabled(enabled: Boolean) {
+        fab.isEnabled = enabled
     }
 
     override fun showLoading() {
@@ -102,7 +105,11 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     }
 
     override fun showError(e: Throwable?) {
-        //TODO: show error
         Snackbar.make(progress, e?.message ?: getString(R.string.err_unknown), Snackbar.LENGTH_LONG).show()
+    }
+
+
+    override fun showCheckingSuccess() {
+        Snackbar.make(progress, getString(R.string.info_checkin_successful), Snackbar.LENGTH_LONG).show()
     }
 }

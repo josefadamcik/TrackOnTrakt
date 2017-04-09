@@ -16,5 +16,6 @@
     <string name="title_history">History</string>
     <string name="media_item_type_info">%1$s ( %2$s )</string>
     <string name="title_activity_media_detail">MediaDetailActivity</string>
+    <string name="info_checkin_successful">Checkin completed.</string>
 
 </resources>

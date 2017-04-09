@@ -28,6 +28,7 @@ class SearchResultPresenter @Inject constructor(
     private val tokenHolder: TraktAuthTokenHolder
 ) : BasePresenter<SearchResultsView>() {
 
+
     fun search(query: String?, filter: TraktFilter) {
         Timber.d("search $query $filter")
 

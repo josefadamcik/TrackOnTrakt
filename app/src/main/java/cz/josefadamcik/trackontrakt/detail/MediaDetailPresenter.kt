@@ -15,10 +15,13 @@
 */
 package cz.josefadamcik.trackontrakt.detail
 
+import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.data.api.model.CheckinRequest
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
+import cz.josefadamcik.trackontrakt.data.api.model.Movie
 import cz.josefadamcik.trackontrakt.data.api.model.MovieDetail
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -30,6 +33,8 @@ class MediaDetailPresenter @Inject constructor(
     val tokenHolder: TraktAuthTokenHolder
 ) : BasePresenter<MediaDetailView>() {
 
+    private var identifier: MediaIdentifier? = null
+    private var movieDetail: MovieDetail? = null
 
     fun load(mediaId: MediaIdentifier?, name: String?) {
         Timber.i("load: %s", mediaId)
@@ -43,7 +48,8 @@ class MediaDetailPresenter @Inject constructor(
             view?.showTitle(name)
         }
 
-        view?.showItemCheckInActionVisible(mediaId.type == MediaType.movie)
+        view?.itemCheckInactionVisible(false)
+        view?.itemCheckInactionEnabled(false)
 
         if (mediaId.type == MediaType.movie) {
             view?.showLoading()
@@ -53,6 +59,7 @@ class MediaDetailPresenter @Inject constructor(
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                         { movie ->
+                            movieDetail = movieDetail
                             view?.hideLoading()
                             if (movie != null) {
                                 showMovie(movie)
@@ -69,7 +76,42 @@ class MediaDetailPresenter @Inject constructor(
 
     }
 
+    fun checkinActionClicked() {
+        val movieDetail = this.movieDetail
+        if (movieDetail != null) {
+            val request = CheckinRequest(
+                Movie(movieDetail.title, movieDetail.year, movieDetail.ids),
+                BuildConfig.VERSION_NAME,
+                BuildConfig.BUILD_DATE,
+                null,
+                null
+            )
+            view?.showLoading()
+            view?.itemCheckInactionEnabled(false)
+            disposables.add(
+                traktApi.checkin(tokenHolder.httpAuth(), request)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        { result ->
+                            Timber.d("checkin complete $result")
+                            view?.hideLoading()
+                            view?.itemCheckInactionEnabled(true)
+                            view?.showCheckingSuccess()
+                        },
+                        { t ->
+                            view?.hideLoading()
+                            view?.showError(t)
+                        }
+                    )
+            )
+        }
+    }
+
     private fun showMovie(movie: MovieDetail) {
+        movieDetail = movie
+        view?.itemCheckInactionVisible(true)
+        view?.itemCheckInactionEnabled(true)
         view?.showTextInfo(movie.tagline, movie.overview)
     }
 }
