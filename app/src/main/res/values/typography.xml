@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2016 Ao (Matthieu Esnault)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+    <!--
+      ~ Note that the Material Design guidelines have an "English and
+      ~ English-like" script family that is called "regular" here for
+      ~ brevity.
+      ~ The "dense" and "tall" script families' names remain unchanged.
+      -->
+
+    <!-- Regular scripts dimensions -->
+    <dimen name="material_typography_regular_display_4_text_size">112sp</dimen>
+    <dimen name="material_typography_regular_display_3_text_size">56sp</dimen>
+    <dimen name="material_typography_regular_display_2_text_size">45sp</dimen>
+    <dimen name="material_typography_regular_display_1_text_size">34sp</dimen>
+    <dimen name="material_typography_regular_headline_text_size">24sp</dimen>
+    <dimen name="material_typography_regular_title_text_size">20sp</dimen>
+    <dimen name="material_typography_regular_subheading_text_size">16sp</dimen>
+    <dimen name="material_typography_regular_body_2_text_size">14sp</dimen>
+    <dimen name="material_typography_regular_body_1_text_size">14sp</dimen>
+    <dimen name="material_typography_regular_caption_text_size">12sp</dimen>
+    <dimen name="material_typography_regular_button_text_size">14sp</dimen>
+
+
+    <!-- Dense scripts dimensions -->
+    <dimen name="material_typography_dense_display_4_text_size">112sp</dimen>
+    <dimen name="material_typography_dense_display_3_text_size">56sp</dimen>
+    <dimen name="material_typography_dense_display_2_text_size">45sp</dimen>
+    <dimen name="material_typography_dense_display_1_text_size">34sp</dimen>
+    <dimen name="material_typography_dense_headline_text_size">24sp</dimen>
+    <dimen name="material_typography_dense_title_text_size">21sp</dimen>
+    <dimen name="material_typography_dense_subheading_text_size">17sp</dimen>
+    <dimen name="material_typography_dense_body_2_text_size">15sp</dimen>
+    <dimen name="material_typography_dense_body_1_text_size">15sp</dimen>
+    <dimen name="material_typography_dense_caption_text_size">13sp</dimen>
+    <dimen name="material_typography_dense_button_text_size">15sp</dimen>
+
+
+    <!-- Tall scripts dimensions -->
+    <dimen name="material_typography_tall_display_4_text_size">112sp</dimen>
+    <dimen name="material_typography_tall_display_3_text_size">56sp</dimen>
+    <dimen name="material_typography_tall_display_2_text_size">45sp</dimen>
+    <dimen name="material_typography_tall_display_1_text_size">34sp</dimen>
+    <dimen name="material_typography_tall_headline_text_size">24sp</dimen>
+    <dimen name="material_typography_tall_title_text_size">21sp</dimen>
+    <dimen name="material_typography_tall_subheading_text_size">17sp</dimen>
+    <dimen name="material_typography_tall_body_2_text_size">15sp</dimen>
+    <dimen name="material_typography_tall_body_1_text_size">15sp</dimen>
+    <dimen name="material_typography_tall_caption_text_size">13sp</dimen>
+    <dimen name="material_typography_tall_button_text_size">15sp</dimen>
+
+
+    <!--
+      ~ Locale scripts dimensions
+      ~ These script dimensions match the regular, dense or tall
+      ~ ones depending on the device locale.
+      ~ Note that this process will occur even if no localized
+      ~ strings have been provided for the locale.
+      -->
+    <dimen name="material_typography_locale_display_4_text_size">
+        @dimen/material_typography_regular_display_4_text_size
+    </dimen>
+    <dimen name="material_typography_locale_display_3_text_size">
+        @dimen/material_typography_regular_display_3_text_size
+    </dimen>
+    <dimen name="material_typography_locale_display_2_text_size">
+        @dimen/material_typography_regular_display_2_text_size
+    </dimen>
+    <dimen name="material_typography_locale_display_1_text_size">
+        @dimen/material_typography_regular_display_1_text_size
+    </dimen>
+    <dimen name="material_typography_locale_headline_text_size">
+        @dimen/material_typography_regular_headline_text_size
+    </dimen>
+    <dimen name="material_typography_locale_title_text_size">
+        @dimen/material_typography_regular_title_text_size
+    </dimen>
+    <dimen name="material_typography_locale_subheading_text_size">
+        @dimen/material_typography_regular_subheading_text_size
+    </dimen>
+    <dimen name="material_typography_locale_body_2_text_size">
+        @dimen/material_typography_regular_body_2_text_size
+    </dimen>
+    <dimen name="material_typography_locale_body_1_text_size">
+        @dimen/material_typography_regular_body_1_text_size
+    </dimen>
+    <dimen name="material_typography_locale_caption_text_size">
+        @dimen/material_typography_regular_caption_text_size
+    </dimen>
+    <dimen name="material_typography_locale_button_text_size">
+        @dimen/material_typography_regular_button_text_size
+    </dimen>
+
+
+    <!-- Base script styles -->
+
+    <style name="MaterialTypography">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+
+    <!-- Regular scripts styles -->
+
+    <style name="MaterialTypography.Regular"/>
+
+    <style name="MaterialTypography.Regular.Display4">
+        <item name="android:textSize">@dimen/material_typography_regular_display_4_text_size</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Display3">
+        <item name="android:textSize">@dimen/material_typography_regular_display_3_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Display2">
+        <item name="android:textSize">@dimen/material_typography_regular_display_2_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Display1">
+        <item name="android:textSize">@dimen/material_typography_regular_display_1_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Headline">
+        <item name="android:textSize">@dimen/material_typography_regular_headline_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Title">
+        <item name="android:textSize">@dimen/material_typography_regular_title_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Subheading">
+        <item name="android:textSize">@dimen/material_typography_regular_subheading_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Body2">
+        <item name="android:textSize">@dimen/material_typography_regular_body_2_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Body1">
+        <item name="android:textSize">@dimen/material_typography_regular_body_1_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Caption">
+        <item name="android:textSize">@dimen/material_typography_regular_caption_text_size</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="MaterialTypography.Regular.Button">
+        <item name="android:textSize">@dimen/material_typography_regular_button_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+
+    <!-- Dense scripts styles -->
+    <style name="MaterialTypography.Dense"/>
+
+    <style name="MaterialTypography.Dense.Display4">
+        <item name="android:textSize">@dimen/material_typography_dense_display_4_text_size</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Display3">
+        <item name="android:textSize">@dimen/material_typography_dense_display_3_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Display2">
+        <item name="android:textSize">@dimen/material_typography_dense_display_2_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Display1">
+        <item name="android:textSize">@dimen/material_typography_dense_display_1_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Headline">
+        <item name="android:textSize">@dimen/material_typography_dense_headline_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Title">
+        <item name="android:textSize">@dimen/material_typography_dense_title_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Subheading">
+        <item name="android:textSize">@dimen/material_typography_dense_subheading_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Body2">
+        <item name="android:textSize">@dimen/material_typography_dense_body_2_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Body1">
+        <item name="android:textSize">@dimen/material_typography_dense_body_1_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Caption">
+        <item name="android:textSize">@dimen/material_typography_dense_caption_text_size</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="MaterialTypography.Dense.Button">
+        <item name="android:textSize">@dimen/material_typography_dense_button_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+
+    <!-- Tall scripts styles -->
+    <style name="MaterialTypography.Tall"/>
+
+    <style name="MaterialTypography.Tall.Display4">
+        <item name="android:textSize">@dimen/material_typography_tall_display_4_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Display3">
+        <item name="android:textSize">@dimen/material_typography_tall_display_3_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Display2">
+        <item name="android:textSize">@dimen/material_typography_tall_display_2_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Display1">
+        <item name="android:textSize">@dimen/material_typography_tall_display_1_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Headline">
+        <item name="android:textSize">@dimen/material_typography_tall_headline_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Title">
+        <item name="android:textSize">@dimen/material_typography_tall_title_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Subheading">
+        <item name="android:textSize">@dimen/material_typography_tall_subheading_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Body2">
+        <item name="android:textSize">@dimen/material_typography_tall_body_2_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Body1">
+        <item name="android:textSize">@dimen/material_typography_tall_body_1_text_size</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Caption">
+        <item name="android:textSize">@dimen/material_typography_tall_caption_text_size</item>
+        <item name="android:textColor">?android:textColorSecondary</item>
+    </style>
+
+    <style name="MaterialTypography.Tall.Button">
+        <item name="android:textSize">@dimen/material_typography_tall_button_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <!-- Locale scripts styles -->
+    <style name="MaterialTypography.Locale"/>
+
+    <style name="MaterialTypography.Locale.Display4" parent="@style/MaterialTypography.Regular.Display4"/>
+
+    <style name="MaterialTypography.Locale.Display3" parent="@style/MaterialTypography.Regular.Display3"/>
+
+    <style name="MaterialTypography.Locale.Display2" parent="@style/MaterialTypography.Regular.Display2"/>
+
+    <style name="MaterialTypography.Locale.Display1" parent="@style/MaterialTypography.Regular.Display1"/>
+
+    <style name="MaterialTypography.Locale.Headline" parent="@style/MaterialTypography.Regular.Headline"/>
+
+    <style name="MaterialTypography.Locale.Title" parent="@style/MaterialTypography.Regular.Title"/>
+
+    <style name="MaterialTypography.Locale.Subheading" parent="@style/MaterialTypography.Regular.Subheading"/>
+
+    <style name="MaterialTypography.Locale.Body2" parent="@style/MaterialTypography.Regular.Body2"/>
+
+    <style name="MaterialTypography.Locale.Body1" parent="@style/MaterialTypography.Regular.Body1"/>
+
+    <style name="MaterialTypography.Locale.Caption" parent="@style/MaterialTypography.Regular.Caption"/>
+
+    <style name="MaterialTypography.Locale.Button" parent="@style/MaterialTypography.Regular.Button"/>
+
+
+    <!-- Text color -->
+    <color name="material_typography_primary_text_color_dark">
+        @color/material_color_black_87_percent
+    </color>
+    <color name="material_typography_secondary_text_color_dark">
+        @color/material_color_black_54_percent
+    </color>
+    <color name="material_typography_disabled_text_color_dark">
+        @color/material_color_black_38_percent
+    </color>
+    <color name="material_typography_hint_text_color_dark">@color/material_color_black_38_percent
+    </color>
+
+    <color name="material_typography_primary_text_color_light">@color/material_color_white</color>
+    <color name="material_typography_secondary_text_color_light">
+        @color/material_color_white_70_percent
+    </color>
+    <color name="material_typography_disabled_text_color_light">
+        @color/material_color_white_50_percent
+    </color>
+    <color name="material_typography_hint_text_color_light">@color/material_color_white_50_percent
+    </color>
+
+
+    <!-- TODO Add line height values with leading -->
+
+</resources>
