@@ -54,4 +54,12 @@ interface TraktApi {
                @Query("limit") limit: Int = 50)
         : Single<List<SearchResultItem>>
 
+    @GET("/movies/{id}")
+    fun movie(
+        @Header("Authorization") authorization: String,
+        @Path("id") id: Long,
+        @Query("extended") extended: ExtendedInfo = ExtendedInfo.full
+    )
+        : Single<MovieDetail>
+
 }

@@ -13,15 +13,25 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt.detail
+package cz.josefadamcik.trackontrakt.data.api.model
 
-import com.hannesdorfmann.mosby3.mvp.MvpView
+import java.util.*
 
-interface MediaDetailView : MvpView {
-    fun showTitle(name: String)
-    fun showItemCheckInActionVisible(visible: Boolean)
-    fun showLoading()
-    fun hideLoading()
-    fun showError(e: Throwable?)
-    fun showTextInfo(tagline: String?, overview: String?)
-}
+data class MovieDetail(
+    val title: String,
+    val ids: MediaIds,
+    val year: Int?,
+    val tagline: String?,
+    val overview: String?,
+    val released: Date?,
+    val runtime: Int?,
+    val updated_at: Date?,
+    val trailer: String?,
+    val homepage: String?,
+    val rating: Double?,
+    val votes: Long?,
+    val language: String?,
+    val genres: List<String>,
+    val certification: String?
+
+)

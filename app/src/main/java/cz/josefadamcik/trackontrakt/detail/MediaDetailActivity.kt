@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.Toolbar
 import android.view.View
+import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -14,15 +15,18 @@ import com.evernote.android.state.StateSaver
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import javax.inject.Inject
 
 class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(), MediaDetailView {
     @Inject lateinit var myPresenter: MediaDetailPresenter
 
-    //    @BindView(R.id.progress) lateinit var progress: ProgressBar
+    @BindView(R.id.progress) lateinit var progress: MaterialProgressBar
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
     @BindView(R.id.fab) lateinit var fab: FloatingActionButton
+    @BindView(R.id.txt_description) lateinit var txtDescription: TextView
+    @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
 
     @State var mediaId: MediaIdentifier? = null
     @State var mediaName: String? = null
@@ -73,5 +77,32 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
 
     override fun showItemCheckInActionVisible(visible: Boolean) {
         fab.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    override fun showLoading() {
+        progress.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        progress.visibility = View.GONE
+    }
+
+    override fun showTextInfo(tagline: String?, overview: String?) {
+        if (tagline != null) {
+            txtTagline.text = tagline
+        } else {
+            txtTagline.visibility = View.GONE
+        }
+
+        if (overview != null) {
+            txtDescription.text = overview
+        } else {
+            txtDescription.visibility = View.GONE
+        }
+    }
+
+    override fun showError(e: Throwable?) {
+        //TODO: show error
+        Snackbar.make(progress, e?.message ?: getString(R.string.err_unknown), Snackbar.LENGTH_LONG).show()
     }
 }

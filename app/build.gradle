@@ -119,7 +119,6 @@ dependencies {
     compile "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:support-vector-drawable:$rootProject.ext.supportLibraryVersion"
     compile "com.android.support:animated-vector-drawable:$rootProject.ext.supportLibraryVersion"
-    compile 'com.android.support.constraint:constraint-layout:1.0.1'
 
     internalCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
@@ -162,6 +161,7 @@ dependencies {
     compile 'me.zhanghai.android.materialprogressbar:library:1.3.0'
     compile 'com.lapism:searchview:4.0'
 
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 repositories {
     mavenCentral()

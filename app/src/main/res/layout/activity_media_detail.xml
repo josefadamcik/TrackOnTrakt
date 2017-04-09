@@ -30,8 +30,20 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
+            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/material_baseline_grid_0.5x"
+                android:indeterminate="true"
+                app:mpb_progressStyle="horizontal"
+                app:mpb_useIntrinsicPadding="false"
+                android:visibility="gone"
+                android:layout_gravity="bottom"
+                tools:visibility="visible"
+                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"/>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
+
 
     <include layout="@layout/content_media_detail"/>
 
@@ -42,6 +54,6 @@
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
-        android:src="@drawable/ic_check_black_24dp"/>
+        android:src="@drawable/ic_check_white_24dp"/>
 
 </android.support.design.widget.CoordinatorLayout>
