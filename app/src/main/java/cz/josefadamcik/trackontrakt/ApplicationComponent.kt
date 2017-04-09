@@ -16,6 +16,7 @@
 package cz.josefadamcik.trackontrakt
 
 import cz.josefadamcik.trackontrakt.data.ApiModule
+import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
 import cz.josefadamcik.trackontrakt.home.HomeActivity
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
 import cz.josefadamcik.trackontrakt.traktauth.AuthorizationProvider
@@ -31,6 +32,7 @@ interface ApplicationComponent {
     fun inject(activity: HomeActivity)
     fun inject(activity: TraktAuthActivity)
     fun inject(activity: SearchResultsActivity)
+    fun inject(activity: MediaDetailActivity)
 }
 
 

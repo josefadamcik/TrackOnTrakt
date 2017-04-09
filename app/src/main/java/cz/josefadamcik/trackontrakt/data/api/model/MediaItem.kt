@@ -46,4 +46,12 @@ interface MediaItem {
                 MediaType.movie -> movie?.year
             }
         }
+    val traktId: Long?
+        get() {
+            return when (type) {
+                MediaType.episode -> episode?.ids?.trakt
+                MediaType.show -> show?.ids?.trakt
+                MediaType.movie -> movie?.ids?.trakt
+            }
+        }
 }

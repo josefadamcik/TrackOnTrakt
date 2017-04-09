@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -24,10 +23,12 @@ import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
 import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
+import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
+import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
 import javax.inject.Inject
 
 
-class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresenter>(), SearchResultsView, SearchViewWrapper.SearchCallback {
+class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresenter>(), SearchResultsView, SearchViewWrapper.SearchCallback, SearchResultAdapter.OnItemInteractionListener {
     @Inject lateinit var myPresenter: SearchResultPresenter
     private lateinit var searchViewWrapper: SearchViewWrapper
     protected lateinit var searchAdapter: SearchResultAdapter
@@ -114,8 +115,15 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
         //todo
     }
 
+    override fun onSearchResultClicked(item: SearchResultItem, position: Int) {
+        val intent = Intent(this, MediaDetailActivity::class.java)
+        intent.putExtra(MediaDetailActivity.PAR_ID, MediaIdentifier.fromSearchResult(item))
+        intent.putExtra(MediaDetailActivity.PAR_NAME, item.title)
+        startActivity(intent)
+    }
+
     private fun initList() {
-        searchAdapter = SearchResultAdapter(LayoutInflater.from(this), resources, icoTypeMovieDrawable, icoTypeShowDrawable)
+        searchAdapter = SearchResultAdapter(LayoutInflater.from(this), resources, icoTypeMovieDrawable, icoTypeShowDrawable, this)
         list.layoutManager = LinearLayoutManager(this)
         list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         list.setHasFixedSize(true)

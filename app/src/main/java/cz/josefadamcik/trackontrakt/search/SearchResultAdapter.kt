@@ -30,15 +30,19 @@ import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
 import cz.josefadamcik.trackontrakt.search.SearchResultAdapter.ViewHolder
 import java.text.DateFormat
-import javax.annotation.Resource
 
 
 class SearchResultAdapter(
     val layoutInflater: LayoutInflater,
     val resources: Resources,
     val icoMovieTypeDrawable: Drawable,
-    val icoShowTypeDrawable: Drawable
+    val icoShowTypeDrawable: Drawable,
+    val listener: OnItemInteractionListener
 ) : RecyclerView.Adapter<ViewHolder>() {
+
+    interface OnItemInteractionListener {
+        fun onSearchResultClicked(item: SearchResultItem, position: Int)
+    }
 
     val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
 
@@ -77,13 +81,19 @@ class SearchResultAdapter(
         return items.size
     }
 
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         @BindView(R.id.title) lateinit var title: TextView
         @BindView(R.id.subtitle) lateinit var subtitle: TextView
         @BindView(R.id.type_info) lateinit var typeInfo: TextView
 
         init {
             ButterKnife.bind(this, view)
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            listener.onSearchResultClicked(items[adapterPosition], adapterPosition)
         }
     }
+
 }

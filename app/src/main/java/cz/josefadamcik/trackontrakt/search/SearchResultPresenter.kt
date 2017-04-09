@@ -15,11 +15,10 @@
 */
 package cz.josefadamcik.trackontrakt.search
 
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter
+import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
@@ -27,21 +26,7 @@ import javax.inject.Inject
 class SearchResultPresenter @Inject constructor(
     private val traktApi: TraktApi,
     private val tokenHolder: TraktAuthTokenHolder
-)
-    : MvpPresenter<SearchResultsView> {
-    private var view: SearchResultsView? = null
-    private val disposables = CompositeDisposable()
-
-    override fun attachView(view: SearchResultsView?) {
-        this.view = view
-
-    }
-
-    override fun detachView(retainInstance: Boolean) {
-        view = null
-        disposables.clear()
-    }
-
+) : BasePresenter<SearchResultsView>() {
 
     fun search(query: String?, filter: TraktFilter) {
         Timber.d("search $query $filter")

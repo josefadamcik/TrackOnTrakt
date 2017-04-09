@@ -3,6 +3,7 @@ package cz.josefadamcik.trackontrakt.home
 import android.app.SearchManager
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CollapsingToolbarLayout
@@ -18,6 +19,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
+import butterknife.BindDrawable
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.lapism.searchview.SearchView
@@ -51,6 +53,8 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     @BindView(R.id.progress) lateinit var progress: ProgressBar
     @BindView(R.id.swipe_refresh) lateinit var swipeRefreshLayout: SwipeRefreshLayout
     @BindView(R.id.search_view) lateinit var searchView: SearchView
+    @BindDrawable(R.drawable.ic_local_movies_gray_24dp) lateinit var icoTypeMovieDrawable: Drawable
+    @BindDrawable(R.drawable.ic_tv_gray_24dp) lateinit var icoTypeShowDrawable: Drawable
 
 
 
@@ -78,7 +82,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
     private fun initList() {
-        historyAdapter = HistoryAdapter(LayoutInflater.from(this))
+        historyAdapter = HistoryAdapter(LayoutInflater.from(this), resources, icoTypeMovieDrawable, icoTypeShowDrawable)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.setHasFixedSize(true)

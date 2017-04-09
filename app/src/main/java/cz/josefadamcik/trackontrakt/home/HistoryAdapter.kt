@@ -15,6 +15,8 @@
 */
 package cz.josefadamcik.trackontrakt.home
 
+import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -25,12 +27,16 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
+import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.home.HistoryAdapter.ViewHolder
 import java.text.DateFormat
 
 
 class HistoryAdapter(
-    val layoutInflater: LayoutInflater
+    val layoutInflater: LayoutInflater,
+    val resources: Resources,
+    val icoMovieTypeDrawable: Drawable,
+    val icoShowTypeDrawable: Drawable
 ) : RecyclerView.Adapter<ViewHolder>() {
     val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
     var items: List<HistoryItem> = emptyList()
@@ -56,6 +62,15 @@ class HistoryAdapter(
         holder?.date?.text = dateFormat.format(item.watched_at)
 
 
+        val typeIcoDrawable = when (item.type) {
+            MediaType.movie -> icoMovieTypeDrawable
+            MediaType.episode -> icoShowTypeDrawable
+            MediaType.show -> icoShowTypeDrawable
+        }
+
+        holder?.typeInfo?.setCompoundDrawablesWithIntrinsicBounds(typeIcoDrawable, null, null, null)
+        holder?.typeInfo?.text = resources.getString(R.string.media_item_type_info, item.type.toString(), item.year.toString())
+
     }
 
     override fun getItemCount(): Int {
@@ -66,6 +81,7 @@ class HistoryAdapter(
         @BindView(R.id.title) lateinit var title: TextView
         @BindView(R.id.subtitle) lateinit var subtitle: TextView
         @BindView(R.id.date) lateinit var date: TextView
+        @BindView(R.id.type_info) lateinit var typeInfo: TextView
 
         init {
             ButterKnife.bind(this, view)

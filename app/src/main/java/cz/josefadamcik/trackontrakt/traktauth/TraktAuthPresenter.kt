@@ -15,10 +15,9 @@
 */
 package cz.josefadamcik.trackontrakt.traktauth
 
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import cz.josefadamcik.trackontrakt.R
+import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
-import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -26,25 +25,17 @@ import javax.inject.Inject
 class TraktAuthPresenter @Inject constructor(
     private val authorizationProvider: AuthorizationProvider,
     private val traktAuthTokenHolder: TraktAuthTokenHolder
-) : MvpPresenter<TraktAuthView> {
+) : BasePresenter<TraktAuthView>() {
 
-    private var view: TraktAuthView? = null
-    private val disposable = CompositeDisposable()
-
-    override fun attachView(view: TraktAuthView?) {
-        this.view = view;
+    override fun attachView(view: TraktAuthView) {
+        super.attachView(view)
         checkOrStartAuth()
     }
 
 
-    override fun detachView(retainInstance: Boolean) {
-        disposable.clear()
-        view = null
-    }
-
     fun onBrowserRedirected(url: String) : Boolean {
         if (authorizationProvider.shouldHandleRedirectUrl(url)) {
-            disposable.add(
+            disposables.add(
                 authorizationProvider.onTraktAuthRedirect(url)
                     .subscribe(
                         { res ->

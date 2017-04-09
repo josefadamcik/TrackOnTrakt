@@ -15,4 +15,6 @@
     <string name="filter_shows">Shows</string>
     <string name="title_history">History</string>
     <string name="media_item_type_info">%1$s ( %2$s )</string>
+    <string name="title_activity_media_detail">MediaDetailActivity</string>
+
 </resources>
