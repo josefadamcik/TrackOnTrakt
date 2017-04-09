@@ -43,18 +43,17 @@ class SearchResultPresenter @Inject constructor(
     }
 
 
-    fun search(query: String, movies: Boolean, shows: Boolean) {
-        Timber.d("search $query")
-        if (!movies && !shows) {
-            throw IllegalArgumentException("at least on of movies, shows should be true")
-        }
-        val types = mutableListOf<String>()
-        if (movies) types.add("movie")
-        if (shows) types.add("show")
+    fun search(query: String?, filter: TraktFilter) {
+        Timber.d("search $query $filter")
 
+        if (query == null) {
+            view?.showEmptyResult()
+            return
+
+        }
         view?.showLoading()
         disposables.add(
-            traktApi.search(tokenHolder.httpAuth(), types.joinToString(","), query, TraktApi.ExtendedInfo.metadata)
+            traktApi.search(tokenHolder.httpAuth(), filter.forApiQuery() , query, TraktApi.ExtendedInfo.metadata)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

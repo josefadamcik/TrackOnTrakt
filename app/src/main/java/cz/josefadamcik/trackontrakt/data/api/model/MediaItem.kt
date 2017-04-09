@@ -25,8 +25,8 @@ interface MediaItem {
         get() {
             return when (type) {
                 MediaType.episode -> String.format("%s - S %s, Ep %s", show?.title, episode?.season, episode?.number)
+                MediaType.show -> show?.title ?: ""
                 MediaType.movie -> movie?.title ?: ""
-                else -> ""
             }
         }
 
@@ -38,4 +38,12 @@ interface MediaItem {
             }
         }
 
+    val year: Int?
+        get() {
+            return when (type) {
+                MediaType.episode -> show?.year
+                MediaType.show -> show?.year
+                MediaType.movie -> movie?.year
+            }
+        }
 }

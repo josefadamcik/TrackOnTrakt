@@ -28,6 +28,7 @@ import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
 import cz.josefadamcik.trackontrakt.data.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
+import cz.josefadamcik.trackontrakt.search.TraktFilter
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -64,8 +65,9 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
         setContentView(R.layout.activity_home)
         unbinder = ButterKnife.bind(this)
 
-        toolbar.navigationContentDescription = getString(R.string.app_name)
         setSupportActionBar(toolbar)
+        toolbar.title = getString(R.string.title_history)
+        toolbarLayout.title = getString(R.string.title_history)
 
         swipeRefreshLayout.setOnRefreshListener(this)
 
@@ -89,12 +91,13 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
 
-    override fun doSearchForQuery(query: String) {
+    override fun doSearchForQuery(query: String, filter: TraktFilter) {
         searchView.close(true)
 
         val intent = Intent(this, SearchResultsActivity::class.java)
         intent.action = Intent.ACTION_SEARCH
         intent.putExtra(SearchManager.QUERY, query)
+        intent.putExtra(SearchResultsActivity.PAR_FILTER, filter)
         startActivity(intent)
     }
 
@@ -121,8 +124,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
     override fun showError(e: Throwable?) {
-        //TODO: show error
-        Snackbar.make(progress, e?.message ?: getString(R.string.err_uknown), Snackbar.LENGTH_LONG).show()
+        Snackbar.make(progress, e?.message ?: getString(R.string.err_unknown), Snackbar.LENGTH_LONG).show()
 
         hidePullToRefreshRefreshing()
     }

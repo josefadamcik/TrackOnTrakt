@@ -23,19 +23,28 @@ import com.lapism.searchview.SearchFilter
 import com.lapism.searchview.SearchItem
 import com.lapism.searchview.SearchView
 import cz.josefadamcik.trackontrakt.R
+import cz.josefadamcik.trackontrakt.search.TraktFilter
 import timber.log.Timber
 
-public class SearchViewWrapper(
+public class SearchViewWrapper (
     private val context: Context,
     private val searchView: SearchView,
     private val searchCallback: SearchCallback
 ) : SearchView.OnVoiceClickListener, SearchView.OnOpenCloseListener, SearchView.OnQueryTextListener {
+
     private val suggestionList: MutableList<SearchItem> = mutableListOf()
     public var query: String
         get() = searchView.query?.toString() ?: ""
         set(value) {
             searchView.setQuery(value, false)
         }
+    public var filters: TraktFilter
+        get() = TraktFilter(searchView.filtersStates[0], searchView.filtersStates[1])
+        set(value) {
+            val viewFilter = convertTraktFilterToViewFilter(value)
+            searchView.setFilters(viewFilter)
+        }
+
     var searchSuggestions: List<String> = emptyList()
         set(items: List<String>) {
             suggestionList.clear()
@@ -46,7 +55,7 @@ public class SearchViewWrapper(
     private lateinit var suggestionAdapter: SearchAdapter
 
     interface SearchCallback {
-        fun doSearchForQuery(query: String)
+        fun doSearchForQuery(query: String,  filter: TraktFilter)
     }
 
 
@@ -63,22 +72,26 @@ public class SearchViewWrapper(
         suggestionAdapter.addOnItemClickListener { view, position ->
             val textView = view.findViewById(R.id.textView_item_text) as TextView
             val query = textView.text.toString()
-            searchCallback.doSearchForQuery(query)
+            searchCallback.doSearchForQuery(query, filters)
             searchView.close(false)
         }
         searchView.adapter = suggestionAdapter
+        filters = TraktFilter(movies = true, shows = true)
+    }
 
-        val filter = listOf(
-            SearchFilter(context.getString(R.string.filter_movies), true),
-            SearchFilter(context.getString(R.string.filter_shows), true)
+    private fun convertTraktFilterToViewFilter(filter: TraktFilter): List<SearchFilter> {
+        val viewFilter = listOf(
+            SearchFilter(context.getString(R.string.filter_movies), filter.movies),
+            SearchFilter(context.getString(R.string.filter_shows), filter.shows)
         )
-        searchView.setFilters(filter)
+        return viewFilter
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         Timber.d("oQueryTextSubmit $query")
+        searchView.close(true)
         if (query != null && query.isNotBlank()) {
-            searchCallback.doSearchForQuery(query)
+            searchCallback.doSearchForQuery(query, filters)
         }
         return true
     }

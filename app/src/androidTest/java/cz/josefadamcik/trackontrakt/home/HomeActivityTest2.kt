@@ -32,25 +32,6 @@ class HomeActivityTest2 {
     @Test
     fun homeActivityTest2() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-
-        val appCompatTextView = onView(
-                allOf(withId(R.id.title), withText("Settings"), isDisplayed()))
-        appCompatTextView.perform(click())
-
-        val floatingActionButton = onView(
-                allOf(withId(R.id.fab), isDisplayed()))
-        floatingActionButton.perform(click())
-
-        val textView = onView(
-                allOf(withId(R.id.textView), withText("Hello, World!"),
-                        childAtPosition(
-                                childAtPosition(
-                                        IsInstanceOf.instanceOf<View>(android.view.ViewGroup::class.java),
-                                        1),
-                                0),
-                        isDisplayed()))
-        textView.check(matches(withText("Hello, World!")))
-
     }
 
     private fun childAtPosition(

@@ -39,6 +39,8 @@ TODO
 * [MaterialProgressBar](https://github.com/DreaminginCodeZH/MaterialProgressBar)
 * [ThreeTenABP](https://github.com/JakeWharton/ThreeTenABP)
 * [SearchView](https://github.com/lapism/SearchView)
+* [PaperParcel](https://grandstaish.github.io/paperparcel/)
+* [AndroidState](https://github.com/evernote/android-state)
 
 
 

@@ -16,6 +16,7 @@
 package cz.josefadamcik.trackontrakt.home
 
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +46,13 @@ class HistoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val item = items[position]
         holder?.title?.text = item.title
-        holder?.subtitle?.text = item.subtitle
+        if (TextUtils.isEmpty(item.subtitle)) {
+            holder?.subtitle?.visibility = View.GONE
+        } else {
+            holder?.subtitle?.visibility = View.VISIBLE
+            holder?.subtitle?.text = item.subtitle
+        }
+
         holder?.date?.text = dateFormat.format(item.watched_at)
 
 

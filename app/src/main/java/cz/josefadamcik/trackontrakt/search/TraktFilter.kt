@@ -15,14 +15,25 @@
 */
 package cz.josefadamcik.trackontrakt.search
 
-import com.hannesdorfmann.mosby3.mvp.MvpView
-import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
+import paperparcel.PaperParcel
+import paperparcel.PaperParcelable
 
-interface SearchResultsView : MvpView {
+@PaperParcel
+data class TraktFilter(
+    val movies: Boolean,
+    val shows: Boolean
+): PaperParcelable {
+    companion object {
+        @JvmField val CREATOR = PaperParcelTraktFilter.CREATOR
+    }
 
-    fun showSearchResults(items: List<SearchResultItem>)
-    fun showLoading()
-    fun hideLoading()
-    fun showError(e: Throwable?)
-    fun showEmptyResult()
+    fun forApiQuery(): String {
+        if (!movies && !shows) {
+            throw IllegalArgumentException("at least on of movies, shows should be true")
+        }
+        val types = mutableListOf<String>()
+        if (movies) types.add("movie")
+        if (shows) types.add("show")
+        return types.joinToString(",")
+    }
 }

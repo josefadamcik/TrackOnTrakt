@@ -42,7 +42,7 @@ interface TraktApi {
     @GET("/users/me/history")
     fun myHistory(@Header("Authorization") authorization: String,
                   @Query("page") page: Int = 1,
-                  @Query("limit") limit: Int = 10)
+                  @Query("limit") limit: Int = 20)
         : Single<List<HistoryItem>>
 
     @GET("/search/{type}")
@@ -51,7 +51,7 @@ interface TraktApi {
                @Query("query") query: String,
                @Query("extended") extended: ExtendedInfo = ExtendedInfo.metadata,
                @Query("page") page: Int = 1,
-               @Query("limit") limit: Int = 10)
+               @Query("limit") limit: Int = 50)
         : Single<List<SearchResultItem>>
 
 }

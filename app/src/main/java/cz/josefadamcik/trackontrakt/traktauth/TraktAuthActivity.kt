@@ -81,7 +81,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
                 Timber.e("webview error: %s %s", errorCode, description)
                 hideProgress()
                 showErrorView()
-                showErrorMessageWithRetry(R.string.err_uknown)
+                showErrorMessageWithRetry(R.string.err_unknown)
             }
 
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
