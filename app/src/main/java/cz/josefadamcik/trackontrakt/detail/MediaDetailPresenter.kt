@@ -19,10 +19,7 @@ import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
-import cz.josefadamcik.trackontrakt.data.api.model.CheckinRequest
-import cz.josefadamcik.trackontrakt.data.api.model.MediaType
-import cz.josefadamcik.trackontrakt.data.api.model.Movie
-import cz.josefadamcik.trackontrakt.data.api.model.MovieDetail
+import cz.josefadamcik.trackontrakt.data.api.model.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -35,6 +32,7 @@ class MediaDetailPresenter @Inject constructor(
 
     private var identifier: MediaIdentifier? = null
     private var movieDetail: MovieDetail? = null
+    private var showDetail: ShowDetail? = null
 
     fun load(mediaId: MediaIdentifier?, name: String?) {
         Timber.i("load: %s", mediaId)
@@ -51,15 +49,14 @@ class MediaDetailPresenter @Inject constructor(
         view?.itemCheckInactionVisible(false)
         view?.itemCheckInactionEnabled(false)
 
+        view?.showLoading()
         if (mediaId.type == MediaType.movie) {
-            view?.showLoading()
             disposables.add(
                 traktApi.movie(tokenHolder.httpAuth(), mediaId.id)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(
                         { movie ->
-                            movieDetail = movieDetail
                             view?.hideLoading()
                             if (movie != null) {
                                 showMovie(movie)
@@ -72,9 +69,28 @@ class MediaDetailPresenter @Inject constructor(
 
                     )
             )
+        } else if (mediaId.type == MediaType.show) {
+            disposables.add(
+                traktApi.show(tokenHolder.httpAuth(), mediaId.id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        { show ->
+                            view?.hideLoading()
+                            if (show != null) {
+                                showShow(show)
+                            }
+                        },
+                        { t ->
+                            view?.hideLoading()
+                            view?.showError(t)
+                        }
+                    )
+            )
         }
 
     }
+
 
     fun checkinActionClicked() {
         val movieDetail = this.movieDetail
@@ -114,6 +130,16 @@ class MediaDetailPresenter @Inject constructor(
                     )
             )
         }
+    }
+
+
+    private fun showShow(show: ShowDetail) {
+        showDetail = show
+        view?.showTextInfo(show.network, show.overview)
+
+        //TODO: start loading info
+        //view?.showLoading()
+
     }
 
     private fun showMovie(movie: MovieDetail) {

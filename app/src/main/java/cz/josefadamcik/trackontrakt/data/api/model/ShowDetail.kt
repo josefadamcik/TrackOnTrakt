@@ -21,7 +21,8 @@ data class ShowDetail(
     val title: String,
     val ids: MediaIds,
     val year: Int?,
-    val first_aired: String?,
+    val first_aired: Date?,
+    val overview: String?,
     //val airs:
     val runtime: Int?,
     val network: String?,
