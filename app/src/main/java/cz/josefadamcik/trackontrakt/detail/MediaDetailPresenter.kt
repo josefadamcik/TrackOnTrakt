@@ -135,7 +135,7 @@ class MediaDetailPresenter @Inject constructor(
 
     private fun showShow(show: ShowDetail) {
         showDetail = show
-        view?.showTextInfo(show.network, show.overview)
+        view?.showMedia(MediaDetailModel(MediaDetailModel.MediaDetailInfo(show.network, show.overview)))
 
         //TODO: start loading info
         //view?.showLoading()
@@ -146,6 +146,6 @@ class MediaDetailPresenter @Inject constructor(
         movieDetail = movie
         view?.itemCheckInactionVisible(true)
         view?.itemCheckInactionEnabled(true)
-        view?.showTextInfo(movie.tagline, movie.overview)
+        view?.showMedia(MediaDetailModel(MediaDetailModel.MediaDetailInfo(movie.tagline, movie.overview)))
     }
 }

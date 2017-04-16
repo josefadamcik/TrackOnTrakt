@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -25,8 +28,9 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
     @BindView(R.id.fab) lateinit var fab: FloatingActionButton
-    @BindView(R.id.txt_description) lateinit var txtDescription: TextView
-    @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
+    @BindView(R.id.list) lateinit var list: RecyclerView
+
+    lateinit var adapter: MediaDetailAdapter
 
     @State var mediaId: MediaIdentifier? = null
     @State var mediaName: String? = null
@@ -55,7 +59,17 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         mediaName = intent?.extras?.getString(PAR_NAME)
         StateSaver.restoreInstanceState(this, savedInstanceState)
 
+        initList()
+
         presenter.load(mediaId, mediaName)
+    }
+
+    private fun initList() {
+        adapter = MediaDetailAdapter(LayoutInflater.from(this))
+        list.layoutManager = LinearLayoutManager(this)
+        list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        list.setHasFixedSize(true)
+        list.adapter = adapter
     }
 
 
@@ -90,19 +104,10 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         progress.visibility = View.GONE
     }
 
-    override fun showTextInfo(tagline: String?, overview: String?) {
-        if (tagline != null) {
-            txtTagline.text = tagline
-        } else {
-            txtTagline.visibility = View.GONE
-        }
-
-        if (overview != null) {
-            txtDescription.text = overview
-        } else {
-            txtDescription.visibility = View.GONE
-        }
+    override fun showMedia(model: MediaDetailModel) {
+        adapter.model = model
     }
+
 
     override fun showError(e: Throwable?) {
         Snackbar.make(progress, e?.message ?: getString(R.string.err_unknown), Snackbar.LENGTH_LONG).show()

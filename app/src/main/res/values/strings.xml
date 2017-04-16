@@ -18,5 +18,6 @@
     <string name="title_activity_media_detail">MediaDetailActivity</string>
     <string name="info_checkin_successful">Checkin completed.</string>
     <string name="info_checkin_already_in_progress">Checkin already in progress.</string>
+    <string name="media_detail_latest_episode_separator">Latest episode</string>
 
 </resources>

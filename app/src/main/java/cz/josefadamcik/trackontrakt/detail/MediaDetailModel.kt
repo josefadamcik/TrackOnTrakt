@@ -15,16 +15,16 @@
 */
 package cz.josefadamcik.trackontrakt.detail
 
-import com.hannesdorfmann.mosby3.mvp.MvpView
+import cz.josefadamcik.trackontrakt.data.api.model.Episode
 
-interface MediaDetailView : MvpView {
-    fun showTitle(name: String)
-    fun itemCheckInactionVisible(visible: Boolean)
-    fun itemCheckInactionEnabled(visible: Boolean)
-    fun showLoading()
-    fun hideLoading()
-    fun showError(e: Throwable?)
-    fun showMedia(model: MediaDetailModel)
-    fun showCheckinSuccess()
-    fun showCheckinAlreadyInProgress()
+class MediaDetailModel(
+    val basic: MediaDetailInfo
+) {
+
+    var latestEpisode: Episode? = null
+
+    data class MediaDetailInfo(
+        val tagline: String?,
+        val description: String?
+    )
 }
