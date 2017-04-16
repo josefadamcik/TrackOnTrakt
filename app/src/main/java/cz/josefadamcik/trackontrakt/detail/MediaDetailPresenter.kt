@@ -81,6 +81,7 @@ class MediaDetailPresenter @Inject constructor(
         if (movieDetail != null) {
             val request = CheckinRequest(
                 Movie(movieDetail.title, movieDetail.year, movieDetail.ids),
+                null,
                 BuildConfig.VERSION_NAME,
                 BuildConfig.BUILD_DATE,
                 null,
@@ -97,7 +98,14 @@ class MediaDetailPresenter @Inject constructor(
                             Timber.d("checkin complete $result")
                             view?.hideLoading()
                             view?.itemCheckInactionEnabled(true)
-                            view?.showCheckingSuccess()
+                            if (result.isSuccessful && result.code() == 201) {
+                                view?.showCheckinSuccess()
+                            } else if (result.code() == 409) {
+                                view?.showCheckinAlreadyInProgress()
+                            } else {
+                                Timber.e("Unexpected status code %s", result.code())
+                                view?.showError(IllegalStateException("Unexpected status code " + result.code()))
+                            }
                         },
                         { t ->
                             view?.hideLoading()

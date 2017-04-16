@@ -25,5 +25,6 @@ interface MediaDetailView : MvpView {
     fun hideLoading()
     fun showError(e: Throwable?)
     fun showTextInfo(tagline: String?, overview: String?)
-    fun showCheckingSuccess()
+    fun showCheckinSuccess()
+    fun showCheckinAlreadyInProgress()
 }

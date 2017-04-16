@@ -109,7 +109,11 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     }
 
 
-    override fun showCheckingSuccess() {
+    override fun showCheckinSuccess() {
         Snackbar.make(progress, getString(R.string.info_checkin_successful), Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun showCheckinAlreadyInProgress() {
+        Snackbar.make(progress, getString(R.string.info_checkin_already_in_progress), Snackbar.LENGTH_LONG).show()
     }
 }
