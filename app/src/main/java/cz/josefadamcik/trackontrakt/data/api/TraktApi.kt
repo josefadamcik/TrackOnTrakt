@@ -45,6 +45,12 @@ interface TraktApi {
                   @Query("limit") limit: Int = 20)
         : Single<List<HistoryItem>>
 
+    @GET("/users/me/watching")
+    fun watching(@Header("Authorization") authorization: String,
+                 @Query("extended") extended: ExtendedInfo = ExtendedInfo.metadata
+    )
+        : Single<Watching>
+
     @GET("/search/{type}")
     fun search(@Header("Authorization") authorization: String,
                @Path("type") type: String,
@@ -60,6 +66,29 @@ interface TraktApi {
         @Path("id") id: Long,
         @Query("extended") extended: ExtendedInfo = ExtendedInfo.full
     ): Single<MovieDetail>
+
+    @GET("/shows/{id}")
+    fun show(
+        @Header("Authorization") authorization: String,
+        @Path("id") id: Long,
+        @Query("extended") extended: ExtendedInfo = ExtendedInfo.full
+    ): Single<ShowDetail>
+
+    @GET("/shows/{id}/progress/watched")
+    fun showWatchedProgress(
+        @Header("Authorization") authorization: String,
+        @Path("id") id: Long,
+        @Query("hidden") hidden: Boolean = false,
+        @Query("specials") specials: Boolean = false,
+        @Query("count_specials") countSpecials: Boolean = false
+    ): Single<Response<ShowWatchedProgress>>
+
+    @GET("/shows/{id}/last_episode")
+    fun showLastEpisode(
+        @Header("Authorization") authorization: String,
+        @Path("id") id: Long,
+        @Query("extended") extended: ExtendedInfo = ExtendedInfo.full
+    ): Single<Response<Episode>>
 
     @POST("/checkin")
     fun checkin(@Header("Authorization") authorization: String,

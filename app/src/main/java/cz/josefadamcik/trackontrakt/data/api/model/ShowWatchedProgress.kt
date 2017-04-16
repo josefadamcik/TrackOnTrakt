@@ -15,14 +15,25 @@
 */
 package cz.josefadamcik.trackontrakt.data.api.model
 
-data class CheckinRequest(
-    val movie: Movie?,
-    val episode: Episode?,
-    val app_version: String,
-    val app_date: String,
-    val message: String?,
-    val sharing: Sharing?
+import java.util.*
 
+data class ShowWatchedProgress(
+    val aired: Int,
+    val completed: Int,
+    val last_watched_at: Date?,
+    val seasons: List<SeasonWatchedProgress>
 ) {
-    data class Sharing(val facebook: Boolean, val twitter: Boolean, val thumblr: Boolean)
+
+    data class SeasonWatchedProgress(
+        val number: Int,
+        val aired: Int,
+        val completed: Int,
+        val episodes: List<EpisodeWatchedProgress>
+    )
+
+    data class EpisodeWatchedProgress(
+        val number: Int,
+        val completed: Boolean,
+        val last_watched_at: Date?
+    )
 }

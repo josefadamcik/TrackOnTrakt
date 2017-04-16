@@ -15,14 +15,26 @@
 */
 package cz.josefadamcik.trackontrakt.data.api.model
 
-data class CheckinRequest(
-    val movie: Movie?,
-    val episode: Episode?,
-    val app_version: String,
-    val app_date: String,
-    val message: String?,
-    val sharing: Sharing?
+import java.util.*
 
-) {
-    data class Sharing(val facebook: Boolean, val twitter: Boolean, val thumblr: Boolean)
-}
+data class ShowDetail(
+    val title: String,
+    val ids: MediaIds,
+    val year: Int?,
+    val first_aired: String?,
+    //val airs:
+    val runtime: Int?,
+    val network: String?,
+    val country: String?,
+    val updated_at: Date?,
+    val trailer: String?,
+    val homepage: String?,
+    val status: String?,
+    val rating: Double?,
+    val votes: Long?,
+    val language: String?,
+    val genres: List<String>,
+    val certification: String?,
+    val aired_episodes: Int?
+)
+

@@ -15,14 +15,14 @@
 */
 package cz.josefadamcik.trackontrakt.data.api.model
 
-data class CheckinRequest(
-    val movie: Movie?,
-    val episode: Episode?,
-    val app_version: String,
-    val app_date: String,
-    val message: String?,
-    val sharing: Sharing?
+import java.util.*
 
-) {
-    data class Sharing(val facebook: Boolean, val twitter: Boolean, val thumblr: Boolean)
-}
+data class Watching(
+    val expires_at: Date,
+    val started_at: Date,
+    val action: String,
+    override val type: MediaType,
+    override val movie: Movie?,
+    override val show: Show?,
+    override val episode: Episode?
+) : MediaItem
