@@ -29,13 +29,16 @@ import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
 import cz.josefadamcik.trackontrakt.data.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
+import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
+import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
 import cz.josefadamcik.trackontrakt.search.TraktFilter
 import timber.log.Timber
 import javax.inject.Inject
 
 
-class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchViewWrapper.SearchCallback {
+class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchViewWrapper.SearchCallback, HistoryAdapter.OnItemInteractionListener {
+
     enum class Mode {
         History,
         Search
@@ -82,7 +85,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
     private fun initList() {
-        historyAdapter = HistoryAdapter(LayoutInflater.from(this), resources, icoTypeMovieDrawable, icoTypeShowDrawable)
+        historyAdapter = HistoryAdapter(LayoutInflater.from(this), resources, this, icoTypeMovieDrawable, icoTypeShowDrawable)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.setHasFixedSize(true)
@@ -160,6 +163,12 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
 
+    override fun onHistoryItemClicked(item: HistoryItem, position: Int) {
+        val intent = Intent(this, MediaDetailActivity::class.java)
+        intent.putExtra(MediaDetailActivity.PAR_ID, MediaIdentifier.fromMediaItemButShowForEpisode(item))
+        intent.putExtra(MediaDetailActivity.PAR_NAME, item.title)
+        startActivity(intent)
+    }
 
 
 

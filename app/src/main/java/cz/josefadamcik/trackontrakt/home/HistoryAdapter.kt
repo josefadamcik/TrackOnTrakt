@@ -35,6 +35,7 @@ import java.text.DateFormat
 class HistoryAdapter(
     val layoutInflater: LayoutInflater,
     val resources: Resources,
+    val itemInteractionListener: OnItemInteractionListener,
     val icoMovieTypeDrawable: Drawable,
     val icoShowTypeDrawable: Drawable
 ) : RecyclerView.Adapter<ViewHolder>() {
@@ -44,6 +45,11 @@ class HistoryAdapter(
             field = value
             notifyDataSetChanged()
         }
+
+
+    interface OnItemInteractionListener {
+        fun onHistoryItemClicked(item: HistoryItem, position: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return ViewHolder(layoutInflater.inflate(R.layout.item_history, parent, false))
@@ -77,7 +83,7 @@ class HistoryAdapter(
         return items.size
     }
 
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         @BindView(R.id.title) lateinit var title: TextView
         @BindView(R.id.subtitle) lateinit var subtitle: TextView
         @BindView(R.id.date) lateinit var date: TextView
@@ -85,6 +91,11 @@ class HistoryAdapter(
 
         init {
             ButterKnife.bind(this, view)
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            itemInteractionListener.onHistoryItemClicked(items[adapterPosition], adapterPosition)
         }
     }
 }

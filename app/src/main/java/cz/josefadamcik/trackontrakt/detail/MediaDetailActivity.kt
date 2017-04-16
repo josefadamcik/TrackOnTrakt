@@ -65,7 +65,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     }
 
     private fun initList() {
-        adapter = MediaDetailAdapter(LayoutInflater.from(this))
+        adapter = MediaDetailAdapter(LayoutInflater.from(this), resources)
         list.layoutManager = LinearLayoutManager(this)
         list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         list.setHasFixedSize(true)
@@ -107,7 +107,6 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     override fun showMedia(model: MediaDetailModel) {
         adapter.model = model
     }
-
 
     override fun showError(e: Throwable?) {
         Snackbar.make(progress, e?.message ?: getString(R.string.err_unknown), Snackbar.LENGTH_LONG).show()

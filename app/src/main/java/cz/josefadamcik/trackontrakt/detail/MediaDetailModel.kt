@@ -17,11 +17,11 @@ package cz.josefadamcik.trackontrakt.detail
 
 import cz.josefadamcik.trackontrakt.data.api.model.Episode
 
-class MediaDetailModel(
-    val basic: MediaDetailInfo
+data class MediaDetailModel(
+    val basic: MediaDetailInfo,
+    val latestEpisode: Episode? = null
 ) {
 
-    var latestEpisode: Episode? = null
 
     data class MediaDetailInfo(
         val tagline: String?,

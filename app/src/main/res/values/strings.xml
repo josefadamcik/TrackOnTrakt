@@ -18,6 +18,7 @@
     <string name="title_activity_media_detail">MediaDetailActivity</string>
     <string name="info_checkin_successful">Checkin completed.</string>
     <string name="info_checkin_already_in_progress">Checkin already in progress.</string>
-    <string name="media_detail_latest_episode_separator">Latest episode</string>
+    <string name="media_detail_latest_episode_separator">Latest aired episode</string>
+    <string name="episode_item_number_and_seasion_info">episode %1$d season %2$d</string>
 
 </resources>

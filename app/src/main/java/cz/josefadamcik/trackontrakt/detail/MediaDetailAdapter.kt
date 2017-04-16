@@ -15,6 +15,7 @@
 */
 package cz.josefadamcik.trackontrakt.detail
 
+import android.content.res.Resources
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -23,11 +24,13 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import cz.josefadamcik.trackontrakt.R
+import java.text.DateFormat
 
 class MediaDetailAdapter(
-    val inflater: LayoutInflater
+    val inflater: LayoutInflater,
+    val resources: Resources
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+    val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
     var model: MediaDetailModel? = null
         set(value) {
             field = value
@@ -74,7 +77,13 @@ class MediaDetailAdapter(
                 holder.txtDescription.text = model?.basic?.description
             }
             is EpisodeInfoViewHolder -> {
-                holder.txtTitle.text = model?.latestEpisode?.title
+                val episode = model?.latestEpisode
+                episode?.let {
+                    holder.txtTitle.text = it.title
+                    holder.txtEpisodeInfo.text = resources.getString(R.string.episode_item_number_and_seasion_info, it.number, it.season)
+                    //holder.txtDate = dateFormat.format(it.)
+
+                }
             }
             else -> {
 
@@ -105,5 +114,8 @@ class MediaDetailAdapter(
 
     class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
         @BindView(R.id.title) lateinit var txtTitle: TextView
+        @BindView(R.id.subtitle) lateinit var txtSubtitle: TextView
+        @BindView(R.id.episode_info) lateinit var txtEpisodeInfo: TextView
+        @BindView(R.id.date) lateinit var txtDate: TextView
     }
 }

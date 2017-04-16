@@ -33,6 +33,7 @@ class MediaDetailPresenter @Inject constructor(
     private var identifier: MediaIdentifier? = null
     private var movieDetail: MovieDetail? = null
     private var showDetail: ShowDetail? = null
+    private var model: MediaDetailModel? = null
 
     fun load(mediaId: MediaIdentifier?, name: String?) {
         Timber.i("load: %s", mediaId)
@@ -123,7 +124,7 @@ class MediaDetailPresenter @Inject constructor(
                                 view?.showError(IllegalStateException("Unexpected status code " + result.code()))
                             }
                         },
-                        { t ->
+                        { t: Throwable? ->
                             view?.hideLoading()
                             view?.showError(t)
                         }
@@ -135,17 +136,47 @@ class MediaDetailPresenter @Inject constructor(
 
     private fun showShow(show: ShowDetail) {
         showDetail = show
-        view?.showMedia(MediaDetailModel(MediaDetailModel.MediaDetailInfo(show.network, show.overview)))
+        showModel(MediaDetailModel(MediaDetailModel.MediaDetailInfo(show.network, show.overview)))
 
-        //TODO: start loading info
-        //view?.showLoading()
+        view?.showLoading()
+        Timber.d("showShow - last episode")
+        disposables.add(
+            traktApi.showLastEpisode(tokenHolder.httpAuth(), show.ids.trakt)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { response ->
+                        Timber.d("showShow - last episode result")
+                        view?.hideLoading()
+                        if (response.code() == 204) {
+                            Timber.d("No last episode")
+                        } else {
+                            val latestEpisode = response.body()
+                            Timber.d("Last episode %s", latestEpisode)
+                            showModel(model?.copy(latestEpisode = latestEpisode))
+                        }
+                    },
+                    { t ->
+                        view?.hideLoading()
+                        view?.showError(t)
+                    }
+                )
 
+        )
     }
 
     private fun showMovie(movie: MovieDetail) {
         movieDetail = movie
         view?.itemCheckInactionVisible(true)
         view?.itemCheckInactionEnabled(true)
-        view?.showMedia(MediaDetailModel(MediaDetailModel.MediaDetailInfo(movie.tagline, movie.overview)))
+        showModel(MediaDetailModel(MediaDetailModel.MediaDetailInfo(movie.tagline, movie.overview)))
+
+    }
+
+    private fun showModel(model: MediaDetailModel?) {
+        if (model != null) {
+            this.model = model
+            view?.showMedia(model = model)
+        }
     }
 }

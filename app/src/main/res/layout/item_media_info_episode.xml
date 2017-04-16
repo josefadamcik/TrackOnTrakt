@@ -4,7 +4,10 @@
               android:layout_height="wrap_content"
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
-              android:padding="@dimen/material_baseline_grid_4x"
+              android:paddingLeft="@dimen/material_baseline_grid_4x"
+              android:paddingRight="@dimen/material_baseline_grid_4x"
+              android:paddingTop="@dimen/material_baseline_grid_1x"
+              android:paddingBottom="@dimen/material_baseline_grid_1x"
     >
 
     <TextView
@@ -14,5 +17,39 @@
         android:textAppearance="@style/MaterialTypography.Regular.Title"
         tools:text="episode item title"/>
 
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/material_baseline_grid_0.5x"
+        android:textAppearance="@style/MaterialTypography.Regular.Subheading"
+        android:visibility="gone"
+        tools:text="episode item subtitle"/>
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/material_baseline_grid_0.5x"
+        >
+
+        <TextView
+            android:id="@+id/episode_info"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/MaterialTypography.Regular.Caption"
+            tools:text="Episode 10 Season 12"
+            android:gravity="left|center_vertical"/>
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/MaterialTypography.Regular.Caption"
+            tools:text="12.2.2016 45:00"
+            android:gravity="right|center_vertical"/>
+    </LinearLayout>
 </LinearLayout>
