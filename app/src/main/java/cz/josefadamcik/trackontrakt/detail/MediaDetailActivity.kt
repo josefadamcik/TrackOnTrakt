@@ -18,10 +18,11 @@ import com.evernote.android.state.StateSaver
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
+import cz.josefadamcik.trackontrakt.data.api.model.Episode
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import javax.inject.Inject
 
-class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(), MediaDetailView {
+class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(), MediaDetailView, MediaDetailAdapter.InteractionListener {
     @Inject lateinit var myPresenter: MediaDetailPresenter
 
     @BindView(R.id.progress) lateinit var progress: MaterialProgressBar
@@ -65,7 +66,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     }
 
     private fun initList() {
-        adapter = MediaDetailAdapter(LayoutInflater.from(this), resources)
+        adapter = MediaDetailAdapter(LayoutInflater.from(this), resources, this)
         list.layoutManager = LinearLayoutManager(this)
         list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         list.setHasFixedSize(true)
@@ -82,6 +83,9 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         presenter.checkinActionClicked()
     }
 
+    override fun onEpisodeCheckInClick(episode: Episode) {
+        presenter.checkinActionClicked(episode)
+    }
 
     override fun showTitle(name: String) {
         toolbar.title = name

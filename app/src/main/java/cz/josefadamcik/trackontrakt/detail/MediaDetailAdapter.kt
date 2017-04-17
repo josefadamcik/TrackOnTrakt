@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.Episode
 import cz.josefadamcik.trackontrakt.data.api.model.Season
@@ -30,7 +31,8 @@ import java.text.DateFormat
 
 class MediaDetailAdapter(
     val inflater: LayoutInflater,
-    val resources: Resources
+    val resources: Resources,
+    val listener: InteractionListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEWTYPE_MEDIA_INFO = 1
@@ -38,6 +40,10 @@ class MediaDetailAdapter(
         const val VIEWTYPE_SEASON_HEADER = 3
         const val VIEWTYPE_LAST_EPISODE_HEADER = 4
         val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+    }
+
+    interface InteractionListener {
+        fun onEpisodeCheckInClick(episode: Episode)
     }
 
     private var items = listOf<Item>()
@@ -124,9 +130,14 @@ class MediaDetailAdapter(
         @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
     }
 
-    class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
+    inner class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
+
         @BindView(R.id.title) lateinit var txtTitle: TextView
         @BindView(R.id.episode_info) lateinit var txtEpisodeInfo: TextView
+        @OnClick(R.id.btn_checkin) fun onCheckinClick() {
+            items[adapterPosition].episode?.let { listener.onEpisodeCheckInClick(it) }
+        }
+
     }
 
     class HeaderInfoViewHolder(itemView: View?) : ViewHolder(itemView) {

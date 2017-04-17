@@ -16,12 +16,12 @@
 package cz.josefadamcik.trackontrakt.data.api.model
 
 data class CheckinRequest(
-    val movie: Movie?,
-    val episode: Episode?,
+    val movie: Movie? = null,
+    val episode: Episode? = null,
     val app_version: String,
     val app_date: String,
-    val message: String?,
-    val sharing: Sharing?
+    val message: String? = null,
+    val sharing: Sharing? = null
 
 ) {
     data class Sharing(val facebook: Boolean, val twitter: Boolean, val thumblr: Boolean)

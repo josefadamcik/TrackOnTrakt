@@ -94,45 +94,57 @@ class MediaDetailPresenter @Inject constructor(
 
 
     fun checkinActionClicked() {
-        val movieDetail = this.movieDetail
-        if (movieDetail != null) {
+        this.movieDetail?.let { (title, ids, year) ->
             val request = CheckinRequest(
-                Movie(movieDetail.title, movieDetail.year, movieDetail.ids),
-                null,
-                BuildConfig.VERSION_NAME,
-                BuildConfig.BUILD_DATE,
-                null,
-                null
+                movie = Movie(title, year, ids),
+                app_version = BuildConfig.VERSION_NAME,
+                app_date = BuildConfig.BUILD_DATE
             )
-            view?.showLoading()
-            view?.itemCheckInactionEnabled(false)
-            disposables.add(
-                traktApi.checkin(tokenHolder.httpAuth(), request)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                        { result ->
-                            Timber.d("checkin complete $result")
-                            view?.hideLoading()
-                            view?.itemCheckInactionEnabled(true)
-                            if (result.isSuccessful && result.code() == 201) {
-                                view?.showCheckinSuccess()
-                            } else if (result.code() == 409) {
-                                view?.showCheckinAlreadyInProgress()
-                            } else {
-                                Timber.e("Unexpected status code %s", result.code())
-                                view?.showError(IllegalStateException("Unexpected status code " + result.code()))
-                            }
-                        },
-                        { t: Throwable? ->
-                            view?.hideLoading()
-                            view?.showError(t)
-                        }
-                    )
-            )
+            doCheckinRequest(request)
         }
     }
 
+    fun checkinActionClicked(episode: Episode) {
+        Timber.d("checkinActionClicked for $episode")
+        val request = CheckinRequest(
+            episode = episode,
+            app_version = BuildConfig.VERSION_NAME,
+            app_date = BuildConfig.BUILD_DATE
+        )
+        doCheckinRequest(request)
+    }
+
+
+    private fun doCheckinRequest(request: CheckinRequest) {
+        view?.showLoading()
+        view?.itemCheckInactionEnabled(false)
+        disposables.add(
+            traktApi.checkin(tokenHolder.httpAuth(), request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { result ->
+                        Timber.d("checkin complete $result")
+                        view?.hideLoading()
+                        view?.itemCheckInactionEnabled(true)
+                        if (result.isSuccessful && result.code() == 201) {
+                            view?.showCheckinSuccess()
+                        } else if (result.code() == 409) {
+                            view?.showCheckinAlreadyInProgress()
+                        } else {
+                            Timber.e("Unexpected status code %s", result.code())
+                            view?.showError(IllegalStateException("Unexpected status code " + result.code()))
+                        }
+                    },
+                    { t: Throwable? ->
+                        view?.hideLoading()
+                        view?.showError(t)
+                    }
+                )
+        )
+    }
+
+  
 
     private fun showShow(show: ShowDetail) {
         showDetail = show
@@ -200,4 +212,6 @@ class MediaDetailPresenter @Inject constructor(
             view?.showMedia(model = model)
         }
     }
+
+
 }
