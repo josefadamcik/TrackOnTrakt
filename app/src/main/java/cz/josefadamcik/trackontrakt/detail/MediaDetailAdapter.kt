@@ -94,13 +94,13 @@ class MediaDetailAdapter(
             }
             is EpisodeInfoViewHolder -> {
                 items[position].episode?.let {
-                    holder.txtEpisodeInfo.text = resources.getString(R.string.episode_item_number_and_season_info, it.season + 1, it.number)
+                    holder.txtEpisodeInfo.text = resources.getString(R.string.episode_item_number_and_season_info, it.season, it.number)
                     holder.txtTitle.text = it.title
                 }
             }
             is HeaderInfoViewHolder -> {
                 items[position].season?.let {
-                    holder.txtTitle.text = resources.getString(R.string.season_info, it.number + 1)
+                    holder.txtTitle.text = resources.getString(R.string.season_info, it.number)
                 }
             }
             else -> {
