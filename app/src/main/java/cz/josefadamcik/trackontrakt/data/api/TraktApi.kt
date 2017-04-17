@@ -29,7 +29,7 @@ import retrofit2.http.*
  */
 interface TraktApi {
     enum class ExtendedInfo {
-        full, metadata
+        full, metadata, episodes
     }
 
     @POST("/oauth/token")
@@ -89,6 +89,13 @@ interface TraktApi {
         @Path("id") id: Long,
         @Query("extended") extended: ExtendedInfo = ExtendedInfo.full
     ): Single<Response<Episode>>
+
+    @GET("/shows/{id}/seasons")
+    fun showSeasons(
+        @Header("Authorization") authorization: String,
+        @Path("id") id: Long,
+        @Query("extended") extended: ExtendedInfo = ExtendedInfo.metadata
+    ): Single<Response<List<Season>>>
 
     @POST("/checkin")
     fun checkin(@Header("Authorization") authorization: String,

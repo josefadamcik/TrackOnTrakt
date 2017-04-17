@@ -18,32 +18,35 @@ package cz.josefadamcik.trackontrakt.data
 import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Rfc3339DateJsonAdapter
+import cz.josefadamcik.trackontrakt.ApplicationScope
 import cz.josefadamcik.trackontrakt.BuildConfig
+import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktApiConfig
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
 import dagger.Module
 import dagger.Provides
+import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
+import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
-import javax.inject.Singleton
 
 
 /**
  * Module for API and networking related dependencies.
  */
 @Module
-class ApiModule {
+class ApiModule(private val app: TrackOnTraktApplication) {
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
             .add(Date::class.java, Rfc3339DateJsonAdapter())
@@ -51,7 +54,7 @@ class ApiModule {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideRetrofit(traktApiConfig: TraktApiConfig, @Named("traktokhttp") okHttpClient: OkHttpClient, moshi: Moshi): Retrofit {
         return Retrofit.Builder()
             .baseUrl(traktApiConfig.apiBaseUrl)
@@ -61,18 +64,28 @@ class ApiModule {
             .build()
     }
 
+    @Provides
+    @ApplicationScope
+    fun provideOkHttpCache(): Cache {
+        val cacheSize = 10 * 1024 * 1024 // 10 MiB
+        val cache = Cache(File(app.cacheDir, "traktapi"), cacheSize.toLong())
+        return cache
+    }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     @Named("traktokhttp")
-    fun provideOkHttpForTraktApi(traktApiConfig: TraktApiConfig): OkHttpClient {
+    fun provideOkHttpForTraktApi(traktApiConfig: TraktApiConfig, cache: Cache): OkHttpClient {
+        Timber.d("provideOkHttpForTraktApi ")
         val builder = OkHttpClient.Builder()
             .connectTimeout(20, TimeUnit.SECONDS)
             .readTimeout(20, TimeUnit.SECONDS)
             .writeTimeout(20, TimeUnit.SECONDS)
+            .cache(cache)
             .addInterceptor { chain ->
                 val original = chain.request()
                 val request = original.newBuilder()
+                    .header("User-Agent", String.format("TrackOnTrakt %s", BuildConfig.VERSION_CODE))
                     .addHeader("Content-type", "application/json")
                     .addHeader("trakt-api-key", traktApiConfig.clientId)
                     .addHeader("trakt-api-version", "2")
@@ -91,15 +104,18 @@ class ApiModule {
         return builder.build();
     }
 
+
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideTraktApi(retrofit: Retrofit): TraktApi {
+        Timber.d("provideTraktApi ")
         return retrofit.create(TraktApi::class.java)
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideTraktAuthTokenHolder(preferences: SharedPreferences, moshi: Moshi): TraktAuthTokenHolder {
+        Timber.d("provideTraktAuthTokenHolder ")
         val instance = TraktAuthTokenHolder(preferences, moshi)
         instance.readFromPreferences()
         return instance
@@ -107,7 +123,7 @@ class ApiModule {
 
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideTraktApiConfig(): TraktApiConfig {
         return TraktApiConfig(
             clientId = BuildConfig.TRAKT_CLIENT_ID,

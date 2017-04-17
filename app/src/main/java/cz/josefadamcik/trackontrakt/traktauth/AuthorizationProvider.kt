@@ -17,23 +17,20 @@
 package cz.josefadamcik.trackontrakt.traktauth
 
 
-import android.content.SharedPreferences
 import android.net.Uri
-import com.squareup.moshi.Moshi
+import cz.josefadamcik.trackontrakt.ApplicationScope
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktApiConfig
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
 import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenRequest
-import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenResponse
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
+@ApplicationScope
 class AuthorizationProvider
 @Inject
 constructor(

@@ -22,9 +22,8 @@ import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
 import cz.josefadamcik.trackontrakt.traktauth.AuthorizationProvider
 import cz.josefadamcik.trackontrakt.traktauth.TraktAuthActivity
 import dagger.Component
-import javax.inject.Singleton
 
-@Singleton
+@ApplicationScope
 @Component(modules = arrayOf(ApplicationModule::class, ApiModule::class))
 interface ApplicationComponent {
     fun inject(authorizationProvider: AuthorizationProvider)

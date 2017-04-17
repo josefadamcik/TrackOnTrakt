@@ -19,6 +19,7 @@ package cz.josefadamcik.trackontrakt
 
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
+import cz.josefadamcik.trackontrakt.data.ApiModule
 import timber.log.Timber
 
 class TrackOnTraktApplication : Application() {
@@ -31,6 +32,7 @@ class TrackOnTraktApplication : Application() {
 
         graph = DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(this))
+            .apiModule(ApiModule(this))
                 .build()
         graph.inject(this)
 

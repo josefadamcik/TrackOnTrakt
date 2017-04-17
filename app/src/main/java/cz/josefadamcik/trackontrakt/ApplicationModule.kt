@@ -20,7 +20,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 class ApplicationModule(private val app: TrackOnTraktApplication) {
@@ -32,7 +31,7 @@ class ApplicationModule(private val app: TrackOnTraktApplication) {
     }
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideSharedPreferences(): SharedPreferences {
         return app.getSharedPreferences("trackontrackt", Context.MODE_PRIVATE);
     }

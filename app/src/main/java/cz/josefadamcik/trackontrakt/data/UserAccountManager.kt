@@ -15,6 +15,7 @@
 */
 package cz.josefadamcik.trackontrakt.data
 
+import cz.josefadamcik.trackontrakt.ApplicationScope
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
@@ -23,10 +24,9 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
-@Singleton
+@ApplicationScope
 class UserAccountManager
 @Inject constructor(
     private val traktApi: TraktApi,
