@@ -16,10 +16,12 @@
 package cz.josefadamcik.trackontrakt.detail
 
 import cz.josefadamcik.trackontrakt.data.api.model.Episode
+import cz.josefadamcik.trackontrakt.data.api.model.Season
 
 data class MediaDetailModel(
     val basic: MediaDetailInfo,
-    val latestEpisode: Episode? = null
+    val latestEpisode: Episode? = null,
+    val seasons: List<Season> = emptyList()
 ) {
 
 

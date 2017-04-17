@@ -20,6 +20,7 @@ import cz.josefadamcik.trackontrakt.data.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
 import io.reactivex.disposables.CompositeDisposable
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -49,9 +50,12 @@ class HomePresenter @Inject constructor(
             userAccountManager.loadUserHistory()
                 .subscribe(
                     { history ->
+                        Timber.d("loadHomeStreamData ")
                         view?.showHistory(history)
                     },
                     { t ->
+                        Timber.e(t, "loadHomeStreamData error")
+                        view?.hideLoading()
                         view?.showError(t)
                     }
                 )

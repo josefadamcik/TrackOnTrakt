@@ -78,9 +78,9 @@ class ApiModule(private val app: TrackOnTraktApplication) {
     fun provideOkHttpForTraktApi(traktApiConfig: TraktApiConfig, cache: Cache): OkHttpClient {
         Timber.d("provideOkHttpForTraktApi ")
         val builder = OkHttpClient.Builder()
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
             .cache(cache)
             .addInterceptor { chain ->
                 val original = chain.request()

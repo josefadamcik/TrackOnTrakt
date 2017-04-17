@@ -147,7 +147,6 @@ class MediaDetailPresenter @Inject constructor(
                 .subscribe(
                     { response ->
                         Timber.d("showShow - last episode result")
-                        view?.hideLoading()
                         if (response.code() == 204) {
                             Timber.d("No last episode")
                         } else {
@@ -155,6 +154,28 @@ class MediaDetailPresenter @Inject constructor(
                             Timber.d("Last episode %s", latestEpisode)
                             showModel(model?.copy(latestEpisode = latestEpisode))
                         }
+                        loadEpisodes(show.ids.trakt)
+                    },
+                    { t ->
+                        view?.hideLoading()
+                        view?.showError(t)
+                    }
+                )
+
+        )
+    }
+
+    private fun loadEpisodes(showId: Long) {
+        Timber.d("loadEpisodes ")
+        disposables.add(
+            traktApi.showSeasons(tokenHolder.httpAuth(), showId, TraktApi.ExtendedInfo.episodes)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    { response ->
+                        Timber.d("loadEpisodes - result %s", response.code())
+                        view?.hideLoading()
+                        showModel(model?.copy(seasons = response.body()))
                     },
                     { t ->
                         view?.hideLoading()

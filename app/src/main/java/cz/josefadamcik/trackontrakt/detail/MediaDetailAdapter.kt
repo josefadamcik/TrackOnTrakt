@@ -24,51 +24,61 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import cz.josefadamcik.trackontrakt.R
+import cz.josefadamcik.trackontrakt.data.api.model.Episode
+import cz.josefadamcik.trackontrakt.data.api.model.Season
 import java.text.DateFormat
 
 class MediaDetailAdapter(
     val inflater: LayoutInflater,
     val resources: Resources
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
-    var model: MediaDetailModel? = null
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
     companion object {
         const val VIEWTYPE_MEDIA_INFO = 1
         const val VIEWTYPE_EPISODE = 2
         const val VIEWTYPE_SEASON_HEADER = 3
         const val VIEWTYPE_LAST_EPISODE_HEADER = 4
+        val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        if (position == 0) {
-            return VIEWTYPE_MEDIA_INFO;
-        } else if (model?.latestEpisode != null) {
-            if (position == 1) {
-                return VIEWTYPE_LAST_EPISODE_HEADER
-            } else if (position == 2) {
-                return VIEWTYPE_EPISODE
-            }
+    private var items = listOf<Item>()
+
+    var model: MediaDetailModel? = null
+        set(value) {
+            field = value
+            items = buildItems()
+            notifyDataSetChanged()
         }
-        return -1
+
+
+    override fun getItemViewType(position: Int): Int {
+        return items[position].viewType
     }
 
 
     override fun getItemCount(): Int {
-        if (model == null) {
-            return 0
-        } else {
-            var rowCount = 1
-            if (model?.latestEpisode != null) {
-                rowCount += 2
-            }
-            return rowCount
-        }
+        return items.size
     }
+
+    private fun buildItems(): List<Item> {
+        val list = mutableListOf<Item>()
+        val model = this.model
+        if (model != null) {
+            list.add(Item(VIEWTYPE_MEDIA_INFO))
+            if (model.latestEpisode != null) {
+                list.add(Item(VIEWTYPE_LAST_EPISODE_HEADER))
+                list.add(Item(VIEWTYPE_EPISODE, episode = model.latestEpisode))
+            }
+            if (model.seasons.isNotEmpty()) {
+                model.seasons.forEach { season ->
+                    list.add(Item(VIEWTYPE_SEASON_HEADER, season = season))
+                    season.episodes?.mapTo(list, transform = { ep -> Item(VIEWTYPE_EPISODE, season, ep) })
+                }
+            }
+        }
+        return list
+    }
+
+    private fun hasLatestEpisode() = model?.latestEpisode != null
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (holder) {
@@ -77,12 +87,14 @@ class MediaDetailAdapter(
                 holder.txtDescription.text = model?.basic?.description
             }
             is EpisodeInfoViewHolder -> {
-                val episode = model?.latestEpisode
-                episode?.let {
+                items[position].episode?.let {
+                    holder.txtEpisodeInfo.text = resources.getString(R.string.episode_item_number_and_season_info, it.season + 1, it.number)
                     holder.txtTitle.text = it.title
-                    holder.txtEpisodeInfo.text = resources.getString(R.string.episode_item_number_and_seasion_info, it.number, it.season)
-                    //holder.txtDate = dateFormat.format(it.)
-
+                }
+            }
+            is HeaderInfoViewHolder -> {
+                items[position].season?.let {
+                    holder.txtTitle.text = resources.getString(R.string.season_info, it.number + 1)
                 }
             }
             else -> {
@@ -95,6 +107,7 @@ class MediaDetailAdapter(
         val holder = when (viewType) {
             VIEWTYPE_MEDIA_INFO -> MainInfoViewHolder(inflater.inflate(R.layout.item_media_info, parent, false))
             VIEWTYPE_EPISODE -> EpisodeInfoViewHolder(inflater.inflate(R.layout.item_media_info_episode, parent, false))
+            VIEWTYPE_SEASON_HEADER -> HeaderInfoViewHolder(inflater.inflate(R.layout.item_media_info_season_header, parent, false))
             VIEWTYPE_LAST_EPISODE_HEADER -> ViewHolder(inflater.inflate(R.layout.item_media_info_latest_episode_separator, parent, false))
             else -> ViewHolder(null)
         }
@@ -104,8 +117,7 @@ class MediaDetailAdapter(
         return holder
     }
 
-    open class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-    }
+    open class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView)
 
     class MainInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
         @BindView(R.id.txt_description) lateinit var txtDescription: TextView
@@ -114,8 +126,12 @@ class MediaDetailAdapter(
 
     class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
         @BindView(R.id.title) lateinit var txtTitle: TextView
-        @BindView(R.id.subtitle) lateinit var txtSubtitle: TextView
         @BindView(R.id.episode_info) lateinit var txtEpisodeInfo: TextView
-        @BindView(R.id.date) lateinit var txtDate: TextView
     }
+
+    class HeaderInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
+        @BindView(R.id.title) lateinit var txtTitle: TextView
+    }
+
+    data class Item(val viewType: Int, val season: Season? = null, val episode: Episode? = null)
 }

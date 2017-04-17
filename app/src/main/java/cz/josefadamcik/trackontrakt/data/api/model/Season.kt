@@ -17,5 +17,6 @@ package cz.josefadamcik.trackontrakt.data.api.model
 
 data class Season(
     val number: Int,
-    val ids: MediaIds
+    val ids: MediaIds,
+    val episodes: List<Episode>?
 )

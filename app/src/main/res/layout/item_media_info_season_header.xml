@@ -3,7 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="horizontal"
+              android:orientation="vertical"
               android:paddingLeft="@dimen/material_baseline_grid_4x"
               android:paddingRight="@dimen/material_baseline_grid_4x"
               android:paddingTop="@dimen/material_baseline_grid_1x"
@@ -11,18 +11,12 @@
     >
 
     <TextView
-        android:id="@+id/episode_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/MediaDetailEpisodeTitle.Secondary"
-        android:paddingRight="@dimen/material_baseline_grid_0.5x"
-        tools:text="episode item title"/>
-    <TextView
         android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/MediaDetailEpisodeTitle"
-        tools:text="episode item title"/>
+        android:textAppearance="@style/MaterialTypography.Regular.Headline"
+        tools:text="Season 01"
+        />
+
 
 </LinearLayout>
