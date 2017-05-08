@@ -27,8 +27,9 @@ import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
-import cz.josefadamcik.trackontrakt.data.UserAccountManager
+import cz.josefadamcik.trackontrakt.data.api.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
+import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
 import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
@@ -68,7 +69,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as TrackOnTraktApplication).graph.inject(this)
+        (application as TrackOnTraktApplication).component.inject(this)
         setContentView(R.layout.activity_home)
         unbinder = ButterKnife.bind(this)
 
@@ -165,8 +166,13 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
     override fun onHistoryItemClicked(item: HistoryItem, position: Int) {
         val intent = Intent(this, MediaDetailActivity::class.java)
+        val title: String? = when (item.type) {
+            MediaType.episode -> item.show?.title
+            MediaType.movie -> item.movie?.title
+            else -> null
+        }
         intent.putExtra(MediaDetailActivity.PAR_ID, MediaIdentifier.fromMediaItemButShowForEpisode(item))
-        intent.putExtra(MediaDetailActivity.PAR_NAME, item.title)
+        intent.putExtra(MediaDetailActivity.PAR_NAME, title)
         startActivity(intent)
     }
 

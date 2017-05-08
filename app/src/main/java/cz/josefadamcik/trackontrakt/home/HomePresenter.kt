@@ -16,9 +16,9 @@
 package cz.josefadamcik.trackontrakt.home
 
 import com.hannesdorfmann.mosby3.mvp.MvpPresenter
-import cz.josefadamcik.trackontrakt.data.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.data.api.UserAccountManager
 import io.reactivex.disposables.CompositeDisposable
 import timber.log.Timber
 import javax.inject.Inject
@@ -45,6 +45,7 @@ class HomePresenter @Inject constructor(
     }
 
     fun loadHomeStreamData(forceRefresh: Boolean) {
+        Timber.i("loadHomeStreamData: start")
         view?.showLoading()
         disposable.add(
             userAccountManager.loadUserHistory()

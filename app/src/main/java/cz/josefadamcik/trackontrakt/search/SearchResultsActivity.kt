@@ -49,7 +49,7 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as TrackOnTraktApplication).graph.inject(this)
+        (application as TrackOnTraktApplication).component.inject(this)
         setContentView(R.layout.activity_search_results)
         unbinder = ButterKnife.bind(this)
 

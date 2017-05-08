@@ -1,0 +1,55 @@
+{
+  "title": "Rick and Morty",
+  "year": 2013,
+  "ids": {
+    "trakt": 69829,
+    "slug": "rick-and-morty",
+    "tvdb": 275274,
+    "imdb": "tt2861424",
+    "tmdb": 60625,
+    "tvrage": 33381
+  },
+  "overview": "A sociopathic scientist drags his unintelligent grandson on insanely dangerous adventures across the universe.",
+  "first_aired": "2013-12-03T04:30:00.000Z",
+  "airs": {
+    "day": "Sunday",
+    "time": "23:30",
+    "timezone": "America/New_York"
+  },
+  "runtime": 22,
+  "certification": "TV-14",
+  "network": "Adult Swim",
+  "country": "us",
+  "trailer": "http://youtube.com/watch?v=WNhH00OIPP0",
+  "homepage": "http://video.adultswim.com/rick-and-morty/",
+  "status": "returning series",
+  "rating": 9.2711,
+  "votes": 4751,
+  "updated_at": "2017-05-06T10:32:23.000Z",
+  "language": "en",
+  "available_translations": [
+    "cs",
+    "da",
+    "de",
+    "el",
+    "en",
+    "es",
+    "fr",
+    "he",
+    "io",
+    "nl",
+    "pl",
+    "pt",
+    "ru",
+    "tr",
+    "uk",
+    "zh"
+  ],
+  "genres": [
+    "animation",
+    "comedy",
+    "adventure",
+    "action"
+  ],
+  "aired_episodes": 22
+}

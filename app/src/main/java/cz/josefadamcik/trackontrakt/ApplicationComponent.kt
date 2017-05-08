@@ -15,7 +15,7 @@
 */
 package cz.josefadamcik.trackontrakt
 
-import cz.josefadamcik.trackontrakt.data.ApiModule
+import cz.josefadamcik.trackontrakt.data.api.ApiModule
 import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
 import cz.josefadamcik.trackontrakt.home.HomeActivity
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity

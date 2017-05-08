@@ -37,7 +37,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as TrackOnTraktApplication).graph.inject(this)
+        (application as TrackOnTraktApplication).component.inject(this)
         setContentView(R.layout.activity_trakt_auth)
         unbinder = ButterKnife.bind(this)
 

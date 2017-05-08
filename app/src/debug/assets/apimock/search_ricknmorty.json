@@ -1,0 +1,74 @@
+[
+  {
+    "type": "show",
+    "score": 983.2373,
+    "show": {
+      "title": "Rick and Morty",
+      "year": 2013,
+      "ids": {
+        "trakt": 69829,
+        "slug": "rick-and-morty",
+        "tvdb": 275274,
+        "imdb": "tt2861424",
+        "tmdb": 60625,
+        "tvrage": 33381
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 4.1269145,
+    "movie": {
+      "title": "Rick and Morty: State of Georgia Vs. Denver Fenton Allen",
+      "year": 2016,
+      "ids": {
+        "trakt": 257599,
+        "slug": "rick-and-morty-state-of-georgia-vs-denver-fenton-allen-2016",
+        "imdb": "tt5950978",
+        "tmdb": 412103
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 5.965461e-05,
+    "movie": {
+      "title": "WCW Fall Brawl 1997",
+      "year": 1997,
+      "ids": {
+        "trakt": 140264,
+        "slug": "wcw-fall-brawl-1997-1997",
+        "imdb": "tt1641647",
+        "tmdb": 229747
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 3.5080695e-05,
+    "movie": {
+      "title": "WCW Slamboree 1997",
+      "year": 1997,
+      "ids": {
+        "trakt": 140252,
+        "slug": "wcw-slamboree-1997-1997",
+        "imdb": "tt0498728",
+        "tmdb": 229729
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 2.9827304e-05,
+    "movie": {
+      "title": "WCW Bash at the Beach 1997",
+      "year": 1997,
+      "ids": {
+        "trakt": 140254,
+        "slug": "wcw-bash-at-the-beach-1997-1997",
+        "imdb": "tt0770206",
+        "tmdb": 229731
+      }
+    }
+  }
+]

@@ -41,13 +41,15 @@ android {
         buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp}"
         buildConfigField 'String', 'BUILD_DATE', "\"2017-04-09\""
 
+        buildConfigField "int", "MOCKSERVER_PORT", "8698"
+
         buildConfigField "String", "TRAKT_CLIENT_ID", "\"${traktclientid}\""
         buildConfigField "String", "TRAKT_CLIENT_SECRET", "\"${traktclientsecret}\""
         buildConfigField "String", "TRAKT_OAUTH_REDIRECT_URL", "\"tot://authorized\""
         buildConfigField "String", "TRAKT_BASE_API_URL", "\"https://api.trakt.tv\""
         buildConfigField "String", "TRAKT_LOGIN_URL", "\"https://trakt.tv/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s\""
 
-
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -85,6 +87,14 @@ android {
 //        sourceCompatibility JavaVersion.VERSION_1_8
 //        targetCompatibility JavaVersion.VERSION_1_8
 //    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 }
 
 // TODO remove eventually: http://b.android.com/162285
@@ -102,8 +112,12 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
+    /* Testing */
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest-library:1.3'
+    testCompile 'com.google.dexmaker:dexmaker-mockito:1.0'
+    testCompile 'com.google.dexmaker:dexmaker:1.0'
+    testCompile 'org.mockito:mockito-core:1.10.17'
 
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
@@ -112,6 +126,34 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    androidTestCompile('com.squareup.okhttp3:mockwebserver:3.5.0') {
+        exclude module: 'okhttp'
+    }
+
+    //WireMock
+    androidTestCompile("com.github.tomakehurst:wiremock:2.5.0") {
+        //Using Android Version Instead
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+
+        //Version conflict with our app's slf4j version
+//        exclude group: 'org.slf4j', module: 'slf4j-api'
+
+        //Was getting a classpath conflict for org.objectweb.asm.AnnotationVisitor which is a part of 'net.minidev:asm'
+        exclude group: 'org.ow2.asm', module: 'asm'
+
+        //Was getting this warning, so decided to ignore this version included by WireMock.
+        //Warning:Dependency org.json:json:20090211 is ignored as it may be conflicting with the internal version provided by Android.
+        //In case of problem, please repackage with jarjar to change the class package
+        exclude group: 'org.json', module: 'json'
+    }
+
+    androidTestCompile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+    androidTestCompile 'commons-io:commons-io:2.4'
+
+    androidTestCompile "com.squareup.spoon:spoon-client:1.5.6"
+
+    /* Build dependencies */
 
     //support, design, etc
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibraryVersion"
@@ -136,6 +178,8 @@ dependencies {
     //dagger 2
     compile 'com.google.dagger:dagger:2.9'
     kapt 'com.google.dagger:dagger-compiler:2.9'
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.9'
+    kaptTest 'com.google.dagger:dagger-compiler:2.9'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     //rx
@@ -185,3 +229,14 @@ gradle.buildFinished { buildResult ->
     def formattedDate = buildFinishDate.format('yyyy-MM-dd HH:mm:ss')
     println "Build finished: ${formattedDate}"
 }
+
+// This section is optional
+//spoon {
+//    // for debug output
+//    debug = true
+//
+//    codeCoverage = false
+//
+//    shard = true
+//}
+

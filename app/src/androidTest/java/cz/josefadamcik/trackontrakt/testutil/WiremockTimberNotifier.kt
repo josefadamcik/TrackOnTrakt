@@ -14,20 +14,21 @@
  limitations under the License.
 */
 
-package cz.josefadamcik.trackontrakt.home
+package cz.josefadamcik.trackontrakt.testutil
 
-import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
-import org.junit.Rule
-import org.junit.runner.RunWith
+import com.github.tomakehurst.wiremock.common.Notifier
+import timber.log.Timber
 
+object WiremockTimberNotifier : Notifier {
+    override fun info(s: String) {
+        Timber.i(s)
+    }
 
-@RunWith(AndroidJUnit4::class)
-@LargeTest
-class HomeActivityTest {
-    @get:Rule
-    public val mActivityRule = ActivityTestRule(HomeActivity::class.java)
+    override fun error(s: String) {
+        Timber.e(s)
+    }
 
-
+    override fun error(s: String, throwable: Throwable) {
+        Timber.e(throwable, s)
+    }
 }

@@ -1,0 +1,37 @@
+{
+  "season": 3,
+  "number": 1,
+  "title": "The Rickshank Rickdemption",
+  "ids": {
+    "trakt": 2530948,
+    "tvdb": 6016897,
+    "imdb": "tt5218228",
+    "tmdb": 1298227,
+    "tvrage": 0
+  },
+  "number_abs": 22,
+  "overview": "The Smith family tries to cope without Rick, which is painful enough on its own without taking into consideration the stifling rules put into place by the Federation. Meanwhile Rick's past is finally revealed as he attempts to get out of his prison.",
+  "rating": 8.78315,
+  "votes": 3431,
+  "first_aired": "2017-04-02T03:30:00.000Z",
+  "updated_at": "2017-05-08T10:53:26.000Z",
+  "available_translations": [
+    "cs",
+    "da",
+    "de",
+    "el",
+    "en",
+    "es",
+    "fr",
+    "he",
+    "io",
+    "nl",
+    "pl",
+    "pt",
+    "ru",
+    "tr",
+    "uk",
+    "zh"
+  ],
+  "runtime": 22
+}

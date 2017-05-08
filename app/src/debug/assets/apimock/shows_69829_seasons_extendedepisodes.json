@@ -1,0 +1,598 @@
+[
+  {
+    "number": 0,
+    "ids": {
+      "trakt": 75225,
+      "tvdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "episodes": [
+      {
+        "season": 0,
+        "number": 1,
+        "title": "The Real Animated Adventures of Doc and Mharti",
+        "ids": {
+          "trakt": 1166595,
+          "tvdb": 4721616,
+          "imdb": "tt2930486",
+          "tmdb": 0,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 2,
+        "title": "Gatorade Commercial #4",
+        "ids": {
+          "trakt": 1166743,
+          "tvdb": 4779718,
+          "imdb": null,
+          "tmdb": 0,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 3,
+        "title": "SCUD VLOG #12",
+        "ids": {
+          "trakt": 1166870,
+          "tvdb": 4779719,
+          "imdb": null,
+          "tmdb": 0,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 4,
+        "title": "The Freedom of Channel 101",
+        "ids": {
+          "trakt": 1166988,
+          "tvdb": 4779720,
+          "imdb": null,
+          "tmdb": 0,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 5,
+        "title": "Rick and Morty Panel SDCC 2013",
+        "ids": {
+          "trakt": 1167106,
+          "tvdb": 4993904,
+          "imdb": null,
+          "tmdb": 0,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 6,
+        "title": "Season 1 Blu-Ray Promo w/R&M Puppets",
+        "ids": {
+          "trakt": 1167225,
+          "tvdb": 5001291,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 7,
+        "title": "Behind the Scenes",
+        "ids": {
+          "trakt": 1167367,
+          "tvdb": 5014929,
+          "imdb": null,
+          "tmdb": 0,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 8,
+        "title": "State of Georgia Vs. Denver Fenton Allen",
+        "ids": {
+          "trakt": 2304287,
+          "tvdb": 5702078,
+          "imdb": null,
+          "tmdb": 0,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 9,
+        "title": "Rick and Morty Panel SDCC 2014",
+        "ids": {
+          "trakt": 2468825,
+          "tvdb": 5925773,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 10,
+        "title": "Rick and Morty Summon Mr. Meeseeks for a Very Important Task",
+        "ids": {
+          "trakt": 2468827,
+          "tvdb": 5925775,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 11,
+        "title": "Rick and Morty Panel NYCC 2014",
+        "ids": {
+          "trakt": 2468830,
+          "tvdb": 5925776,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 12,
+        "title": "Simpsons Couch Gag",
+        "ids": {
+          "trakt": 2468832,
+          "tvdb": 5925779,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 13,
+        "title": "Rick and Morty Panel SDCC 2015",
+        "ids": {
+          "trakt": 2468834,
+          "tvdb": 5925781,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 14,
+        "title": "The Misadventures of Rick and Morty",
+        "ids": {
+          "trakt": 2468835,
+          "tvdb": 5925784,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 15,
+        "title": "Carl's Jr and Hardee's Commercial",
+        "ids": {
+          "trakt": 2468836,
+          "tvdb": 5925785,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 16,
+        "title": "Rick and Morty: The Non-Canonical Adventures #1 - The Thing",
+        "ids": {
+          "trakt": 2468837,
+          "tvdb": 5925787,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 17,
+        "title": "Rick and Morty: The Non-Canonical Adventures #2 - The Fly",
+        "ids": {
+          "trakt": 2468838,
+          "tvdb": 5925790,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 18,
+        "title": "Rick and Morty: The Non-Canonical Adventures #3 - Honey I Shrunk The Kids",
+        "ids": {
+          "trakt": 2468839,
+          "tvdb": 5925793,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 19,
+        "title": "Rick and Morty: The Non-Canonical Adventures #4 - Ex Machina",
+        "ids": {
+          "trakt": 2468840,
+          "tvdb": 5925794,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 20,
+        "title": "Rick and Morty: The Non-Canonical Adventures #5 - Halloween",
+        "ids": {
+          "trakt": 2468841,
+          "tvdb": 5925795,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 21,
+        "title": "Rick and Morty 8-Bit Intro",
+        "ids": {
+          "trakt": 2468842,
+          "tvdb": 5925798,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      },
+      {
+        "season": 0,
+        "number": 22,
+        "title": "Rick and Morty Panel SDCC 2016",
+        "ids": {
+          "trakt": 2491776,
+          "tvdb": 5962577,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      }
+    ]
+  },
+  {
+    "number": 1,
+    "ids": {
+      "trakt": 75308,
+      "tvdb": 567215,
+      "tmdb": 60059,
+      "tvrage": null
+    },
+    "episodes": [
+      {
+        "season": 1,
+        "number": 1,
+        "title": "Pilot",
+        "ids": {
+          "trakt": 1167595,
+          "tvdb": 4711142,
+          "imdb": "tt2169080",
+          "tmdb": 973400,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 2,
+        "title": "Lawnmower Dog",
+        "ids": {
+          "trakt": 1167687,
+          "tvdb": 4725805,
+          "imdb": "tt3333824",
+          "tmdb": 973401,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 3,
+        "title": "Anatomy Park",
+        "ids": {
+          "trakt": 1167805,
+          "tvdb": 4730467,
+          "imdb": "tt3333828",
+          "tmdb": 973402,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 4,
+        "title": "M. Night Shaym-Aliens!",
+        "ids": {
+          "trakt": 1167917,
+          "tvdb": 4743885,
+          "imdb": "tt3333830",
+          "tmdb": 973403,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 5,
+        "title": "Meeseeks and Destroy",
+        "ids": {
+          "trakt": 1168054,
+          "tvdb": 4743886,
+          "imdb": "tt3333832",
+          "tmdb": 973404,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 6,
+        "title": "Rick Potion #9",
+        "ids": {
+          "trakt": 1168124,
+          "tvdb": 4743887,
+          "imdb": "tt3333834",
+          "tmdb": 973405,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 7,
+        "title": "Raising Gazorpazorp",
+        "ids": {
+          "trakt": 1168242,
+          "tvdb": 4743888,
+          "imdb": "tt3333836",
+          "tmdb": 973406,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 8,
+        "title": "Rixty Minutes",
+        "ids": {
+          "trakt": 1168382,
+          "tvdb": 4743889,
+          "imdb": "tt3333838",
+          "tmdb": 973407,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 9,
+        "title": "Something Ricked This Way Comes",
+        "ids": {
+          "trakt": 1168618,
+          "tvdb": 4743890,
+          "imdb": "tt3333840",
+          "tmdb": 973462,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 10,
+        "title": "Close Rick-Counters of the Rick Kind",
+        "ids": {
+          "trakt": 1168778,
+          "tvdb": 4743891,
+          "imdb": "tt3333846",
+          "tmdb": 973676,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 1,
+        "number": 11,
+        "title": "Ricksy Business",
+        "ids": {
+          "trakt": 1168917,
+          "tvdb": 4743892,
+          "imdb": "tt3333854",
+          "tmdb": 974721,
+          "tvrage": 0
+        }
+      }
+    ]
+  },
+  {
+    "number": 2,
+    "ids": {
+      "trakt": 104163,
+      "tvdb": 623124,
+      "tmdb": 66738,
+      "tvrage": null
+    },
+    "episodes": [
+      {
+        "season": 2,
+        "number": 1,
+        "title": "A Rickle in Time",
+        "ids": {
+          "trakt": 1732564,
+          "tvdb": 5225680,
+          "imdb": "tt4462494",
+          "tmdb": 1061750,
+          "tvrage": 1065808803
+        }
+      },
+      {
+        "season": 2,
+        "number": 2,
+        "title": "Mortynight Run",
+        "ids": {
+          "trakt": 1917687,
+          "tvdb": 5265205,
+          "imdb": "tt4832254",
+          "tmdb": 1091840,
+          "tvrage": 1065835214
+        }
+      },
+      {
+        "season": 2,
+        "number": 3,
+        "title": "Auto Erotic Assimilation",
+        "ids": {
+          "trakt": 1942976,
+          "tvdb": 5290447,
+          "imdb": "tt4832260",
+          "tmdb": 1091841,
+          "tvrage": 1065849489
+        }
+      },
+      {
+        "season": 2,
+        "number": 4,
+        "title": "Total Rickall",
+        "ids": {
+          "trakt": 1944042,
+          "tvdb": 5292288,
+          "imdb": "tt4832262",
+          "tmdb": 1091844,
+          "tvrage": 1065849490
+        }
+      },
+      {
+        "season": 2,
+        "number": 5,
+        "title": "Get Schwifty",
+        "ids": {
+          "trakt": 1944043,
+          "tvdb": 5292289,
+          "imdb": "tt4832266",
+          "tmdb": 1091843,
+          "tvrage": 1065849491
+        }
+      },
+      {
+        "season": 2,
+        "number": 6,
+        "title": "The Ricks Must Be Crazy",
+        "ids": {
+          "trakt": 1944044,
+          "tvdb": 5292290,
+          "imdb": "tt4832268",
+          "tmdb": 1091842,
+          "tvrage": 1065849492
+        }
+      },
+      {
+        "season": 2,
+        "number": 7,
+        "title": "Big Trouble in Little Sanchez",
+        "ids": {
+          "trakt": 1963352,
+          "tvdb": 5309462,
+          "imdb": "tt4832272",
+          "tmdb": 1106242,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 2,
+        "number": 8,
+        "title": "Interdimensional Cable 2: Tempting Fate",
+        "ids": {
+          "trakt": 1963353,
+          "tvdb": 5309463,
+          "imdb": "tt4832274",
+          "tmdb": 1106721,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 2,
+        "number": 9,
+        "title": "Look Who's Purging Now",
+        "ids": {
+          "trakt": 1963354,
+          "tvdb": 5335865,
+          "imdb": "tt4832276",
+          "tmdb": 1109175,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 2,
+        "number": 10,
+        "title": "The Wedding Squanchers",
+        "ids": {
+          "trakt": 1963355,
+          "tvdb": 5335866,
+          "imdb": "tt4832278",
+          "tmdb": 1109176,
+          "tvrage": 0
+        }
+      }
+    ]
+  },
+  {
+    "number": 3,
+    "ids": {
+      "trakt": 141578,
+      "tvdb": null,
+      "tmdb": 86926,
+      "tvrage": null
+    },
+    "episodes": [
+      {
+        "season": 3,
+        "number": 1,
+        "title": "The Rickshank Rickdemption",
+        "ids": {
+          "trakt": 2530948,
+          "tvdb": 6016897,
+          "imdb": "tt5218228",
+          "tmdb": 1298227,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 3,
+        "number": 2,
+        "title": "Rickmancing the Stone",
+        "ids": {
+          "trakt": 2560335,
+          "tvdb": 6058270,
+          "imdb": null,
+          "tmdb": 1302008,
+          "tvrage": 0
+        }
+      },
+      {
+        "season": 3,
+        "number": 3,
+        "title": "Episode 3",
+        "ids": {
+          "trakt": 2570908,
+          "tvdb": 6074061,
+          "imdb": null,
+          "tmdb": null,
+          "tvrage": null
+        }
+      }
+    ]
+  }
+]

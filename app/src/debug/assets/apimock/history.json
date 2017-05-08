@@ -1,0 +1,288 @@
+[
+  {
+    "id": 2809232582,
+    "watched_at": "2017-05-07T21:57:31.000Z",
+    "action": "scrobble",
+    "type": "episode",
+    "episode": {
+      "season": 2,
+      "number": 1,
+      "title": "The Entertainer",
+      "ids": {
+        "trakt": 58924,
+        "tvdb": 220375,
+        "imdb": "tt0526558",
+        "tmdb": 973361,
+        "tvrage": 0
+      }
+    },
+    "show": {
+      "title": "Black Books",
+      "year": 2000,
+      "ids": {
+        "trakt": 898,
+        "slug": "black-books",
+        "tvdb": 76924,
+        "imdb": "tt0262150",
+        "tmdb": 903,
+        "tvrage": 2812
+      }
+    }
+  },
+  {
+    "id": 2809145963,
+    "watched_at": "2017-05-07T21:30:45.000Z",
+    "action": "scrobble",
+    "type": "episode",
+    "episode": {
+      "season": 1,
+      "number": 6,
+      "title": "He's Leaving Home",
+      "ids": {
+        "trakt": 58923,
+        "tvdb": 220374,
+        "imdb": "tt0526550",
+        "tmdb": 973360,
+        "tvrage": 0
+      }
+    },
+    "show": {
+      "title": "Black Books",
+      "year": 2000,
+      "ids": {
+        "trakt": 898,
+        "slug": "black-books",
+        "tvdb": 76924,
+        "imdb": "tt0262150",
+        "tmdb": 903,
+        "tvrage": 2812
+      }
+    }
+  },
+  {
+    "id": 2809041974,
+    "watched_at": "2017-05-07T20:59:41.000Z",
+    "action": "scrobble",
+    "type": "episode",
+    "episode": {
+      "season": 10,
+      "number": 23,
+      "title": "The Gyroscopic Collapse",
+      "ids": {
+        "trakt": 2536989,
+        "tvdb": 6026835,
+        "imdb": "tt6706250",
+        "tmdb": 1303312,
+        "tvrage": 0
+      }
+    },
+    "show": {
+      "title": "The Big Bang Theory",
+      "year": 2007,
+      "ids": {
+        "trakt": 1409,
+        "slug": "the-big-bang-theory",
+        "tvdb": 80379,
+        "imdb": "tt0898266",
+        "tmdb": 1418,
+        "tvrage": 8511
+      }
+    }
+  },
+  {
+    "id": 2808903137,
+    "watched_at": "2017-05-07T20:21:29.000Z",
+    "action": "scrobble",
+    "type": "movie",
+    "movie": {
+      "title": "Children of Men",
+      "year": 2006,
+      "ids": {
+        "trakt": 4965,
+        "slug": "children-of-men-2006",
+        "imdb": "tt0206634",
+        "tmdb": 9693
+      }
+    }
+  },
+  {
+    "id": 2805397048,
+    "watched_at": "2017-05-06T22:33:16.000Z",
+    "action": "scrobble",
+    "type": "episode",
+    "episode": {
+      "season": 1,
+      "number": 5,
+      "title": "The Big Lock-Out",
+      "ids": {
+        "trakt": 58922,
+        "tvdb": 220373,
+        "imdb": "tt0526556",
+        "tmdb": 973359,
+        "tvrage": 0
+      }
+    },
+    "show": {
+      "title": "Black Books",
+      "year": 2000,
+      "ids": {
+        "trakt": 898,
+        "slug": "black-books",
+        "tvdb": 76924,
+        "imdb": "tt0262150",
+        "tmdb": 903,
+        "tvrage": 2812
+      }
+    }
+  },
+  {
+    "id": 2802305782,
+    "watched_at": "2017-05-05T23:38:03.000Z",
+    "action": "scrobble",
+    "type": "episode",
+    "episode": {
+      "season": 1,
+      "number": 4,
+      "title": "The Blackout",
+      "ids": {
+        "trakt": 58921,
+        "tvdb": 220372,
+        "imdb": "tt0526557",
+        "tmdb": 973358,
+        "tvrage": 0
+      }
+    },
+    "show": {
+      "title": "Black Books",
+      "year": 2000,
+      "ids": {
+        "trakt": 898,
+        "slug": "black-books",
+        "tvdb": 76924,
+        "imdb": "tt0262150",
+        "tmdb": 903,
+        "tvrage": 2812
+      }
+    }
+  },
+  {
+    "id": 2802221547,
+    "watched_at": "2017-05-05T23:13:40.000Z",
+    "action": "scrobble",
+    "type": "episode",
+    "episode": {
+      "season": 1,
+      "number": 3,
+      "title": "Grapes of Wrath",
+      "ids": {
+        "trakt": 58920,
+        "tvdb": 220371,
+        "imdb": "tt0526560",
+        "tmdb": 973357,
+        "tvrage": 0
+      }
+    },
+    "show": {
+      "title": "Black Books",
+      "year": 2000,
+      "ids": {
+        "trakt": 898,
+        "slug": "black-books",
+        "tvdb": 76924,
+        "imdb": "tt0262150",
+        "tmdb": 903,
+        "tvrage": 2812
+      }
+    }
+  },
+  {
+    "id": 2796275825,
+    "watched_at": "2017-05-03T22:49:55.000Z",
+    "action": "scrobble",
+    "type": "episode",
+    "episode": {
+      "season": 1,
+      "number": 2,
+      "title": "Manny’s First Day",
+      "ids": {
+        "trakt": 58919,
+        "tvdb": 220370,
+        "imdb": "tt0526553",
+        "tmdb": 973356,
+        "tvrage": 0
+      }
+    },
+    "show": {
+      "title": "Black Books",
+      "year": 2000,
+      "ids": {
+        "trakt": 898,
+        "slug": "black-books",
+        "tvdb": 76924,
+        "imdb": "tt0262150",
+        "tmdb": 903,
+        "tvrage": 2812
+      }
+    }
+  },
+  {
+    "id": 2796237965,
+    "watched_at": "2017-05-03T22:26:46.000Z",
+    "action": "scrobble",
+    "type": "episode",
+    "episode": {
+      "season": 1,
+      "number": 1,
+      "title": "Cooking the Books",
+      "ids": {
+        "trakt": 58918,
+        "tvdb": 220369,
+        "imdb": "tt0526547",
+        "tmdb": 973355,
+        "tvrage": 0
+      }
+    },
+    "show": {
+      "title": "Black Books",
+      "year": 2000,
+      "ids": {
+        "trakt": 898,
+        "slug": "black-books",
+        "tvdb": 76924,
+        "imdb": "tt0262150",
+        "tmdb": 903,
+        "tvrage": 2812
+      }
+    }
+  },
+  {
+    "id": 2793266490,
+    "watched_at": "2017-05-02T22:23:35.000Z",
+    "action": "scrobble",
+    "type": "episode",
+    "episode": {
+      "season": 1,
+      "number": 6,
+      "title": "Grant Unto Him Eternal Rest",
+      "ids": {
+        "trakt": 121880,
+        "tvdb": 178569,
+        "imdb": "tt0578511",
+        "tmdb": 110093,
+        "tvrage": 62225
+      }
+    },
+    "show": {
+      "title": "Father Ted",
+      "year": 1995,
+      "ids": {
+        "trakt": 1801,
+        "slug": "father-ted",
+        "tvdb": 75842,
+        "imdb": "tt0111958",
+        "tmdb": 1813,
+        "tvrage": null
+      }
+    }
+  }
+]

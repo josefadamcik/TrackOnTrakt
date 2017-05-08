@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt.data
+package cz.josefadamcik.trackontrakt.data.api
 
 import android.content.SharedPreferences
 import com.squareup.moshi.Moshi
@@ -21,9 +21,6 @@ import com.squareup.moshi.Rfc3339DateJsonAdapter
 import cz.josefadamcik.trackontrakt.ApplicationScope
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
-import cz.josefadamcik.trackontrakt.data.api.TraktApi
-import cz.josefadamcik.trackontrakt.data.api.TraktApiConfig
-import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
 import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
@@ -43,7 +40,7 @@ import javax.inject.Named
  * Module for API and networking related dependencies.
  */
 @Module
-class ApiModule(private val app: TrackOnTraktApplication) {
+open class ApiModule(private val app: TrackOnTraktApplication) {
 
     @Provides
     @ApplicationScope
@@ -77,6 +74,20 @@ class ApiModule(private val app: TrackOnTraktApplication) {
     @Named("traktokhttp")
     fun provideOkHttpForTraktApi(traktApiConfig: TraktApiConfig, cache: Cache): OkHttpClient {
         Timber.d("provideOkHttpForTraktApi ")
+        val builder = createOkHttpBuilder(cache, traktApiConfig)
+
+        if (BuildConfig.DEBUG) {
+            val loggingInterceptor = HttpLoggingInterceptor({
+                Timber.tag("OkHttp").d(it);
+            })
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            builder.addInterceptor(loggingInterceptor)
+        }
+
+        return builder.build();
+    }
+
+    protected open fun createOkHttpBuilder(cache: Cache, traktApiConfig: TraktApiConfig): OkHttpClient.Builder {
         val builder = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
@@ -92,16 +103,7 @@ class ApiModule(private val app: TrackOnTraktApplication) {
                     .build()
                 chain.proceed(request)
             }
-
-        if (BuildConfig.DEBUG) {
-            val loggingInterceptor = HttpLoggingInterceptor({
-                Timber.tag("OkHttp").d(it);
-            })
-            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-            builder.addInterceptor(loggingInterceptor)
-        }
-
-        return builder.build();
+        return builder
     }
 
 
@@ -125,6 +127,10 @@ class ApiModule(private val app: TrackOnTraktApplication) {
     @Provides
     @ApplicationScope
     fun provideTraktApiConfig(): TraktApiConfig {
+        return createTraktApiConfig()
+    }
+
+    protected open fun createTraktApiConfig(): TraktApiConfig {
         return TraktApiConfig(
             clientId = BuildConfig.TRAKT_CLIENT_ID,
             clientSecret = BuildConfig.TRAKT_CLIENT_SECRET,

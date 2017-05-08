@@ -19,22 +19,22 @@ package cz.josefadamcik.trackontrakt
 
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen
-import cz.josefadamcik.trackontrakt.data.ApiModule
+import cz.josefadamcik.trackontrakt.data.api.ApiModule
 import timber.log.Timber
 
 class TrackOnTraktApplication : Application() {
-    lateinit var graph: ApplicationComponent
+    lateinit var component: ApplicationComponent
 
     override fun onCreate() {
         super.onCreate()
 
         AndroidThreeTen.init(this)
 
-        graph = DaggerApplicationComponent.builder()
+        component = DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(this))
             .apiModule(ApiModule(this))
                 .build()
-        graph.inject(this)
+        component.inject(this)
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

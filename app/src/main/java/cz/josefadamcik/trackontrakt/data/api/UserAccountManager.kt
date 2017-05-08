@@ -13,11 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt.data
+package cz.josefadamcik.trackontrakt.data.api
 
 import cz.josefadamcik.trackontrakt.ApplicationScope
-import cz.josefadamcik.trackontrakt.data.api.TraktApi
-import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.Settings
 import io.reactivex.Single

@@ -46,7 +46,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as TrackOnTraktApplication).graph.inject(this)
+        (application as TrackOnTraktApplication).component.inject(this)
         setContentView(R.layout.activity_media_detail)
         unbinder = ButterKnife.bind(this)
 
