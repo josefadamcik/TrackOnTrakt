@@ -28,26 +28,26 @@ import javax.inject.Inject
 class UserAccountManager
 @Inject constructor(
     private val traktApi: TraktApi,
-    private val traktAuthTokenHolder: TraktAuthTokenHolder
+    private val authTokenProvider: TraktAuthTokenProvider
 ) {
     /**
      * Produces IllegalStateException when not authorised (missing auth token).
      */
     fun obtainUserSettings(): Single<Settings> {
-        if (traktAuthTokenHolder.hasToken().not()) {
+        if (authTokenProvider.hasToken().not()) {
             return Single.error(IllegalStateException("Missing authorisation token"));
         } else {
-            return traktApi.userSettings(traktAuthTokenHolder.httpAuth())
+            return traktApi.userSettings(authTokenProvider.httpAuth())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
         }
     }
 
     fun loadUserHistory(): Single<List<HistoryItem>> {
-        if (traktAuthTokenHolder.hasToken().not()) {
+        if (authTokenProvider.hasToken().not()) {
             return Single.error(IllegalStateException("Missing authorisation token"));
         } else {
-            return traktApi.myHistory(traktAuthTokenHolder.httpAuth(), 1, 10)
+            return traktApi.myHistory(authTokenProvider.httpAuth(), 1, 10)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
         }

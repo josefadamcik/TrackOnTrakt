@@ -116,11 +116,24 @@ open class ApiModule(private val app: TrackOnTraktApplication) {
 
     @Provides
     @ApplicationScope
-    fun provideTraktAuthTokenHolder(preferences: SharedPreferences, moshi: Moshi): TraktAuthTokenHolder {
-        Timber.d("provideTraktAuthTokenHolder ")
-        val instance = TraktAuthTokenHolder(preferences, moshi)
+    fun provideTraktAuthTokenHolderImpl(preferences: SharedPreferences, moshi: Moshi): TraktAuthTokenHolderImpl {
+        Timber.d("provideTraktAuthTokenHolderImpl ")
+        val instance = TraktAuthTokenHolderImpl(preferences, moshi)
         instance.readFromPreferences()
         return instance
+    }
+
+
+    @Provides
+    @ApplicationScope
+    fun provideTraktAuthTokenHolder(impl: TraktAuthTokenHolderImpl): TraktAuthTokenHolder {
+        return impl
+    }
+
+    @Provides
+    @ApplicationScope
+    fun provideTraktAuthTokenProvider(impl: TraktAuthTokenHolderImpl): TraktAuthTokenProvider {
+        return impl
     }
 
 

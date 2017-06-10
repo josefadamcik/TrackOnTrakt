@@ -17,7 +17,7 @@ package cz.josefadamcik.trackontrakt.search
 
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
-import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenProvider
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 class SearchResultPresenter @Inject constructor(
     private val traktApi: TraktApi,
-    private val tokenHolder: TraktAuthTokenHolder
+    private val tokenHolder: TraktAuthTokenProvider
 ) : BasePresenter<SearchResultsView>() {
 
 

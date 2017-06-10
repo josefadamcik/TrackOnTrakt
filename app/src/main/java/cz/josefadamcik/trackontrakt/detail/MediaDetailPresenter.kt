@@ -18,7 +18,7 @@ package cz.josefadamcik.trackontrakt.detail
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
-import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenProvider
 import cz.josefadamcik.trackontrakt.data.api.model.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -27,7 +27,7 @@ import javax.inject.Inject
 
 class MediaDetailPresenter @Inject constructor(
     val traktApi: TraktApi,
-    val tokenHolder: TraktAuthTokenHolder
+    val tokenHolder: TraktAuthTokenProvider
 ) : BasePresenter<MediaDetailView>() {
 
     private var identifier: MediaIdentifier? = null
