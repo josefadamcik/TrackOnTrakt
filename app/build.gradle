@@ -66,13 +66,16 @@ android {
         }
     }
 
+    flavorDimensions "publication"
+
     productFlavors {
         internal {
             applicationId "${packagename}.internal"
-
+            dimension "publication"
         }
         production {
             applicationId "${packagename}"
+            dimension "publication"
         }
     }
 
@@ -215,11 +218,11 @@ repositories {
 // change apk name
 android.applicationVariants.all { variant ->
     for (output in variant.outputs) {
-        def outputFile = output.outputFile
-        if (outputFile != null && outputFile.name.endsWith('.apk')) {
-            def fileName = "trackontrakt-${output.name}.apk"
-            output.outputFile = new File(outputFile.parent, fileName)
-        }
+//        def outputFile = output.outputFile
+//        if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//            def fileName = "trackontrakt-${output.name}.apk"
+//            output.outputFile = new File(outputFile.parent, fileName)
+//        }
     }
 }
 
