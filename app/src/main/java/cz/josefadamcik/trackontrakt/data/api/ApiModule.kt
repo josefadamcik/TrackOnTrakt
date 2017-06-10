@@ -87,6 +87,33 @@ open class ApiModule(private val app: TrackOnTraktApplication) {
         return builder.build();
     }
 
+    @Provides
+    @ApplicationScope
+    fun provideTraktApi(retrofit: Retrofit): TraktApi {
+        return retrofit.create(TraktApi::class.java)
+    }
+
+
+    @Provides
+    @ApplicationScope
+    fun provideTraktAuthTokenHolder(preferences: SharedPreferences, moshi: Moshi): TraktAuthTokenHolder {
+        return createTraktAuthTokenHolderImpl(preferences, moshi)
+    }
+
+
+    @Provides
+    @ApplicationScope
+    fun provideTraktAuthTokenProvider(impl: TraktAuthTokenHolder): TraktAuthTokenProvider {
+        return impl
+    }
+
+
+    @Provides
+    @ApplicationScope
+    fun provideTraktApiConfig(): TraktApiConfig {
+        return createTraktApiConfig()
+    }
+
     protected open fun createOkHttpBuilder(cache: Cache, traktApiConfig: TraktApiConfig): OkHttpClient.Builder {
         val builder = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
@@ -107,40 +134,10 @@ open class ApiModule(private val app: TrackOnTraktApplication) {
     }
 
 
-    @Provides
-    @ApplicationScope
-    fun provideTraktApi(retrofit: Retrofit): TraktApi {
-        Timber.d("provideTraktApi ")
-        return retrofit.create(TraktApi::class.java)
-    }
-
-    @Provides
-    @ApplicationScope
-    fun provideTraktAuthTokenHolderImpl(preferences: SharedPreferences, moshi: Moshi): TraktAuthTokenHolderImpl {
-        Timber.d("provideTraktAuthTokenHolderImpl ")
+    protected open fun createTraktAuthTokenHolderImpl(preferences: SharedPreferences, moshi: Moshi): TraktAuthTokenHolder {
         val instance = TraktAuthTokenHolderImpl(preferences, moshi)
         instance.readFromPreferences()
         return instance
-    }
-
-
-    @Provides
-    @ApplicationScope
-    fun provideTraktAuthTokenHolder(impl: TraktAuthTokenHolderImpl): TraktAuthTokenHolder {
-        return impl
-    }
-
-    @Provides
-    @ApplicationScope
-    fun provideTraktAuthTokenProvider(impl: TraktAuthTokenHolderImpl): TraktAuthTokenProvider {
-        return impl
-    }
-
-
-    @Provides
-    @ApplicationScope
-    fun provideTraktApiConfig(): TraktApiConfig {
-        return createTraktApiConfig()
     }
 
     protected open fun createTraktApiConfig(): TraktApiConfig {
