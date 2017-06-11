@@ -39,6 +39,7 @@ class HistoryAdapter(
     val icoMovieTypeDrawable: Drawable,
     val icoShowTypeDrawable: Drawable
 ) : RecyclerView.Adapter<ViewHolder>() {
+
     val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
     var items: List<HistoryItem> = emptyList()
         set(value) {

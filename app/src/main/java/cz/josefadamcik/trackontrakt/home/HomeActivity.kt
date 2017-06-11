@@ -1,6 +1,5 @@
 package cz.josefadamcik.trackontrakt.home
 
-import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -160,15 +159,12 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
 
     override fun onHistoryItemClicked(item: HistoryItem, position: Int) {
-        val intent = Intent(this, MediaDetailActivity::class.java)
         val title: String? = when (item.type) {
             MediaType.episode -> item.show?.title
             MediaType.movie -> item.movie?.title
             else -> null
         }
-        intent.putExtra(MediaDetailActivity.PAR_ID, MediaIdentifier.fromMediaItemButShowForEpisode(item))
-        intent.putExtra(MediaDetailActivity.PAR_NAME, title)
-        startActivity(intent)
+        startActivity(MediaDetailActivity.createIntent(this, MediaIdentifier.fromMediaItemButShowForEpisode(item), title ?: getString(R.string.media_title_placeholder)))
     }
 
 

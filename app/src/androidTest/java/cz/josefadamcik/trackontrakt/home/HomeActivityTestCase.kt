@@ -10,11 +10,15 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.intent.Intents.intended
 import android.support.test.espresso.intent.matcher.IntentMatchers.*
 import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.runner.AndroidJUnit4
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.R
+import cz.josefadamcik.trackontrakt.data.api.model.MediaType
+import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
+import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
 import cz.josefadamcik.trackontrakt.testutil.RecyclerViewRowMatcher.atPosition
 import cz.josefadamcik.trackontrakt.testutil.WiremockTimberNotifier
@@ -26,8 +30,9 @@ import org.hamcrest.Matchers.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
-
+@RunWith(AndroidJUnit4::class)
 class HomeActivityTestCase {
 
     @get:Rule
@@ -64,7 +69,15 @@ class HomeActivityTestCase {
         onView(withId(R.id.list))
             .check(matches(atPosition(0, hasDescendant(withText("Black Books - S 2, Ep 1")))))
 
-        //should open detail when clickeed
+        //should open detail when clicked
+        onView(childAtPosition(withId(R.id.list), 0))
+            .perform(ViewActions.click())
+        //assert intent
+        intended(allOf(
+            hasComponent(MediaDetailActivity::class.java.name),
+            hasExtra(MediaDetailActivity.PAR_ID, MediaIdentifier(MediaType.show, 898)),
+            hasExtra(MediaDetailActivity.PAR_NAME, "Black Books")
+        ))
 
     }
 
@@ -86,8 +99,12 @@ class HomeActivityTestCase {
                     1)
             ))
 
-        searchEditText.perform(ViewActions.replaceText(searchQuery), ViewActions.pressImeActionButton())
+        searchEditText.perform(
+            ViewActions.replaceText(searchQuery),
+            ViewActions.pressImeActionButton()
+        )
 
+        //assert intent
         intended(
             allOf(
                 hasAction(Intent.ACTION_SEARCH),

@@ -1,5 +1,7 @@
 package cz.josefadamcik.trackontrakt.detail
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.FloatingActionButton
@@ -39,6 +41,12 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     companion object {
         public const val PAR_ID = "id"
         public const val PAR_NAME = "name"
+        public fun createIntent(context: Context, id: MediaIdentifier, title: String): Intent {
+            val intent = Intent(context, MediaDetailActivity::class.java)
+            intent.putExtra(MediaDetailActivity.PAR_ID, id)
+            intent.putExtra(MediaDetailActivity.PAR_NAME, title)
+            return intent
+        }
     }
 
     override fun createPresenter(): MediaDetailPresenter {

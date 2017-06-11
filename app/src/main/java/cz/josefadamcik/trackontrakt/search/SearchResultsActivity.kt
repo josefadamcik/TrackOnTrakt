@@ -124,10 +124,7 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
     }
 
     override fun onSearchResultClicked(item: SearchResultItem, position: Int) {
-        val intent = Intent(this, MediaDetailActivity::class.java)
-        intent.putExtra(MediaDetailActivity.PAR_ID, MediaIdentifier.fromMediaItemButShowForEpisode(item))
-        intent.putExtra(MediaDetailActivity.PAR_NAME, item.title)
-        startActivity(intent)
+        startActivity(MediaDetailActivity.createIntent(this, MediaIdentifier.fromMediaItemButShowForEpisode(item), item.title))
     }
 
     private fun initList() {
