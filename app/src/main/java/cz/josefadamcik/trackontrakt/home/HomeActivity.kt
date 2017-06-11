@@ -1,6 +1,5 @@
 package cz.josefadamcik.trackontrakt.home
 
-import android.app.SearchManager
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
@@ -102,11 +101,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     override fun doSearchForQuery(query: String, filter: TraktFilter) {
         searchView.close(true)
 
-        val intent = Intent(this, SearchResultsActivity::class.java)
-        intent.action = Intent.ACTION_SEARCH
-        intent.putExtra(SearchManager.QUERY, query)
-        intent.putExtra(SearchResultsActivity.PAR_FILTER, filter)
-        startActivity(intent)
+        startActivity(SearchResultsActivity.createIntent(this, query, filter))
     }
 
 

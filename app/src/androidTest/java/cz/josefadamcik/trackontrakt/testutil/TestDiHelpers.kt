@@ -16,20 +16,21 @@
 package cz.josefadamcik.trackontrakt.testutil
 
 import android.app.Activity
-import android.support.test.InstrumentationRegistry
-import android.support.test.espresso.intent.rule.IntentsTestRule
+import cz.josefadamcik.trackontrakt.ApplicationModule
+import cz.josefadamcik.trackontrakt.DaggerTestApplicationComponent
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
+import cz.josefadamcik.trackontrakt.data.api.TestApiModule
 
-class ComponentActivityTestRule<T : Activity>(
-    activityClass: Class<T>,
-    val beforeActivityLaunched: (TrackOnTraktApplication) -> Unit,
-    initialTouchMode: Boolean = true,
-    launchActivity: Boolean = false
-) : IntentsTestRule<T>(activityClass, initialTouchMode, launchActivity) {
 
-    override fun beforeActivityLaunched() {
-        super.beforeActivityLaunched()
-        beforeActivityLaunched(InstrumentationRegistry.getInstrumentation().targetContext.applicationContext as TrackOnTraktApplication)
-    }
+public fun initDiWithStubApiModules(app: TrackOnTraktApplication): Unit {
+    app.component = DaggerTestApplicationComponent.builder()
+        .applicationModule(ApplicationModule(app))
+        .testApiModule(TestApiModule(app))
+        .build()
 }
 
+/**
+ * Shortcut for
+ * rule = ComponentActivityTestRule(MyActivity::class.java ...)
+ */
+public inline fun <reified T : Activity> activityTestRule(): ComponentActivityTestRule<T> = ComponentActivityTestRule(T::class.java, ::initDiWithStubApiModules)

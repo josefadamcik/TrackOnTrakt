@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import cz.josefadamcik.trackontrakt.testutil.AssetReaderUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -20,6 +19,7 @@ import timber.log.Timber;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
+import static cz.josefadamcik.trackontrakt.testutil.AssetReaderUtilKt.asset;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -58,7 +58,7 @@ public class WireMockApplicationTestCase {
 
         String uri = "/history.json";
 
-        String jsonBody = AssetReaderUtil.INSTANCE.asset(applicationContext, "history.json");
+        String jsonBody = asset(applicationContext, "history.json");
         assertFalse(jsonBody.isEmpty());
         wireMockServer.stubFor(get(urlMatching(uri))
                 .willReturn(aResponse()
