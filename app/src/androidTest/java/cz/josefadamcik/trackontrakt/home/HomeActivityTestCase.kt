@@ -1,6 +1,7 @@
 package cz.josefadamcik.trackontrakt.home
 
 
+import android.content.Context
 import android.content.Intent
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
@@ -14,7 +15,7 @@ import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.DaggerTestApplicationComponent
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.TestApiModule
-import cz.josefadamcik.trackontrakt.testutil.AssetReaderUtil
+import cz.josefadamcik.trackontrakt.testutil.AssetReaderUtil.asset
 import cz.josefadamcik.trackontrakt.testutil.ComponentActivityTestRule
 import cz.josefadamcik.trackontrakt.testutil.RecyclerViewRowMatcher.atPosition
 import cz.josefadamcik.trackontrakt.testutil.WiremockTimberNotifier
@@ -43,22 +44,26 @@ class HomeActivityTestCase {
     @Test
     fun homeActivityTestShowHistory() {
         Timber.d("homeActivityTestShowHistory %s", wireMockRule.isRunning)
-
-        // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        val responseBody = AssetReaderUtil.asset(appContext, "history.json")
-        wireMockRule.stubFor(
-            get(urlMatching("/users/me/history.*"))
-                .willReturn(aResponse()
-                    .withStatus(200)
-                    .withBody(responseBody)
-                )
-        )
+        // API call
+        withApiStubForHistory(appContext)
+
+        //launch activity
         val activity = activityTestRule.launchActivity(Intent(appContext, HomeActivity::class.java))
 
         onView(withId(R.id.list))
             .check(matches(atPosition(0, hasDescendant(withText("Black Books - S 2, Ep 1")))))
 
+    }
+
+    private fun withApiStubForHistory(appContext: Context) {
+        wireMockRule.stubFor(
+            get(urlMatching("/users/me/history.*"))
+                .willReturn(aResponse()
+                    .withStatus(200)
+                    .withBody(asset(appContext, "history.json"))
+                )
+        )
     }
 
 
