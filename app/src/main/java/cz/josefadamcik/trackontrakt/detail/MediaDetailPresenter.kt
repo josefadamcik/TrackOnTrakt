@@ -148,7 +148,15 @@ class MediaDetailPresenter @Inject constructor(
 
     private fun showShow(show: ShowDetail) {
         showDetail = show
-        showModel(MediaDetailModel(MediaDetailModel.MediaDetailInfo(show.network, show.overview)))
+        showModel(MediaDetailModel(MediaDetailModel.MediaDetailInfo(
+            description = show.overview,
+            homepage = show.homepage,
+            rating = show.rating ?: 0.0,
+            votes = show.votes ?: 0,
+            network = show.network,
+            genres = show.genres,
+            date = show.first_aired
+        )))
 
         view?.showLoading()
         Timber.d("showShow - last episode")
@@ -202,7 +210,15 @@ class MediaDetailPresenter @Inject constructor(
         movieDetail = movie
         view?.itemCheckInactionVisible(true)
         view?.itemCheckInactionEnabled(true)
-        showModel(MediaDetailModel(MediaDetailModel.MediaDetailInfo(movie.tagline, movie.overview)))
+        showModel(MediaDetailModel(MediaDetailModel.MediaDetailInfo(
+            tagline = movie.tagline,
+            description = movie.overview,
+            homepage = movie.homepage,
+            rating = movie.rating ?: 0.0,
+            votes = movie.votes ?: 0,
+            genres = movie.genres,
+            date = movie.released
+        )))
 
     }
 

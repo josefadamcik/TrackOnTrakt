@@ -22,5 +22,6 @@
     <string name="episode_item_number_and_season_info">%1$dx%2$02d</string>
     <string name="season_info">Season %1$d</string>
     <string name="media_title_placeholder">[Title missing]</string>
+    <string name="media_detail_votes">%1$2.0f %% (%2$d votes)</string>
 
 </resources>

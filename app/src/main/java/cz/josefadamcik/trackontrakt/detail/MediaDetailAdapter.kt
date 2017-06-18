@@ -88,9 +88,16 @@ class MediaDetailAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (holder) {
-            is MainInfoViewHolder -> {
-                holder.txtTagline.text = model?.basic?.tagline
-                holder.txtDescription.text = model?.basic?.description
+            is MainInfoViewHolder -> model?.basic?.let {
+                if (it.tagline == null) {
+                    holder.txtTagline.visibility = View.GONE
+                } else {
+                    holder.txtTagline.visibility = View.VISIBLE
+                    holder.txtTagline.text = it.tagline
+                }
+                holder.txtDescription.text = it.description
+                holder.txtYear.text = it.year
+                holder.txtRating.text = resources.getString(R.string.media_detail_votes, it.rating * 10, it.votes)
             }
             is EpisodeInfoViewHolder -> {
                 items[position].episode?.let {
@@ -128,6 +135,9 @@ class MediaDetailAdapter(
     class MainInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
         @BindView(R.id.txt_description) lateinit var txtDescription: TextView
         @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
+        @BindView(R.id.txt_year) lateinit var txtYear: TextView
+        @BindView(R.id.txt_rating) lateinit var txtRating: TextView
+        @BindView(R.id.txt_other) lateinit var txtOther: TextView
     }
 
     inner class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {

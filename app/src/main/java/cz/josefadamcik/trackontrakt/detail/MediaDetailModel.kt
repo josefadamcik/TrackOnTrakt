@@ -17,6 +17,8 @@ package cz.josefadamcik.trackontrakt.detail
 
 import cz.josefadamcik.trackontrakt.data.api.model.Episode
 import cz.josefadamcik.trackontrakt.data.api.model.Season
+import java.text.SimpleDateFormat
+import java.util.*
 
 data class MediaDetailModel(
     val basic: MediaDetailInfo,
@@ -26,7 +28,20 @@ data class MediaDetailModel(
 
 
     data class MediaDetailInfo(
-        val tagline: String?,
-        val description: String?
-    )
+        val tagline: String? = null,
+        val description: String?,
+        val homepage: String?,
+        val rating: Double,
+        val votes: Long,
+        val date: Date?,
+        val network: String? = null,
+        val genres: List<String> = emptyList()
+    ) {
+
+        companion object {
+            val YEAR_FORMAT = SimpleDateFormat("YYYY", Locale.getDefault())
+        }
+
+        val year: CharSequence get() = if (date == null) "" else YEAR_FORMAT.format(date)
+    }
 }
