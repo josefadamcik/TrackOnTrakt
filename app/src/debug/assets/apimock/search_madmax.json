@@ -1,0 +1,710 @@
+[
+  {
+    "type": "movie",
+    "score": 2639.489,
+    "movie": {
+      "title": "Mad Max: Fury Road",
+      "year": 2015,
+      "ids": {
+        "trakt": 56360,
+        "slug": "mad-max-fury-road-2015",
+        "imdb": "tt1392190",
+        "tmdb": 76341
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 643.25134,
+    "movie": {
+      "title": "Mad Max",
+      "year": 1979,
+      "ids": {
+        "trakt": 4934,
+        "slug": "mad-max-1979",
+        "imdb": "tt0079501",
+        "tmdb": 9659
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 296.65027,
+    "movie": {
+      "title": "Mad Max 2: The Road Warrior",
+      "year": 1981,
+      "ids": {
+        "trakt": 4314,
+        "slug": "mad-max-2-the-road-warrior-1981",
+        "imdb": "tt0082694",
+        "tmdb": 8810
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 255.5454,
+    "movie": {
+      "title": "Mad Max Beyond Thunderdome",
+      "year": 1985,
+      "ids": {
+        "trakt": 4647,
+        "slug": "mad-max-beyond-thunderdome-1985",
+        "imdb": "tt0089530",
+        "tmdb": 9355
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 6.1780205,
+    "movie": {
+      "title": "Mad Max Renegade",
+      "year": 2011,
+      "ids": {
+        "trakt": 195132,
+        "slug": "mad-max-renegade-2011",
+        "imdb": "tt2011110",
+        "tmdb": 307732
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 2.4571676,
+    "movie": {
+      "title": "Mad Max: Fury Road (Black & Chrome Edition)",
+      "year": 2016,
+      "ids": {
+        "trakt": 281091,
+        "slug": "mad-max-fury-road-black-chrome-edition-2016",
+        "imdb": null,
+        "tmdb": 434021
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.9984496,
+    "movie": {
+      "title": "Alice Through the Looking Glass",
+      "year": 2016,
+      "ids": {
+        "trakt": 147091,
+        "slug": "alice-through-the-looking-glass-2016",
+        "imdb": "tt2567026",
+        "tmdb": 241259
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.7371502,
+    "movie": {
+      "title": "Mad Max: The Wasteland",
+      "year": null,
+      "ids": {
+        "trakt": 220485,
+        "slug": "mad-max-the-wasteland",
+        "imdb": "tt4575512",
+        "tmdb": 340023
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.63184303,
+    "movie": {
+      "title": "Mad Max a Wasteland Story",
+      "year": 2012,
+      "ids": {
+        "trakt": 220720,
+        "slug": "mad-max-a-wasteland-story-2012",
+        "imdb": null,
+        "tmdb": 340266
+      }
+    }
+  },
+  {
+    "type": "show",
+    "score": 0.4763502,
+    "show": {
+      "title": "Mad Dogs",
+      "year": 2011,
+      "ids": {
+        "trakt": 37579,
+        "slug": "mad-dogs",
+        "tvdb": 217071,
+        "imdb": "tt1652218",
+        "tmdb": 37737,
+        "tvrage": 27437
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.35102394,
+    "movie": {
+      "title": "Mad Max: Fury Road - Black & Chrome Edition",
+      "year": 2016,
+      "ids": {
+        "trakt": 300024,
+        "slug": "mad-max-fury-road-black-chrome-edition-2016-11-04",
+        "imdb": null,
+        "tmdb": 453503
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.28081915,
+    "movie": {
+      "title": "Turkish Mad Max",
+      "year": 1983,
+      "ids": {
+        "trakt": 157402,
+        "slug": "turkish-mad-max-1983",
+        "imdb": "tt0183599",
+        "tmdb": 257723
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.2689188,
+    "movie": {
+      "title": "The Great Gatsby",
+      "year": 2013,
+      "ids": {
+        "trakt": 46728,
+        "slug": "the-great-gatsby-2013",
+        "imdb": "tt1343092",
+        "tmdb": 64682
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.26326793,
+    "movie": {
+      "title": "Mad Max: Fury Road (Black & Chrome Edition)",
+      "year": 2016,
+      "ids": {
+        "trakt": 291842,
+        "slug": "mad-max-fury-road-black-chrome-edition-2016-10-19",
+        "imdb": null,
+        "tmdb": 445019
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.15572017,
+    "movie": {
+      "title": "Wyrmwood: Road Of The Dead",
+      "year": 2014,
+      "ids": {
+        "trakt": 187875,
+        "slug": "wyrmwood-road-of-the-dead-2014",
+        "imdb": "tt2535470",
+        "tmdb": 290999
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.13366643,
+    "movie": {
+      "title": "The A-Team",
+      "year": 2010,
+      "ids": {
+        "trakt": 22059,
+        "slug": "the-a-team-2010",
+        "imdb": "tt0429493",
+        "tmdb": 34544
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.04769565,
+    "movie": {
+      "title": "Branded",
+      "year": 2012,
+      "ids": {
+        "trakt": 78846,
+        "slug": "branded-2012",
+        "imdb": "tt1368440",
+        "tmdb": 112090
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.041107547,
+    "movie": {
+      "title": "8MM",
+      "year": 1999,
+      "ids": {
+        "trakt": 4087,
+        "slug": "8mm-1999",
+        "imdb": "tt0134273",
+        "tmdb": 8224
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.039503973,
+    "movie": {
+      "title": "To Kill a Mockingbird",
+      "year": 1962,
+      "ids": {
+        "trakt": 473,
+        "slug": "to-kill-a-mockingbird-1962",
+        "imdb": "tt0056592",
+        "tmdb": 595
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.033673517,
+    "movie": {
+      "title": "Superman: The Mad Scientist",
+      "year": 1941,
+      "ids": {
+        "trakt": 69746,
+        "slug": "superman-the-mad-scientist-1941",
+        "imdb": "tt0034247",
+        "tmdb": 95414
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.017107973,
+    "movie": {
+      "title": "The Assassination of Richard Nixon",
+      "year": 2004,
+      "ids": {
+        "trakt": 685,
+        "slug": "the-assassination-of-richard-nixon-2004",
+        "imdb": "tt0364961",
+        "tmdb": 842
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.011869967,
+    "movie": {
+      "title": "Stryker",
+      "year": 1983,
+      "ids": {
+        "trakt": 19692,
+        "slug": "stryker-1983",
+        "imdb": "tt0086381",
+        "tmdb": 30927
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.00910402,
+    "movie": {
+      "title": "Hellraiser: Inferno",
+      "year": 2000,
+      "ids": {
+        "trakt": 7364,
+        "slug": "hellraiser-inferno-2000",
+        "imdb": "tt0229440",
+        "tmdb": 12597
+      }
+    }
+  },
+  {
+    "type": "show",
+    "score": 0.008980003,
+    "show": {
+      "title": "Goof Troop",
+      "year": 1992,
+      "ids": {
+        "trakt": 2222,
+        "slug": "goof-troop",
+        "tvdb": 78250,
+        "imdb": "tt0103428",
+        "tmdb": 2235,
+        "tvrage": 3725
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.007718472,
+    "movie": {
+      "title": "Bushwhacked",
+      "year": 1995,
+      "ids": {
+        "trakt": 15941,
+        "slug": "bushwhacked-1995",
+        "imdb": "tt0112602",
+        "tmdb": 26258
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.00703808,
+    "movie": {
+      "title": "Flickering Lights",
+      "year": 2000,
+      "ids": {
+        "trakt": 5396,
+        "slug": "flickering-lights-2000",
+        "imdb": "tt0236027",
+        "tmdb": 10180
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.006061783,
+    "movie": {
+      "title": "Warsaw 44",
+      "year": 2014,
+      "ids": {
+        "trakt": 190734,
+        "slug": "warsaw-44-2014",
+        "imdb": "tt3765326",
+        "tmdb": 293982
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0056392066,
+    "movie": {
+      "title": "Cursed",
+      "year": 2005,
+      "ids": {
+        "trakt": 5237,
+        "slug": "cursed-2005",
+        "imdb": "tt0257516",
+        "tmdb": 10012
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.005332057,
+    "movie": {
+      "title": "Neverland",
+      "year": 2011,
+      "ids": {
+        "trakt": 75919,
+        "slug": "neverland-2011",
+        "imdb": "tt1720619",
+        "tmdb": 106938
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0047593075,
+    "movie": {
+      "title": "Mad Dog Morgan",
+      "year": 1976,
+      "ids": {
+        "trakt": 43120,
+        "slug": "mad-dog-morgan-1976",
+        "imdb": "tt0074836",
+        "tmdb": 60269
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.004438296,
+    "movie": {
+      "title": "The Guyver",
+      "year": 1991,
+      "ids": {
+        "trakt": 9101,
+        "slug": "the-guyver-1991",
+        "imdb": "tt0101988",
+        "tmdb": 15026
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0030019125,
+    "movie": {
+      "title": "The Madness of Max",
+      "year": 2015,
+      "ids": {
+        "trakt": 234886,
+        "slug": "the-madness-of-max-2015",
+        "imdb": "tt4950280",
+        "tmdb": 358804
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0026900892,
+    "movie": {
+      "title": "Aces Go Places",
+      "year": 1982,
+      "ids": {
+        "trakt": 1784,
+        "slug": "aces-go-places-1982",
+        "imdb": "tt0084955",
+        "tmdb": 2644
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.002405699,
+    "movie": {
+      "title": "The Leftovers (Pilot)",
+      "year": 2014,
+      "ids": {
+        "trakt": 297331,
+        "slug": "the-leftovers-pilot-2014",
+        "imdb": "tt2699128",
+        "tmdb": 450792
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0019724255,
+    "movie": {
+      "title": "Deuces Wild",
+      "year": 2002,
+      "ids": {
+        "trakt": 7747,
+        "slug": "deuces-wild-2002",
+        "imdb": "tt0231448",
+        "tmdb": 13201
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0019556028,
+    "movie": {
+      "title": "Phileine Says Sorry",
+      "year": 2003,
+      "ids": {
+        "trakt": 14602,
+        "slug": "phileine-says-sorry-2003",
+        "imdb": "tt0314502",
+        "tmdb": 24285
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0017741157,
+    "movie": {
+      "title": "Aces Go Places II",
+      "year": 1983,
+      "ids": {
+        "trakt": 1785,
+        "slug": "aces-go-places-ii-1983",
+        "imdb": "tt0086646",
+        "tmdb": 2645
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0016578315,
+    "movie": {
+      "title": "Monster Mutt",
+      "year": 2010,
+      "ids": {
+        "trakt": 37107,
+        "slug": "monster-mutt-2010",
+        "imdb": "tt1468727",
+        "tmdb": 52643
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.00139798,
+    "movie": {
+      "title": "The Mansion of Madness",
+      "year": 1973,
+      "ids": {
+        "trakt": 69817,
+        "slug": "the-mansion-of-madness-1973",
+        "imdb": "tt0068504",
+        "tmdb": 95551
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0012458656,
+    "movie": {
+      "title": "Bloodsuckers",
+      "year": 2005,
+      "ids": {
+        "trakt": 5017,
+        "slug": "bloodsuckers-2005",
+        "imdb": "tt0430926",
+        "tmdb": 9755
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0012060112,
+    "movie": {
+      "title": "Badlanders",
+      "year": 1992,
+      "ids": {
+        "trakt": 81515,
+        "slug": "badlanders-1992",
+        "imdb": "tt0140471",
+        "tmdb": 116883
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0008052925,
+    "movie": {
+      "title": "Caught",
+      "year": 1949,
+      "ids": {
+        "trakt": 29181,
+        "slug": "caught-1949",
+        "imdb": "tt0040221",
+        "tmdb": 43397
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0007140081,
+    "movie": {
+      "title": "Moomins and the Comet Chase",
+      "year": 2010,
+      "ids": {
+        "trakt": 41064,
+        "slug": "moomins-and-the-comet-chase-2010",
+        "imdb": "tt1606636",
+        "tmdb": 57500
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0005100058,
+    "movie": {
+      "title": "Rich Kids",
+      "year": 2007,
+      "ids": {
+        "trakt": 9029,
+        "slug": "rich-kids-2007",
+        "imdb": "tt1010445",
+        "tmdb": 14896
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.00050373067,
+    "movie": {
+      "title": "Tammy and the T-Rex",
+      "year": 1994,
+      "ids": {
+        "trakt": 39527,
+        "slug": "tammy-and-the-t-rex-1994",
+        "imdb": "tt0111361",
+        "tmdb": 55563
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.0003859236,
+    "movie": {
+      "title": "The Open",
+      "year": 2015,
+      "ids": {
+        "trakt": 231899,
+        "slug": "the-open-2015",
+        "imdb": "tt3779844",
+        "tmdb": 368926
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.00037559005,
+    "movie": {
+      "title": "Breaking Upwards",
+      "year": 2009,
+      "ids": {
+        "trakt": 30612,
+        "slug": "breaking-upwards-2009",
+        "imdb": "tt1247644",
+        "tmdb": 44990
+      }
+    }
+  },
+  {
+    "type": "show",
+    "score": 0.00032978793,
+    "show": {
+      "title": "Vegas Rat Rods",
+      "year": 2014,
+      "ids": {
+        "trakt": 77928,
+        "slug": "vegas-rat-rods",
+        "tvdb": 281940,
+        "imdb": "tt3727822",
+        "tmdb": 64431,
+        "tvrage": null
+      }
+    }
+  },
+  {
+    "type": "movie",
+    "score": 0.00032801877,
+    "movie": {
+      "title": "You're Missing the Point",
+      "year": 1940,
+      "ids": {
+        "trakt": 50419,
+        "slug": "you-re-missing-the-point-1940",
+        "imdb": "tt0032186",
+        "tmdb": 69060
+      }
+    }
+  },
+  {
+    "type": "show",
+    "score": 0.0003116137,
+    "show": {
+      "title": "Love My Way",
+      "year": 2004,
+      "ids": {
+        "trakt": 2310,
+        "slug": "love-my-way",
+        "tvdb": 75339,
+        "imdb": "tt0426741",
+        "tmdb": 2324,
+        "tvrage": 4302
+      }
+    }
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "id": 2921479362,
+  "watched_at": "2017-06-18T13:16:37.000Z",
+  "sharing": {
+    "facebook": false,
+    "twitter": false,
+    "tumblr": false
+  },
+  "movie": {
+    "title": "Mad Max: Fury Road",
+    "year": 2015,
+    "ids": {
+      "trakt": 56360,
+      "slug": "mad-max-fury-road-2015",
+      "imdb": "tt1392190",
+      "tmdb": 76341
+    }
+  }
+}
