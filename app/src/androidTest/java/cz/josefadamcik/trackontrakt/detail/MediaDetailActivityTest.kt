@@ -5,6 +5,7 @@ import android.content.Context
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.BoundedMatcher
 import android.support.test.espresso.matcher.ViewMatchers.*
@@ -85,8 +86,40 @@ class MediaDetailActivityTest {
         //assert info rendered
         assertActionBarTitle(detailName)
         assertDescriptionViewValue("An apocalyptic story set in the furthest reaches of our planet, in a stark desert landscape where humanity is broken, and most everyone is crazed fighting for the necessities of life. Within this world exist two rebels on the run who just might be able to restore order. There's Max, a man of action and a man of few words, who seeks peace of mind following the loss of his wife and child in the aftermath of the chaos. And Furiosa, a woman of action and a woman who believes her path to survival may be achieved if she can make it across the desert back to her childhood homeland.")
+        //and checkin button displayed
+        onView(withId(R.id.fab)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun movieCheckinTest() {
+        //arrange
+        val appContext = InstrumentationRegistry.getTargetContext()
+        arrangeApiStubForMovieDetail(appContext)
+        arrangeApiStubForCheckin(appContext)
+
+        //act: launch activity
+        val intent = MediaDetailActivity.createIntent(appContext, MediaIdentifier(MediaType.movie, 56360), "name")
+        activityTestRule.launchActivity(intent)
+
+        onView(allOf(
+            withId(R.id.fab),
+            isDisplayed()
+        )).perform(click())
 
 
+        //assert: checkin request received
+        verify(postRequestedFor(urlPathEqualTo("/checkin")))
+    }
+
+    private fun arrangeApiStubForCheckin(appContext: Context) {
+        wireMockRule.stubFor(
+            post(urlPathEqualTo("/checkin"))
+                .withRequestBody(matchingJsonPath("$.movie.ids.trakt"))
+                .willReturn(aResponse()
+                    .withStatus(200)
+                    .withBody(asset(appContext, "checkin.json"))
+                )
+        )
     }
 
     private fun arrangeApiStubForMovieDetail(appContext: Context) {
