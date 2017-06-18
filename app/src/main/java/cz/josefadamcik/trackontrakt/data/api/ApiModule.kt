@@ -78,10 +78,12 @@ open class ApiModule(private val app: TrackOnTraktApplication) {
 
         if (BuildConfig.DEBUG) {
             val loggingInterceptor = HttpLoggingInterceptor({
-                Timber.tag("OkHttp").d(it);
+                Timber.tag("OkHttpNetwork").d(it)
             })
-            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.HEADERS
             builder.addInterceptor(loggingInterceptor)
+
+            builder.addInterceptor(OkHttpCacheLoggingInterceptor())
         }
 
         return builder.build();

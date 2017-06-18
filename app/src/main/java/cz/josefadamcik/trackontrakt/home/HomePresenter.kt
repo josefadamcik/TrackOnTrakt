@@ -46,7 +46,9 @@ class HomePresenter @Inject constructor(
 
     fun loadHomeStreamData(forceRefresh: Boolean) {
         Timber.i("loadHomeStreamData: start")
-        view?.showLoading()
+        if (!forceRefresh) {
+            view?.showLoading()
+        }
         disposable.add(
             userAccountManager.loadUserHistory()
                 .subscribe(

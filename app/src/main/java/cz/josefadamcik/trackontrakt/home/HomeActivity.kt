@@ -111,6 +111,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
     override fun showHistory(items: List<HistoryItem>) {
         hideLoading()
+        hidePullToRefreshRefreshing()
         currentMode = Mode.History
         historyAdapter.items = items
         setAdapterForMode()
@@ -133,7 +134,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
     override fun onRefresh() {
         Timber.d("onRefresh ")
-        //fixme: implement pull to refresh
+        presenter.loadHomeStreamData(true)
     }
 
     override fun onStart() {
