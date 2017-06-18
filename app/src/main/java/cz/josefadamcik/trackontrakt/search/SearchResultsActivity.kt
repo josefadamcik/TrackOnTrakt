@@ -50,7 +50,7 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
         public fun createIntent(context: Context, query: String, filter: TraktFilter): Intent {
             val intent = Intent(context, SearchResultsActivity::class.java)
             intent.action = Intent.ACTION_SEARCH
-            intent.putExtra(SearchManager.QUERY, "rick and morty")
+            intent.putExtra(SearchManager.QUERY, query)
             intent.putExtra(SearchResultsActivity.PAR_FILTER, TraktFilter(movies = true, shows = true))
             return intent
         }
