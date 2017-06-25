@@ -16,18 +16,24 @@
 package cz.josefadamcik.trackontrakt.detail
 
 import android.content.res.Resources
+import android.graphics.Typeface
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import butterknife.BindColor
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.Episode
 import cz.josefadamcik.trackontrakt.data.api.model.Season
+import cz.josefadamcik.trackontrakt.util.spannable
 import java.text.DateFormat
+
 
 class MediaDetailAdapter(
     val inflater: LayoutInflater,
@@ -44,6 +50,7 @@ class MediaDetailAdapter(
 
     interface InteractionListener {
         fun onEpisodeCheckInClick(episode: Episode)
+        fun onOpenWebPageClick(uri: Uri)
     }
 
     private var items = listOf<Item>()
@@ -98,6 +105,48 @@ class MediaDetailAdapter(
                 holder.txtDescription.text = it.description
                 holder.txtYear.text = it.year
                 holder.txtRating.text = resources.getString(R.string.media_detail_votes, it.rating * 10, it.votes)
+                holder.txtOther.movementMethod = LinkMovementMethod.getInstance()
+
+                val otherSpan = spannable {
+                    if (it.genres.isNotEmpty()) {
+//                        roundedBg(holder.otherBgColor, holder.otherColor) {
+                        typeface(Typeface.BOLD) {
+                            +resources.getString(R.string.label_genres)
+                        }
+                        +":"
+                        +it.genres.joinToString(", ")
+//                        }
+                        +" "
+                    }
+
+                    if (it.network != null) {
+//                        roundedBg(holder.otherBgColor, holder.otherColor) {
+                        typeface(Typeface.BOLD) {
+                            +resources.getString(R.string.label_network)
+                        }
+                        +":"
+                        +it.network
+//                        }
+                        +" "
+
+                    }
+
+                    if (it.homepage != null) {
+//                        roundedBg(holder.otherBgColor, holder.otherColor) {
+                        holder.homepageUri = Uri.parse(it.homepage)
+                        typeface(Typeface.BOLD) {
+                            clickable({ holder.onClickHomepage() }) {
+                                +resources.getString(R.string.label_homepage)
+                            }
+                        }
+//                        }
+                        +" "
+                    }
+
+
+                }
+
+                holder.txtOther.text = otherSpan.toCharSequence()
             }
             is EpisodeInfoViewHolder -> {
                 items[position].episode?.let {
@@ -118,7 +167,7 @@ class MediaDetailAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         val holder = when (viewType) {
-            VIEWTYPE_MEDIA_INFO -> MainInfoViewHolder(inflater.inflate(R.layout.item_media_info, parent, false))
+            VIEWTYPE_MEDIA_INFO -> MainInfoViewHolder(inflater.inflate(R.layout.item_media_info, parent, false), listener)
             VIEWTYPE_EPISODE -> EpisodeInfoViewHolder(inflater.inflate(R.layout.item_media_info_episode, parent, false))
             VIEWTYPE_SEASON_HEADER -> HeaderInfoViewHolder(inflater.inflate(R.layout.item_media_info_season_header, parent, false))
             VIEWTYPE_LAST_EPISODE_HEADER -> ViewHolder(inflater.inflate(R.layout.item_media_info_latest_episode_separator, parent, false))
@@ -132,12 +181,21 @@ class MediaDetailAdapter(
 
     open class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView)
 
-    class MainInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
+    class MainInfoViewHolder(itemView: View?, val listener: InteractionListener) : ViewHolder(itemView) {
         @BindView(R.id.txt_description) lateinit var txtDescription: TextView
         @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
         @BindView(R.id.txt_year) lateinit var txtYear: TextView
         @BindView(R.id.txt_rating) lateinit var txtRating: TextView
         @BindView(R.id.txt_other) lateinit var txtOther: TextView
+        @JvmField @BindColor(R.color.material_color_blue_grey_500) var otherBgColor: Int = 0
+        @JvmField @BindColor(android.R.color.white) var otherColor: Int = 0
+        var homepageUri: Uri? = null
+
+        fun onClickHomepage() {
+            if (homepageUri != null) {
+                listener.onOpenWebPageClick(homepageUri as Uri)
+            }
+        }
     }
 
     inner class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {

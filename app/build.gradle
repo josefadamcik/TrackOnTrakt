@@ -205,8 +205,9 @@ dependencies {
     //ui & view
     // MVP + ViewState + LCE Views http://hannesdorfmann.com/mosby/
     compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    kapt 'com.jakewharton:butterknife-compiler:8.5.1'
+
+    compile 'com.jakewharton:butterknife:8.6.0'
+    kapt 'com.jakewharton:butterknife-compiler:8.6.0'
 
     compile 'me.zhanghai.android.materialprogressbar:library:1.3.0'
     compile 'com.lapism:searchview:4.0'

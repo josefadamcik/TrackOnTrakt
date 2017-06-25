@@ -2,6 +2,7 @@ package cz.josefadamcik.trackontrakt.detail
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.FloatingActionButton
@@ -25,6 +26,8 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import javax.inject.Inject
 
 class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(), MediaDetailView, MediaDetailAdapter.InteractionListener {
+
+
     @Inject lateinit var myPresenter: MediaDetailPresenter
 
     @BindView(R.id.progress) lateinit var progress: MaterialProgressBar
@@ -93,6 +96,10 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
 
     override fun onEpisodeCheckInClick(episode: Episode) {
         presenter.checkinActionClicked(episode)
+    }
+
+    override fun onOpenWebPageClick(uri: Uri) {
+        startActivity(Intent(Intent.ACTION_VIEW, uri))
     }
 
     override fun showTitle(name: String) {
