@@ -45,6 +45,15 @@ class SpanWithChildren(val what: Any? = null) : Span() {
 
     fun color(color: Int, init: SpanWithChildren.() -> Unit): SpanWithChildren = span(ForegroundColorSpan(color), init)
 
+    fun labelWithRoundedBgAndValue(config: RoundedBackgroundSpan.Config, label: String, value: String): SpanWithChildren {
+        span(RoundedBackgroundSpan(config)) {
+            +label
+        }
+
+        children.add(SpanWithText("\u00A0" + value + " "))
+
+        return this
+    }
 
     fun roundedBg(config: RoundedBackgroundSpan.Config, init: SpanWithChildren.() -> Unit): SpanWithChildren = span(RoundedBackgroundSpan(config), init)
 

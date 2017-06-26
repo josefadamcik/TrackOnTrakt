@@ -39,7 +39,7 @@ class MediaDetailAdapter(
     val inflater: LayoutInflater,
     val resources: Resources,
     val listener: InteractionListener,
-    val roundedBackgroundSpanConfig: RoundedBackgroundSpan.Config
+    val roundedSpanConfig: RoundedBackgroundSpan.Config
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEWTYPE_MEDIA_INFO = 1
@@ -130,38 +130,23 @@ class MediaDetailAdapter(
     private fun buildSpannableWithOtherInfoForMediaInfo(info: MediaDetailModel.MediaDetailInfo, holder: MainInfoViewHolder): SpanWithChildren {
         val otherSpan = spannable {
             if (info.genres.isNotEmpty()) {
-                roundedBg(roundedBackgroundSpanConfig) {
-                    +resources.getString(R.string.label_genres)
-                }
-                +("\u00A0" + info.genres.joinToString(", ") + " ")
+                labelWithRoundedBgAndValue(roundedSpanConfig, resources.getString(R.string.label_genres), info.genres.joinToString(", "))
             }
 
             if (info.network != null) {
-                roundedBg(roundedBackgroundSpanConfig) {
-                    +resources.getString(R.string.label_network)
-                }
-                +("\u00A0" + info.network + " ")
+                labelWithRoundedBgAndValue(roundedSpanConfig, resources.getString(R.string.label_network), info.network)
             }
-
-
-
             if (info.language != null) {
-                roundedBg(roundedBackgroundSpanConfig) {
-                    +resources.getString(R.string.label_language)
-                }
-                +("\u00A0" + info.language + " ")
+                labelWithRoundedBgAndValue(roundedSpanConfig, resources.getString(R.string.label_language), info.language)
             }
 
             if (info.status != null) {
-                roundedBg(roundedBackgroundSpanConfig) {
-                    +resources.getString(R.string.label_status)
-                }
-                +("\u00A0" + info.status + " ")
+                labelWithRoundedBgAndValue(roundedSpanConfig, resources.getString(R.string.label_status), info.status)
             }
 
             if (info.trailer != null) {
                 holder.trailerUri = Uri.parse(info.trailer)
-                roundedBg(roundedBackgroundSpanConfig) {
+                roundedBg(roundedSpanConfig) {
                     clickable({ holder.onClickTrailer() }) {
                         +resources.getString(R.string.label_trailer)
                     }
@@ -171,7 +156,7 @@ class MediaDetailAdapter(
 
             if (info.homepage != null) {
                 holder.homepageUri = Uri.parse(info.homepage)
-                roundedBg(roundedBackgroundSpanConfig) {
+                roundedBg(roundedSpanConfig) {
                     clickable({ holder.onClickHomepage() }) {
                         +resources.getString(R.string.label_homepage)
                     }
