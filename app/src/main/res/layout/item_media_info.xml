@@ -72,6 +72,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_description"
-        tools:text="some: other, info: in text"/>
+        android:paddingBottom="@dimen/material_baseline_grid_2x"
+        tools:text="some: other, info: in text"
+        />
 
 </android.support.constraint.ConstraintLayout>

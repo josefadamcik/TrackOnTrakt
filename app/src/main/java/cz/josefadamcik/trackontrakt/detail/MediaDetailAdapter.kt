@@ -16,7 +16,6 @@
 package cz.josefadamcik.trackontrakt.detail
 
 import android.content.res.Resources
-import android.graphics.Typeface
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.text.method.LinkMovementMethod
@@ -24,13 +23,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import butterknife.BindColor
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.Episode
 import cz.josefadamcik.trackontrakt.data.api.model.Season
+import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
+import cz.josefadamcik.trackontrakt.util.SpanWithChildren
 import cz.josefadamcik.trackontrakt.util.spannable
 import java.text.DateFormat
 
@@ -38,7 +38,8 @@ import java.text.DateFormat
 class MediaDetailAdapter(
     val inflater: LayoutInflater,
     val resources: Resources,
-    val listener: InteractionListener
+    val listener: InteractionListener,
+    val roundedBackgroundSpanConfig: RoundedBackgroundSpan.Config
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEWTYPE_MEDIA_INFO = 1
@@ -106,46 +107,7 @@ class MediaDetailAdapter(
                 holder.txtYear.text = it.year
                 holder.txtRating.text = resources.getString(R.string.media_detail_votes, it.rating * 10, it.votes)
                 holder.txtOther.movementMethod = LinkMovementMethod.getInstance()
-
-                val otherSpan = spannable {
-                    if (it.genres.isNotEmpty()) {
-//                        roundedBg(holder.otherBgColor, holder.otherColor) {
-                        typeface(Typeface.BOLD) {
-                            +resources.getString(R.string.label_genres)
-                        }
-                        +":"
-                        +it.genres.joinToString(", ")
-//                        }
-                        +" "
-                    }
-
-                    if (it.network != null) {
-//                        roundedBg(holder.otherBgColor, holder.otherColor) {
-                        typeface(Typeface.BOLD) {
-                            +resources.getString(R.string.label_network)
-                        }
-                        +":"
-                        +it.network
-//                        }
-                        +" "
-
-                    }
-
-                    if (it.homepage != null) {
-//                        roundedBg(holder.otherBgColor, holder.otherColor) {
-                        holder.homepageUri = Uri.parse(it.homepage)
-                        typeface(Typeface.BOLD) {
-                            clickable({ holder.onClickHomepage() }) {
-                                +resources.getString(R.string.label_homepage)
-                            }
-                        }
-//                        }
-                        +" "
-                    }
-
-
-                }
-
+                val otherSpan = buildSpannableWithOtherInfoForMediaInfo(it, holder)
                 holder.txtOther.text = otherSpan.toCharSequence()
             }
             is EpisodeInfoViewHolder -> {
@@ -163,6 +125,61 @@ class MediaDetailAdapter(
 
             }
         }
+    }
+
+    private fun buildSpannableWithOtherInfoForMediaInfo(info: MediaDetailModel.MediaDetailInfo, holder: MainInfoViewHolder): SpanWithChildren {
+        val otherSpan = spannable {
+            if (info.genres.isNotEmpty()) {
+                roundedBg(roundedBackgroundSpanConfig) {
+                    +resources.getString(R.string.label_genres)
+                }
+                +("\u00A0" + info.genres.joinToString(", ") + " ")
+            }
+
+            if (info.network != null) {
+                roundedBg(roundedBackgroundSpanConfig) {
+                    +resources.getString(R.string.label_network)
+                }
+                +("\u00A0" + info.network + " ")
+            }
+
+
+
+            if (info.language != null) {
+                roundedBg(roundedBackgroundSpanConfig) {
+                    +resources.getString(R.string.label_language)
+                }
+                +("\u00A0" + info.language + " ")
+            }
+
+            if (info.status != null) {
+                roundedBg(roundedBackgroundSpanConfig) {
+                    +resources.getString(R.string.label_status)
+                }
+                +("\u00A0" + info.status + " ")
+            }
+
+            if (info.trailer != null) {
+                holder.trailerUri = Uri.parse(info.trailer)
+                roundedBg(roundedBackgroundSpanConfig) {
+                    clickable({ holder.onClickTrailer() }) {
+                        +resources.getString(R.string.label_trailer)
+                    }
+                }
+                +" "
+            }
+
+            if (info.homepage != null) {
+                holder.homepageUri = Uri.parse(info.homepage)
+                roundedBg(roundedBackgroundSpanConfig) {
+                    clickable({ holder.onClickHomepage() }) {
+                        +resources.getString(R.string.label_homepage)
+                    }
+                }
+                +" "
+            }
+        }
+        return otherSpan
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
@@ -187,15 +204,23 @@ class MediaDetailAdapter(
         @BindView(R.id.txt_year) lateinit var txtYear: TextView
         @BindView(R.id.txt_rating) lateinit var txtRating: TextView
         @BindView(R.id.txt_other) lateinit var txtOther: TextView
-        @JvmField @BindColor(R.color.material_color_blue_grey_500) var otherBgColor: Int = 0
-        @JvmField @BindColor(android.R.color.white) var otherColor: Int = 0
         var homepageUri: Uri? = null
+        var trailerUri: Uri? = null
 
         fun onClickHomepage() {
             if (homepageUri != null) {
                 listener.onOpenWebPageClick(homepageUri as Uri)
             }
         }
+
+        fun onClickTrailer() {
+            if (trailerUri != null) {
+                listener.onOpenWebPageClick(trailerUri as Uri)
+            }
+        }
+
+
+
     }
 
     inner class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {

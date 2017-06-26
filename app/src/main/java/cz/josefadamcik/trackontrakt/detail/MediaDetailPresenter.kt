@@ -155,7 +155,10 @@ class MediaDetailPresenter @Inject constructor(
             votes = show.votes ?: 0,
             network = show.network,
             genres = show.genres,
-            date = show.first_aired
+            date = show.first_aired,
+            trailer = show.trailer,
+            status = show.status,
+            language = show.language
         )))
 
         view?.showLoading()
@@ -217,7 +220,9 @@ class MediaDetailPresenter @Inject constructor(
             rating = movie.rating ?: 0.0,
             votes = movie.votes ?: 0,
             genres = movie.genres,
-            date = movie.released
+            date = movie.released,
+            trailer = movie.trailer,
+            language = movie.language
         )))
 
     }

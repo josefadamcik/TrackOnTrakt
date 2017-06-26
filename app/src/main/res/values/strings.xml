@@ -23,8 +23,11 @@
     <string name="season_info">Season %1$d</string>
     <string name="media_title_placeholder">[Title missing]</string>
     <string name="media_detail_votes">%1$2.0f %% (%2$d votes)</string>
-    <string name="label_genres">Genres</string>
+    <string name="label_genres">Genres:</string>
     <string name="label_homepage">Homepage</string>
-    <string name="label_network">Network</string>
+    <string name="label_network">Network:</string>
+    <string name="label_language">Language:</string>
+    <string name="label_status">Status:</string>
+    <string name="label_trailer">Trailer</string>
 
 </resources>

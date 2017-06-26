@@ -13,15 +13,14 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
-import butterknife.BindView
-import butterknife.ButterKnife
-import butterknife.OnClick
+import butterknife.*
 import com.evernote.android.state.State
 import com.evernote.android.state.StateSaver
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.data.api.model.Episode
+import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import javax.inject.Inject
 
@@ -35,6 +34,10 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
     @BindView(R.id.fab) lateinit var fab: FloatingActionButton
     @BindView(R.id.list) lateinit var list: RecyclerView
+    @JvmField @BindColor(R.color.material_color_blue_grey_500) var otherBgColor: Int = 0
+    @JvmField @BindColor(android.R.color.white) var otherColor: Int = 0
+    @JvmField @BindDimen(R.dimen.material_baseline_grid_0_5x) var halfGridStep: Int = 0
+
 
     lateinit var adapter: MediaDetailAdapter
 
@@ -77,7 +80,16 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     }
 
     private fun initList() {
-        adapter = MediaDetailAdapter(LayoutInflater.from(this), resources, this)
+        val roundedBackgroundSpanConfig = RoundedBackgroundSpan.Config(
+            backgroundColor = otherBgColor,
+            textColor = otherColor,
+            cornerRadius = halfGridStep,
+            horizontalInnerPad = 2 + halfGridStep,
+            verticalInnerPad = halfGridStep,
+            verticalOuterPad = halfGridStep
+
+        )
+        adapter = MediaDetailAdapter(LayoutInflater.from(this), resources, this, roundedBackgroundSpanConfig)
         list.layoutManager = LinearLayoutManager(this)
         list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         list.setHasFixedSize(true)

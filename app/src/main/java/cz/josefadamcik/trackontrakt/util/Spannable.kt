@@ -46,7 +46,7 @@ class SpanWithChildren(val what: Any? = null) : Span() {
     fun color(color: Int, init: SpanWithChildren.() -> Unit): SpanWithChildren = span(ForegroundColorSpan(color), init)
 
 
-    fun roundedBg(bgColor: Int, color: Int, init: SpanWithChildren.() -> Unit): SpanWithChildren = span(RoundedBackgroundSpan(bgColor, color), init)
+    fun roundedBg(config: RoundedBackgroundSpan.Config, init: SpanWithChildren.() -> Unit): SpanWithChildren = span(RoundedBackgroundSpan(config), init)
 
     fun clickable(onClick: () -> Unit, init: SpanWithChildren.() -> Unit): SpanWithChildren = span(object : ClickableSpan() {
         override fun onClick(widget: View?) {

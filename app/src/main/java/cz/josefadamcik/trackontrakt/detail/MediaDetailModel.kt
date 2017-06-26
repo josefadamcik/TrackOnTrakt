@@ -35,7 +35,10 @@ data class MediaDetailModel(
         val votes: Long,
         val date: Date?,
         val network: String? = null,
-        val genres: List<String> = emptyList()
+        val genres: List<String> = emptyList(),
+        val trailer: String? = null,
+        val status: String? = null,
+        val language: String? = null
     ) {
 
         companion object {
