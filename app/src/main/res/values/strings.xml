@@ -29,5 +29,6 @@
     <string name="label_language">Language:</string>
     <string name="label_status">Status:</string>
     <string name="label_trailer">Trailer</string>
+    <string name="season_specials_title">Specials</string>
 
 </resources>

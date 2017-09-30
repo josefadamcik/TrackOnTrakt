@@ -198,7 +198,17 @@ class MediaDetailPresenter @Inject constructor(
                     { response ->
                         Timber.d("loadEpisodes - result %s", response.code())
                         view?.hideLoading()
-                        showModel(model?.copy(seasons = response.body()))
+                        var seasons = response.body()
+                        if (seasons.isNotEmpty() && seasons.first().number == 0) {
+                            //Season 0 -> specials, put them to an and and rename to specials
+                            val specialsSeason = seasons.first()
+                            val modifiedSeasonsList = seasons.toMutableList()
+                            modifiedSeasonsList.removeAt(0)
+                            modifiedSeasonsList.add(specialsSeason)
+                            seasons = modifiedSeasonsList
+                        }
+
+                        showModel(model?.copy(seasons = seasons))
                     },
                     { t ->
                         view?.hideLoading()

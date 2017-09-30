@@ -118,7 +118,11 @@ class MediaDetailAdapter(
             }
             is HeaderInfoViewHolder -> {
                 items[position].season?.let {
-                    holder.txtTitle.text = resources.getString(R.string.season_info, it.number)
+                    if (it.number == 0) {
+                        holder.txtTitle.text = resources.getString(R.string.season_specials_title)
+                    } else {
+                        holder.txtTitle.text = resources.getString(R.string.season_info, it.number)
+                    }
                 }
             }
             else -> {

@@ -68,7 +68,6 @@ class MediaDetailActivityTest {
                     0),
                 isDisplayed()))
         textView2.check(matches(withText("Latest aired episode")))
-
     }
 
     @Test
