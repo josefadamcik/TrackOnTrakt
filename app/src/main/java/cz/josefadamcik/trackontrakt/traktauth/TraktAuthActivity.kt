@@ -44,7 +44,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
         super.onCreate(savedInstanceState)
         supportActionBar?.setTitle(R.string.title_authorize)
 
-        webview = findViewById(R.id.webview) as WebView
+        webview = findViewById<WebView>(R.id.webview) as WebView
 
     }
 

@@ -70,7 +70,7 @@ public class SearchViewWrapper (
         suggestionAdapter = SearchAdapter(context, suggestionList)
 
         suggestionAdapter.addOnItemClickListener { view, position ->
-            val textView = view.findViewById(R.id.textView_item_text) as TextView
+            val textView = view.findViewById<TextView>(R.id.textView_item_text) as TextView
             val query = textView.text.toString()
             searchCallback.doSearchForQuery(query, filters)
             searchView.close(false)
