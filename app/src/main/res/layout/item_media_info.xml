@@ -5,6 +5,7 @@
                                              android:layout_height="wrap_content"
                                              xmlns:tools="http://schemas.android.com/tools"
                                              android:orientation="vertical"
+                                             android:paddingTop="@dimen/material_baseline_grid_1x"
     >
 
 
@@ -12,8 +13,8 @@
         android:id="@+id/txt_tagline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:textAppearance="@style/MaterialTypography.Regular.Headline"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,29 +27,17 @@
         android:id="@+id/txt_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/MaterialTypography.Regular.Body1"
-        android:lineSpacingExtra="@dimen/material_baseline_grid_0.5x"
-        tools:text="longer text"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_tagline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"/>
-
-    <TextView
-        android:id="@+id/txt_other"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:lineSpacingExtra="@dimen/material_baseline_grid_0.5x"
+        android:textAppearance="@style/MaterialTypography.Regular.Body1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_description"
-        android:paddingBottom="@dimen/material_baseline_grid_2x"
-        tools:text="some: other, info: in text"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/txt_tagline"
+        tools:text="longer text"/>
+
 
 </android.support.constraint.ConstraintLayout>

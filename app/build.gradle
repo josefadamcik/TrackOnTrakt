@@ -26,11 +26,6 @@ def traktclientid = properties.getProperty('trakt.clientid')
 def traktclientsecret = properties.getProperty('trakt.clientsecret')
 
 android {
-
-    dexOptions {
-        incremental false
-    }
-
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {

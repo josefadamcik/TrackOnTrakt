@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
               xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/material_baseline_grid_6x"
               android:orientation="vertical"
-              android:paddingLeft="@dimen/material_baseline_grid_4x"
-              android:paddingRight="@dimen/material_baseline_grid_4x"
-              android:paddingTop="@dimen/material_baseline_grid_1x"
-              android:paddingBottom="@dimen/material_baseline_grid_1x"
     >
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/MaterialTypography.Regular.Headline"
+        android:layout_height="@dimen/material_baseline_grid_6x"
+        android:paddingLeft="@dimen/material_baseline_grid_2x"
+        android:paddingRight="@dimen/material_baseline_grid_2x"
+        android:paddingTop="@dimen/material_baseline_grid_1x"
+        android:paddingBottom="@dimen/material_baseline_grid_1x"
+
+        android:textAppearance="@style/MaterialTypography.Regular.Subheading"
+        android:textColor="@color/material_typography_secondary_text_color_dark"
         tools:text="Season 01"
+        android:gravity="left|center_vertical"
         />
 
 

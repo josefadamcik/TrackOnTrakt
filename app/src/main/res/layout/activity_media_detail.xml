@@ -125,6 +125,7 @@
                 android:visibility="gone"
                 android:layout_gravity="bottom"
                 tools:visibility="visible"
+                app:layout_collapseMode="pin"
                 style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal"/>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>

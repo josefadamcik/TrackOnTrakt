@@ -149,6 +149,7 @@
 
     <style name="MaterialTypography.Regular.Subheading">
         <item name="android:textSize">@dimen/material_typography_regular_subheading_text_size</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
     </style>
 
     <style name="MaterialTypography.Regular.Body2">

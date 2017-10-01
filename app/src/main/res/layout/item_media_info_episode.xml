@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/episode_info"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/material_baseline_grid_9x"
         android:layout_height="match_parent"
         android:textAppearance="@style/MediaDetailEpisodeTitle.Secondary"
         android:paddingLeft="@dimen/material_baseline_grid_2x"
@@ -27,13 +27,12 @@
         android:gravity="left|center_vertical"
         tools:text="episode item title long enough to split into two lines and more more more"/>
 
-    <ImageButton
+    <ImageView
         android:id="@+id/btn_checkin"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
-        android:src="@drawable/ic_check_white_24dp"
-        android:paddingLeft="@dimen/material_baseline_grid_1x"
-        android:paddingRight="@dimen/material_baseline_grid_1x"
+        android:src="@drawable/ic_check_circle_black_24dp"
+        android:paddingLeft="@dimen/material_baseline_grid_2x"
+        android:paddingRight="@dimen/material_baseline_grid_2x"
         />
 </LinearLayout>

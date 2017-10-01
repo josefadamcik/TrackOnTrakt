@@ -8,7 +8,6 @@ import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.TextViewCompat
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -99,7 +98,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         )
         adapter = MediaDetailAdapter(LayoutInflater.from(this), resources, this, roundedBackgroundSpanConfig)
         list.layoutManager = LinearLayoutManager(this)
-        list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+        //list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         list.setHasFixedSize(true)
         list.adapter = adapter
     }

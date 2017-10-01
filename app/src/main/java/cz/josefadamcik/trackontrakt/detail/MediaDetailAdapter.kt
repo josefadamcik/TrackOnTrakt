@@ -17,6 +17,7 @@ package cz.josefadamcik.trackontrakt.detail
 
 import android.content.res.Resources
 import android.net.Uri
+import android.support.annotation.StringRes
 import android.support.v7.widget.RecyclerView
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -30,22 +31,21 @@ import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.Episode
 import cz.josefadamcik.trackontrakt.data.api.model.Season
 import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
-import cz.josefadamcik.trackontrakt.util.SpanWithChildren
-import cz.josefadamcik.trackontrakt.util.spannable
 import java.text.DateFormat
 
 
 class MediaDetailAdapter(
-    val inflater: LayoutInflater,
+    private val inflater: LayoutInflater,
     val resources: Resources,
     val listener: InteractionListener,
-    val roundedSpanConfig: RoundedBackgroundSpan.Config
+    private val roundedSpanConfig: RoundedBackgroundSpan.Config
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
         const val VIEWTYPE_MEDIA_INFO = 1
-        const val VIEWTYPE_EPISODE = 2
-        const val VIEWTYPE_SEASON_HEADER = 3
-        const val VIEWTYPE_LAST_EPISODE_HEADER = 4
+        const val VIEWTYPE_MEDIA_INFO_ROW = 2
+        const val VIEWTYPE_EPISODE = 3
+        const val VIEWTYPE_SEASON_HEADER = 4
+        const val VIEWTYPE_LAST_EPISODE_HEADER = 5
         val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
     }
 
@@ -78,6 +78,19 @@ class MediaDetailAdapter(
         val model = this.model
         if (model != null) {
             list.add(Item(VIEWTYPE_MEDIA_INFO))
+
+            with(model.basic) {
+                if (genres.isNotEmpty()) {
+                    list.add(itemFormInfoRow(R.string.label_genres, genres.joinToString(", ")))
+                }
+                network?.let { list.add(itemFormInfoRow(R.string.label_network, it)) }
+                language?.let { list.add(itemFormInfoRow(R.string.label_language, it)) }
+                status?.let { list.add(itemFormInfoRow(R.string.label_status, it)) }
+                trailer?.let { list.add(itemFormInfoRow(R.string.label_trailer, it, it)) }
+                homepage?.let { list.add(itemFormInfoRow(R.string.label_homepage, it, it)) }
+                list.add(itemFormInfoRow(R.string.label_traktpage, traktPage, traktPage))
+            }
+
             if (model.latestEpisode != null) {
                 list.add(Item(VIEWTYPE_LAST_EPISODE_HEADER))
                 list.add(Item(VIEWTYPE_EPISODE, episode = model.latestEpisode))
@@ -92,6 +105,12 @@ class MediaDetailAdapter(
         return list
     }
 
+    private fun itemFormInfoRow(@StringRes labelResource: Int, value: String, link: String? = null): Item {
+        return Item(
+            VIEWTYPE_MEDIA_INFO_ROW,
+            infoItem = InfoItem(resources.getString(labelResource), value, link)
+        )
+    }
     private fun hasLatestEpisode() = model?.latestEpisode != null
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
@@ -109,10 +128,21 @@ class MediaDetailAdapter(
                     holder.txtDescription.visibility = View.VISIBLE
                     holder.txtDescription.text = it.description
                 }
-
-                holder.txtOther.movementMethod = LinkMovementMethod.getInstance()
-                val otherSpan = buildSpannableWithOtherInfoForMediaInfo(it, holder)
-                holder.txtOther.text = otherSpan.toCharSequence()
+            }
+            is InfoRowViewHolder -> {
+                items[position].infoItem?.let {
+                    holder.txtLabel.text = it.label
+                    holder.txtValue.movementMethod = LinkMovementMethod.getInstance()
+                    holder.txtValue.text = it.value
+                    if (it.link != null) {
+                        holder.txtValue.tag = it.link
+                        holder.txtValue.setSingleLine(true)
+                        holder.txtValue.setOnClickListener(holder)
+                    } else {
+                        holder.txtValue.setSingleLine(false)
+                        holder.txtValue.setOnClickListener(null)
+                    }
+                }
             }
             is EpisodeInfoViewHolder -> {
                 items[position].episode?.let {
@@ -135,55 +165,12 @@ class MediaDetailAdapter(
         }
     }
 
-    private fun buildSpannableWithOtherInfoForMediaInfo(info: MediaDetailModel.MediaDetailInfo, holder: MainInfoViewHolder): SpanWithChildren {
-        return spannable {
-            if (info.genres.isNotEmpty()) {
-                labelWithRoundedBgAndValue(roundedSpanConfig, resources.getString(R.string.label_genres), info.genres.joinToString(", "))
-            }
 
-            if (info.network != null) {
-                labelWithRoundedBgAndValue(roundedSpanConfig, resources.getString(R.string.label_network), info.network)
-            }
-            if (info.language != null) {
-                labelWithRoundedBgAndValue(roundedSpanConfig, resources.getString(R.string.label_language), info.language)
-            }
-
-            if (info.status != null) {
-                labelWithRoundedBgAndValue(roundedSpanConfig, resources.getString(R.string.label_status), info.status)
-            }
-
-            if (info.trailer != null) {
-                holder.trailerUri = Uri.parse(info.trailer)
-                roundedBg(roundedSpanConfig) {
-                    clickable({ holder.onClickTrailer() }) {
-                        +resources.getString(R.string.label_trailer)
-                    }
-                }
-                +" "
-            }
-
-            if (info.homepage != null) {
-                holder.homepageUri = Uri.parse(info.homepage)
-                roundedBg(roundedSpanConfig) {
-                    clickable({ holder.onClickHomepage() }) {
-                        +resources.getString(R.string.label_homepage)
-                    }
-                }
-                +" "
-            }
-            holder.traktUri = Uri.parse(info.traktPage)
-            roundedBg(roundedSpanConfig) {
-                clickable({ holder.onClickTraktpage() }) {
-                    +resources.getString(R.string.label_traktpage)
-                }
-            }
-
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
         val holder = when (viewType) {
             VIEWTYPE_MEDIA_INFO -> MainInfoViewHolder(inflater.inflate(R.layout.item_media_info, parent, false), listener)
+            VIEWTYPE_MEDIA_INFO_ROW -> InfoRowViewHolder(inflater.inflate(R.layout.item_media_info_row, parent, false), listener)
             VIEWTYPE_EPISODE -> EpisodeInfoViewHolder(inflater.inflate(R.layout.item_media_info_episode, parent, false))
             VIEWTYPE_SEASON_HEADER -> HeaderInfoViewHolder(inflater.inflate(R.layout.item_media_info_season_header, parent, false))
             VIEWTYPE_LAST_EPISODE_HEADER -> ViewHolder(inflater.inflate(R.layout.item_media_info_latest_episode_separator, parent, false))
@@ -202,7 +189,6 @@ class MediaDetailAdapter(
     class MainInfoViewHolder(itemView: View?, private val listener: InteractionListener) : ViewHolder(itemView) {
         @BindView(R.id.txt_description) lateinit var txtDescription: TextView
         @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
-        @BindView(R.id.txt_other) lateinit var txtOther: TextView
         var homepageUri: Uri? = null
         var trailerUri: Uri? = null
         var traktUri: Uri? = null
@@ -224,9 +210,17 @@ class MediaDetailAdapter(
                 listener.onOpenWebPageClick(traktUri as Uri)
             }
         }
+    }
 
+    inner class InfoRowViewHolder(itemView: View?, listener: InteractionListener) : ViewHolder(itemView), View.OnClickListener {
+        @BindView(R.id.txt_label) lateinit var txtLabel: TextView
+        @BindView(R.id.txt_value) lateinit var txtValue: TextView
 
-
+        override fun onClick(view: View?) {
+            if (view?.tag != null) {
+                listener.onOpenWebPageClick(Uri.parse(view.tag as String))
+            }
+        }
     }
 
     inner class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
@@ -243,5 +237,6 @@ class MediaDetailAdapter(
         @BindView(R.id.title) lateinit var txtTitle: TextView
     }
 
-    data class Item(val viewType: Int, val season: Season? = null, val episode: Episode? = null)
+    data class Item(val viewType: Int, val season: Season? = null, val episode: Episode? = null, val infoItem: InfoItem? = null)
+    data class InfoItem(val label: String, val value: String, val link: String? = null)
 }
