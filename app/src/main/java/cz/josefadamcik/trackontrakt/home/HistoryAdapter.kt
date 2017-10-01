@@ -25,6 +25,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.Unbinder
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
@@ -90,8 +91,11 @@ class HistoryAdapter(
         @BindView(R.id.date) lateinit var date: TextView
         @BindView(R.id.type_info) lateinit var typeInfo: TextView
 
+        private var unbinder: Unbinder
+
         init {
-            ButterKnife.bind(this, view)
+            ButterKnife.setDebug(true)
+            unbinder = ButterKnife.bind(this, view)
             view.setOnClickListener(this)
         }
 

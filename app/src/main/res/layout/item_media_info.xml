@@ -7,45 +7,20 @@
                                              android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/txt_year"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="2017"
-        app:layout_constraintTop_toTopOf="parent"
-        android:drawableLeft="@drawable/ic_today_black_24dp"
-        android:drawablePadding="@dimen/material_baseline_grid_0.5x"
-
-        android:textSize="16sp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="32dp"/>
-
-    <TextView
-        android:id="@+id/txt_rating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="9.2 (19292 votes)"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toEndOf="@+id/txt_year"
-        android:drawableLeft="@drawable/ic_thumbs_up_down_black_24dp"
-        android:drawablePadding="@dimen/material_baseline_grid_0.5x"
-        android:layout_marginStart="12dp"/>
 
     <TextView
         android:id="@+id/txt_tagline"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/MaterialTypography.Regular.Headline"
-        tools:text="movie tagline"
-        app:layout_constraintTop_toBottomOf="@+id/txt_year"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintHorizontal_bias="0.0"/>
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/MaterialTypography.Regular.Headline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="movie tagline"/>
 
     <TextView
         android:id="@+id/txt_description"

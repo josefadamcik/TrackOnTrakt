@@ -30,5 +30,6 @@
     <string name="label_status">Status:</string>
     <string name="label_trailer">Trailer</string>
     <string name="season_specials_title">Specials</string>
+    <string name="label_traktpage">Trakt.tv</string>
 
 </resources>

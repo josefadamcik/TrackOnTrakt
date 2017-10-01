@@ -7,12 +7,15 @@ import android.os.Bundle
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
+import android.support.v4.widget.TextViewCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import butterknife.*
 import com.evernote.android.state.State
 import com.evernote.android.state.StateSaver
@@ -32,8 +35,13 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     @BindView(R.id.progress) lateinit var progress: MaterialProgressBar
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
+    @BindView(R.id.toolbar_title) lateinit var toolbarTitle: TextView
+    @BindView(R.id.toolbar_year) lateinit var toolbarYear: TextView
+    @BindView(R.id.toolbar_certification) lateinit var toolbarCertification: TextView
+    @BindView(R.id.toolbar_rating) lateinit var toolbarRating: TextView
     @BindView(R.id.fab) lateinit var fab: FloatingActionButton
     @BindView(R.id.list) lateinit var list: RecyclerView
+
     @JvmField @BindColor(R.color.material_color_blue_grey_500) var otherBgColor: Int = 0
     @JvmField @BindColor(android.R.color.white) var otherColor: Int = 0
     @JvmField @BindDimen(R.dimen.material_baseline_grid_0_5x) var halfGridStep: Int = 0
@@ -117,7 +125,38 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     override fun showTitle(name: String) {
         toolbar.title = name
         toolbarLayout.title = name
+        toolbarTitle.text = name
+
+        TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+            toolbarTitle,
+            8,
+            32,
+            1,
+            TypedValue.COMPLEX_UNIT_DIP
+        )
+
     }
+
+
+    override fun showBasicInfo(year: Int?, certification: String?, rating: Double, votes: Long) {
+        if (year == null) {
+            toolbarYear.visibility = View.GONE
+        } else {
+            toolbarYear.visibility = View.VISIBLE
+            toolbarYear.text = String.format("%d", year)
+        }
+        if (certification == null) {
+            toolbarCertification.visibility = View.GONE
+        } else {
+            toolbarCertification.visibility = View.VISIBLE
+            toolbarCertification.text = certification
+        }
+
+        toolbarRating.text = resources.getString(R.string.media_detail_votes, rating * 10, votes)
+        toolbarRating.visibility = View.VISIBLE
+    }
+
+
 
     override fun itemCheckInactionVisible(visible: Boolean) {
         fab.visibility = if (visible) View.VISIBLE else View.GONE

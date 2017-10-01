@@ -97,15 +97,19 @@ class MediaDetailAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (holder) {
             is MainInfoViewHolder -> model?.basic?.let {
-                if (it.tagline == null) {
+                if (it.tagline == null || it.tagline.isEmpty()) {
                     holder.txtTagline.visibility = View.GONE
                 } else {
                     holder.txtTagline.visibility = View.VISIBLE
                     holder.txtTagline.text = it.tagline
                 }
-                holder.txtDescription.text = it.description
-                holder.txtYear.text = it.year
-                holder.txtRating.text = resources.getString(R.string.media_detail_votes, it.rating * 10, it.votes)
+                if (it.description == null || it.description.isEmpty()) {
+                    holder.txtDescription.visibility = View.GONE
+                } else {
+                    holder.txtDescription.visibility = View.VISIBLE
+                    holder.txtDescription.text = it.description
+                }
+
                 holder.txtOther.movementMethod = LinkMovementMethod.getInstance()
                 val otherSpan = buildSpannableWithOtherInfoForMediaInfo(it, holder)
                 holder.txtOther.text = otherSpan.toCharSequence()
@@ -132,7 +136,7 @@ class MediaDetailAdapter(
     }
 
     private fun buildSpannableWithOtherInfoForMediaInfo(info: MediaDetailModel.MediaDetailInfo, holder: MainInfoViewHolder): SpanWithChildren {
-        val otherSpan = spannable {
+        return spannable {
             if (info.genres.isNotEmpty()) {
                 labelWithRoundedBgAndValue(roundedSpanConfig, resources.getString(R.string.label_genres), info.genres.joinToString(", "))
             }
@@ -167,8 +171,14 @@ class MediaDetailAdapter(
                 }
                 +" "
             }
+            holder.traktUri = Uri.parse(info.traktPage)
+            roundedBg(roundedSpanConfig) {
+                clickable({ holder.onClickTraktpage() }) {
+                    +resources.getString(R.string.label_traktpage)
+                }
+            }
+
         }
-        return otherSpan
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): RecyclerView.ViewHolder {
@@ -185,16 +195,17 @@ class MediaDetailAdapter(
         return holder
     }
 
-    open class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView)
+    open class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
-    class MainInfoViewHolder(itemView: View?, val listener: InteractionListener) : ViewHolder(itemView) {
+    }
+
+    class MainInfoViewHolder(itemView: View?, private val listener: InteractionListener) : ViewHolder(itemView) {
         @BindView(R.id.txt_description) lateinit var txtDescription: TextView
         @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
-        @BindView(R.id.txt_year) lateinit var txtYear: TextView
-        @BindView(R.id.txt_rating) lateinit var txtRating: TextView
         @BindView(R.id.txt_other) lateinit var txtOther: TextView
         var homepageUri: Uri? = null
         var trailerUri: Uri? = null
+        var traktUri: Uri? = null
 
         fun onClickHomepage() {
             if (homepageUri != null) {
@@ -205,6 +216,12 @@ class MediaDetailAdapter(
         fun onClickTrailer() {
             if (trailerUri != null) {
                 listener.onOpenWebPageClick(trailerUri as Uri)
+            }
+        }
+
+        fun onClickTraktpage() {
+            if (traktUri != null) {
+                listener.onOpenWebPageClick(traktUri as Uri)
             }
         }
 

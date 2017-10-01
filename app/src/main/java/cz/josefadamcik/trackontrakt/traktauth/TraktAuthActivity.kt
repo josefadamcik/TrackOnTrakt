@@ -56,6 +56,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
 
     override fun onDestroy() {
         super.onDestroy()
+        webview.destroy()
         unbinder.unbind()
     }
 
@@ -64,7 +65,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
         errorView.visibility = GONE
 
         webview.settings.javaScriptEnabled = true
-        webview.setWebViewClient(object : WebViewClient() {
+        webview.webViewClient = object : WebViewClient() {
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                 super.onPageStarted(view, url, favicon)
                 showProgress()
@@ -97,7 +98,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
                     return true
                 }
             }
-        })
+        }
         webview.loadUrl(url)
     }
 

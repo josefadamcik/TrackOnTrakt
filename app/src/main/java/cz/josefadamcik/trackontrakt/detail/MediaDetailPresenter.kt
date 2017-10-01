@@ -148,10 +148,13 @@ class MediaDetailPresenter @Inject constructor(
 
     private fun showShow(show: ShowDetail) {
         showDetail = show
+        view?.showBasicInfo(show.year, show.certification, show.rating ?: 0.0, show.votes ?: 0)
         showModel(MediaDetailModel(MediaDetailModel.MediaDetailInfo(
             description = show.overview,
             homepage = show.homepage,
+            traktPage = "https://trakt.tv/shows/${show.ids.slug}",
             rating = show.rating ?: 0.0,
+            certification = show.certification,
             votes = show.votes ?: 0,
             network = show.network,
             genres = show.genres,
@@ -221,13 +224,16 @@ class MediaDetailPresenter @Inject constructor(
 
     private fun showMovie(movie: MovieDetail) {
         movieDetail = movie
+        view?.showBasicInfo(movie.year, movie.certification, movie.rating ?: 0.0, movie.votes ?: 0)
         view?.itemCheckInactionVisible(true)
         view?.itemCheckInactionEnabled(true)
         showModel(MediaDetailModel(MediaDetailModel.MediaDetailInfo(
             tagline = movie.tagline,
             description = movie.overview,
             homepage = movie.homepage,
+            traktPage = "https://trakt.tv/movies/${movie.ids.slug}",
             rating = movie.rating ?: 0.0,
+            certification = movie.certification,
             votes = movie.votes ?: 0,
             genres = movie.genres,
             date = movie.released,

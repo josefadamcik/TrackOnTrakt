@@ -19,6 +19,7 @@ import com.hannesdorfmann.mosby3.mvp.MvpView
 
 interface MediaDetailView : MvpView {
     fun showTitle(name: String)
+    fun showBasicInfo(year: Int?, certification: String?, rating: Double, votes: Long)
     fun itemCheckInactionVisible(visible: Boolean)
     fun itemCheckInactionEnabled(visible: Boolean)
     fun showLoading()

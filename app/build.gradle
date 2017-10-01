@@ -19,12 +19,18 @@ kapt {
     generateStubs = true
 }
 
+
 Properties properties = new Properties()
 properties.load(project.rootProject.file('keys.properties').newDataInputStream())
 def traktclientid = properties.getProperty('trakt.clientid')
 def traktclientsecret = properties.getProperty('trakt.clientsecret')
 
 android {
+
+    dexOptions {
+        incremental false
+    }
+
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
@@ -49,7 +55,7 @@ android {
         buildConfigField "String", "TRAKT_BASE_API_URL", "\"https://api.trakt.tv\""
         buildConfigField "String", "TRAKT_LOGIN_URL", "\"https://trakt.tv/oauth/authorize?response_type=code&client_id=%s&redirect_uri=%s\""
 
-        multiDexEnabled true
+//        multiDexEnabled true
     }
 
     buildTypes {
@@ -206,13 +212,13 @@ dependencies {
     // MVP + ViewState + LCE Views http://hannesdorfmann.com/mosby/
     compile 'com.hannesdorfmann.mosby3:mvp-lce:3.0.0'
 
-    compile 'com.jakewharton:butterknife:8.6.0'
-    kapt 'com.jakewharton:butterknife-compiler:8.6.0'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
     compile 'me.zhanghai.android.materialprogressbar:library:1.3.0'
     compile 'com.lapism:searchview:4.0'
 
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
     androidTestCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'

@@ -475,5 +475,6 @@
     <color name="material_color_white_30_percent">#4DFFFFFF</color>
     <color name="material_color_white_20_percent">#33FFFFFF</color>
     <color name="material_color_white_12_percent">#1FFFFFFF</color>
+    <color name="material_color_white_transparent">#00FFFFFF</color>
 
 </resources>
