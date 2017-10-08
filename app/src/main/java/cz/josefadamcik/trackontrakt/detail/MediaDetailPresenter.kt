@@ -54,10 +54,7 @@ class MediaDetailPresenter @Inject constructor(
                             view?.hideLoading()
                             showMovie(movie)
                         },
-                        { t ->
-                            view?.hideLoading()
-                            view?.showError(t)
-                        }
+                        getOnError()
 
                     )
             )
@@ -71,10 +68,7 @@ class MediaDetailPresenter @Inject constructor(
                                 showShow(show)
                             }
                         },
-                        { t ->
-                            view?.hideLoading()
-                            view?.showError(t)
-                        }
+                        getOnError()
                     )
             )
         }
@@ -122,15 +116,18 @@ class MediaDetailPresenter @Inject constructor(
                             view?.showError(IllegalStateException("Unexpected status code " + result.code()))
                         }
                     },
-                    { t: Throwable? ->
-                        view?.hideLoading()
-                        view?.showError(t)
-                    }
-                )
+                getOnError()
+
+            )
         )
     }
 
-  
+    private fun getOnError(): (Throwable?) -> Unit {
+        return { t: Throwable? ->
+            view?.hideLoading()
+            view?.showError(t)
+        }
+    }
 
     private fun showShow(show: ShowDetail) {
         showDetail = show
@@ -166,10 +163,7 @@ class MediaDetailPresenter @Inject constructor(
                         }
                         loadEpisodes(show.ids.trakt)
                     },
-                    { t ->
-                        view?.hideLoading()
-                        view?.showError(t)
-                    }
+                    getOnError()
                 )
 
         )
@@ -184,10 +178,7 @@ class MediaDetailPresenter @Inject constructor(
                         view?.hideLoading()
                         showModel(model?.copy(seasons = seasons))
                     },
-                    { t ->
-                        view?.hideLoading()
-                        view?.showError(t)
-                    }
+                    getOnError()
                 )
 
         )

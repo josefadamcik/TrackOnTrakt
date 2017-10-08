@@ -19,8 +19,10 @@ package cz.josefadamcik.trackontrakt.detail
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenProvider
 import cz.josefadamcik.trackontrakt.data.api.model.*
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import retrofit2.Response
 import timber.log.Timber
@@ -55,10 +57,14 @@ class MediaDetailDataSource @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun loadShowSeasonsWithEpisodes(showId: Long): Single<List<Season>> {
-        return traktApi.showSeasons(tokenHolder.httpAuth(), showId, TraktApi.ExtendedInfo.episodes)
-            .subscribeOn(Schedulers.io())
+    fun loadShowSeasons(showId: Long): Single<List<Season>> {
+        return loadShowSeasonsInner(showId)
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun loadShowSeasonsInner(showId: Long): Single<List<Season>> {
+        return traktApi.showSeasons(tokenHolder.httpAuth(), showId, TraktApi.ExtendedInfo.full)
+            .subscribeOn(Schedulers.io())
             .map { response ->
                 Timber.d("loadShowSeasonsWithEpisodes - result %s", response.code())
                 var seasons = response.body()
@@ -72,6 +78,20 @@ class MediaDetailDataSource @Inject constructor(
                 }
                 seasons
             }
+    }
 
+    fun loadShowSeasonsWithEpisodes(showId: Long): Single<MutableList<Season>> {
+        return loadShowSeasonsInner(showId)
+            .flatMapObservable { list -> Observable.fromIterable(list) }
+            .flatMapSingle { season: Season ->
+                Single.zip(
+                    traktApi.showSeasonEpisodes(tokenHolder.httpAuth(), showId, season.number, TraktApi.ExtendedInfo.full),
+                    Single.just(season),
+                    BiFunction { t1: Response<List<Episode>>, t2: Season -> Pair(t1, t2) }
+                )
+            }
+            .map { pair -> pair.second.copy(episodes = pair.first.body()) }
+            .toList()
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }

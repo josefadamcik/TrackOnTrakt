@@ -98,6 +98,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         )
         adapter = MediaDetailAdapter(LayoutInflater.from(this), resources, this, roundedBackgroundSpanConfig)
         list.layoutManager = LinearLayoutManager(this)
+
         //list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         list.setHasFixedSize(true)
         list.adapter = adapter

@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="@dimen/material_baseline_grid_6x"
+              android:layout_height="wrap_content"
+              android:minHeight="@dimen/material_baseline_grid_6x"
               android:orientation="vertical"
     >
+
+    <include layout="@layout/separator"/>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/material_baseline_grid_6x"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/material_baseline_grid_2x"
         android:paddingRight="@dimen/material_baseline_grid_2x"
         android:paddingTop="@dimen/material_baseline_grid_1x"
@@ -19,6 +22,17 @@
         android:textColor="@color/material_typography_secondary_text_color_dark"
         tools:text="Season 01"
         android:gravity="left|center_vertical"
+        />
+
+    <TextView
+        android:id="@+id/overview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/material_baseline_grid_2x"
+        android:paddingRight="@dimen/material_baseline_grid_2x"
+        android:paddingTop="@dimen/material_baseline_grid_1x"
+        android:paddingBottom="@dimen/material_baseline_grid_1x"
+        tools:text="Longer text with multiple lines but only in case when api returned something."
         />
 
 

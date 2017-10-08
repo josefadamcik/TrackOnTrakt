@@ -6,6 +6,8 @@
 
     >
 
+    <include layout="@layout/separator"/>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/material_baseline_grid_6x"

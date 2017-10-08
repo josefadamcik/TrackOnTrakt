@@ -148,15 +148,41 @@ class MediaDetailAdapter(
                 items[position].episode?.let {
                     holder.txtEpisodeInfo.text = resources.getString(R.string.episode_item_number_and_season_info, it.season, it.number)
                     holder.txtTitle.text = it.title
+                    if (it.overview.isNullOrEmpty()) {
+                        holder.txtOverview.visibility = View.GONE
+                    } else {
+                        holder.txtOverview.visibility = View.VISIBLE
+                        holder.txtOverview.text = it.overview
+                    }
+
+
+                    if (it.rating == null || it.votes == null) {
+                        holder.txtRating.visibility = View.GONE
+                    } else {
+                        holder.txtRating.visibility = View.VISIBLE
+                        holder.txtRating.text = resources.getString(R.string.media_detail_votes, it.rating * 10, it.votes);
+                    }
                 }
             }
-            is HeaderInfoViewHolder -> {
+            is SeasonHeaderViewHolder -> {
                 items[position].season?.let {
-                    if (it.number == 0) {
-                        holder.txtTitle.text = resources.getString(R.string.season_specials_title)
+                    if (!it.title.isNullOrEmpty()) {
+                        holder.txtTitle.text = it.title
                     } else {
-                        holder.txtTitle.text = resources.getString(R.string.season_info, it.number)
+                        if (it.number == 0) {
+                            holder.txtTitle.text = resources.getString(R.string.season_specials_title)
+                        } else {
+                            holder.txtTitle.text = resources.getString(R.string.season_info, it.number)
+                        }
                     }
+
+                    if (!it.overview.isNullOrEmpty()) {
+                        holder.txtOverview.text = it.overview
+                        holder.txtOverview.visibility = View.VISIBLE
+                    } else {
+                        holder.txtOverview.visibility = View.GONE
+                    }
+
                 }
             }
             else -> {
@@ -172,7 +198,7 @@ class MediaDetailAdapter(
             VIEWTYPE_MEDIA_INFO -> MainInfoViewHolder(inflater.inflate(R.layout.item_media_info, parent, false), listener)
             VIEWTYPE_MEDIA_INFO_ROW -> InfoRowViewHolder(inflater.inflate(R.layout.item_media_info_row, parent, false), listener)
             VIEWTYPE_EPISODE -> EpisodeInfoViewHolder(inflater.inflate(R.layout.item_media_info_episode, parent, false))
-            VIEWTYPE_SEASON_HEADER -> HeaderInfoViewHolder(inflater.inflate(R.layout.item_media_info_season_header, parent, false))
+            VIEWTYPE_SEASON_HEADER -> SeasonHeaderViewHolder(inflater.inflate(R.layout.item_media_info_season_header, parent, false))
             VIEWTYPE_LAST_EPISODE_HEADER -> ViewHolder(inflater.inflate(R.layout.item_media_info_latest_episode_separator, parent, false))
             else -> ViewHolder(null)
         }
@@ -226,15 +252,18 @@ class MediaDetailAdapter(
     inner class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
 
         @BindView(R.id.title) lateinit var txtTitle: TextView
+        @BindView(R.id.overview) lateinit var txtOverview: TextView
         @BindView(R.id.episode_info) lateinit var txtEpisodeInfo: TextView
+        @BindView(R.id.rating) lateinit var txtRating: TextView
         @OnClick(R.id.btn_checkin) fun onCheckinClick() {
             items[adapterPosition].episode?.let { listener.onEpisodeCheckInClick(it) }
         }
 
     }
 
-    class HeaderInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
+    class SeasonHeaderViewHolder(itemView: View?) : ViewHolder(itemView) {
         @BindView(R.id.title) lateinit var txtTitle: TextView
+        @BindView(R.id.overview) lateinit var txtOverview: TextView
     }
 
     data class Item(val viewType: Int, val season: Season? = null, val episode: Episode? = null, val infoItem: InfoItem? = null)

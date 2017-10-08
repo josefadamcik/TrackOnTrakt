@@ -15,9 +15,16 @@
 */
 package cz.josefadamcik.trackontrakt.data.api.model
 
+import java.util.*
+
 data class Episode(
     val season: Int,
     val number: Int,
     val title: String,
-    val ids: MediaIds
+    val ids: MediaIds,
+    val overview: String?,
+    val rating: Float?,
+    val votes: Int?,
+    val first_aired: Date?,
+    val runtime: Int?
 )

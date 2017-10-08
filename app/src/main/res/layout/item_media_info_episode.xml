@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="@dimen/material_increment_1x"
+              android:layout_height="wrap_content"
+              android:minHeight="@dimen/material_increment_1x"
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="horizontal"
     >
@@ -13,26 +14,60 @@
         android:textAppearance="@style/MediaDetailEpisodeTitle.Secondary"
         android:paddingLeft="@dimen/material_baseline_grid_2x"
         android:paddingRight="@dimen/material_baseline_grid_1x"
-        android:gravity="left|center_vertical"
+        android:paddingTop="8dp"
+        android:gravity="left|top"
         tools:text="1x01"/>
-    <TextView
-        android:id="@+id/title"
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:textAppearance="@style/MediaDetailEpisodeTitle"
-        android:paddingRight="@dimen/material_baseline_grid_1x"
-        android:gravity="left|center_vertical"
-        tools:text="episode item title long enough to split into two lines and more more more"/>
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textAppearance="@style/MediaDetailEpisodeTitle"
+            android:paddingRight="@dimen/material_baseline_grid_1x"
+            android:gravity="left|center_vertical"
+            android:paddingTop="8dp"
+            tools:text="episode item title long enough to split into two lines and more more more"/>
+
+        <TextView
+            android:layout_marginTop="@dimen/material_baseline_grid_0.5x"
+            android:id="@+id/overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Longer text with multiple lines but only in case when api returned something."
+            android:textColor="@color/material_typography_secondary_text_color_dark"
+            />
+
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/material_baseline_grid_0.5x"
+
+            android:drawablePadding="@dimen/material_baseline_grid_0.5x"
+            android:textAppearance="@style/TextAppearance.MediaDetailCertification"
+            android:textColor="@color/material_typography_secondary_text_color_dark"
+            tools:text="75% (12 votes)"
+            android:drawableLeft="@drawable/ic_thumbs_up_down_black_20dp"
+            android:layout_marginBottom="@dimen/material_baseline_grid_0.5x"
+            />
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/btn_checkin"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
         android:src="@drawable/ic_check_circle_black_24dp"
         android:paddingLeft="@dimen/material_baseline_grid_2x"
         android:paddingRight="@dimen/material_baseline_grid_2x"
+
         />
 </LinearLayout>

@@ -97,6 +97,15 @@ interface TraktApi {
         @Query("extended") extended: ExtendedInfo = ExtendedInfo.metadata
     ): Single<Response<List<Season>>>
 
+    @GET("/shows/{id}/seasons/{season}")
+    fun showSeasonEpisodes(
+        @Header("Authorization") authorization: String,
+        @Path("id") id: Long,
+        @Path("season") season: Int,
+        @Query("extended") extended: ExtendedInfo = ExtendedInfo.metadata
+
+    ): Single<Response<List<Episode>>>
+
     @POST("/checkin")
     fun checkin(@Header("Authorization") authorization: String,
                 @Body data: CheckinRequest
