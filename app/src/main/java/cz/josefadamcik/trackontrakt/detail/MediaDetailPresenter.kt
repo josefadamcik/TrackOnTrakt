@@ -17,17 +17,12 @@ package cz.josefadamcik.trackontrakt.detail
 
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.base.BasePresenter
-import cz.josefadamcik.trackontrakt.data.api.TraktApi
-import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenProvider
 import cz.josefadamcik.trackontrakt.data.api.model.*
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
 
 class MediaDetailPresenter @Inject constructor(
-    val traktApi: TraktApi,
-    val tokenHolder: TraktAuthTokenProvider
+    private val dataSource: MediaDetailDataSource
 ) : BasePresenter<MediaDetailView>() {
 
     private var identifier: MediaIdentifier? = null
@@ -53,15 +48,11 @@ class MediaDetailPresenter @Inject constructor(
         view?.showLoading()
         if (mediaId.type == MediaType.movie) {
             disposables.add(
-                traktApi.movie(tokenHolder.httpAuth(), mediaId.id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                dataSource.loadMovieInfo(mediaId)
                     .subscribe(
                         { movie ->
                             view?.hideLoading()
-                            if (movie != null) {
-                                showMovie(movie)
-                            }
+                            showMovie(movie)
                         },
                         { t ->
                             view?.hideLoading()
@@ -72,9 +63,7 @@ class MediaDetailPresenter @Inject constructor(
             )
         } else if (mediaId.type == MediaType.show) {
             disposables.add(
-                traktApi.show(tokenHolder.httpAuth(), mediaId.id)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                dataSource.loadShowInfo(mediaId)
                     .subscribe(
                         { show ->
                             view?.hideLoading()
@@ -119,11 +108,8 @@ class MediaDetailPresenter @Inject constructor(
         view?.showLoading()
         view?.itemCheckInactionEnabled(false)
         disposables.add(
-            traktApi.checkin(tokenHolder.httpAuth(), request)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    { result ->
+            dataSource.doCheckin(request).subscribe(
+                { result ->
                         Timber.d("checkin complete $result")
                         view?.hideLoading()
                         view?.itemCheckInactionEnabled(true)
@@ -167,9 +153,7 @@ class MediaDetailPresenter @Inject constructor(
         view?.showLoading()
         Timber.d("showShow - last episode")
         disposables.add(
-            traktApi.showLastEpisode(tokenHolder.httpAuth(), show.ids.trakt)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+            dataSource.loadShowLastEpisode(show.ids.trakt)
                 .subscribe(
                     { response ->
                         Timber.d("showShow - last episode result")
@@ -194,23 +178,10 @@ class MediaDetailPresenter @Inject constructor(
     private fun loadEpisodes(showId: Long) {
         Timber.d("loadEpisodes ")
         disposables.add(
-            traktApi.showSeasons(tokenHolder.httpAuth(), showId, TraktApi.ExtendedInfo.episodes)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+            dataSource.loadShowSeasonsWithEpisodes(showId)
                 .subscribe(
-                    { response ->
-                        Timber.d("loadEpisodes - result %s", response.code())
+                    { seasons ->
                         view?.hideLoading()
-                        var seasons = response.body()
-                        if (seasons.isNotEmpty() && seasons.first().number == 0) {
-                            //Season 0 -> specials, put them to an and and rename to specials
-                            val specialsSeason = seasons.first()
-                            val modifiedSeasonsList = seasons.toMutableList()
-                            modifiedSeasonsList.removeAt(0)
-                            modifiedSeasonsList.add(specialsSeason)
-                            seasons = modifiedSeasonsList
-                        }
-
                         showModel(model?.copy(seasons = seasons))
                     },
                     { t ->

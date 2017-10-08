@@ -44,7 +44,7 @@ data class MediaDetailModel(
     ) {
 
         companion object {
-            val YEAR_FORMAT = SimpleDateFormat("YYYY", Locale.getDefault())
+            val YEAR_FORMAT = SimpleDateFormat("yyyy", Locale.getDefault())
         }
 
         val year: CharSequence get() = if (date == null) "" else YEAR_FORMAT.format(date)
