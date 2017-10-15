@@ -5,12 +5,14 @@ import java.util.*
 data class Season(
     val number: Int,
     val ids: MediaIds,
-    val rating: Float?,
-    val votes: Int?,
-    val aired_episodes: Int?,
-    val title: String?,
-    val overview: String?,
-    val first_aired: Date?,
-    val network: String?,
-    val episodes: List<Episode>?
+    val rating: Float? = 0.0f,
+    val votes: Int? = 0,
+    val aired_episodes: Int? = 0,
+    val title: String? = null,
+    val overview: String? = null,
+    val first_aired: Date? = null,
+    val network: String? = null,
+    val episodes: List<Episode>? = emptyList()
 )
+
+

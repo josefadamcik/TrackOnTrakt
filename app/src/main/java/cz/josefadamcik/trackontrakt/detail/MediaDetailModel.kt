@@ -15,15 +15,15 @@
 */
 package cz.josefadamcik.trackontrakt.detail
 
-import cz.josefadamcik.trackontrakt.data.api.model.Episode
-import cz.josefadamcik.trackontrakt.data.api.model.Season
+import cz.josefadamcik.trackontrakt.data.api.model.SeasonWithProgress
+import cz.josefadamcik.trackontrakt.data.api.model.ShowWatchedProgress
 import java.text.SimpleDateFormat
 import java.util.*
 
 data class MediaDetailModel(
     val basic: MediaDetailInfo,
-    val latestEpisode: Episode? = null,
-    val seasons: List<Season> = emptyList()
+    val seasons: List<SeasonWithProgress> = emptyList(),
+    val showProgress: ShowWatchedProgress = ShowWatchedProgress()
 ) {
 
 

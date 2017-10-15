@@ -119,9 +119,12 @@ dependencies {
     /* Testing */
     testCompile 'junit:junit:4.12'
     testCompile 'org.hamcrest:hamcrest-library:1.3'
-    testCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
-    testCompile 'com.google.dexmaker:dexmaker:1.2'
-    testCompile 'org.mockito:mockito-core:1.10.17'
+    testCompile 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0' //includes mockito
+//    testCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+//    testCompile 'com.google.dexmaker:dexmaker:1.2'
+    testCompile 'org.mockito:mockito-core:2.8.9'
+    testCompile "org.mockito:mockito-inline:2.8.9"
+    testCompile 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
 
     androidTestCompile 'com.android.support.test:runner:1.0.1'
     androidTestCompile 'com.android.support.test:rules:1.0.1'
@@ -173,6 +176,7 @@ dependencies {
     productionCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
 
     //basic utils
+    compile 'com.github.hotchemi:khronos:0.9.0'
     compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     compile 'nz.bradcampbell:paperparcel:2.0.1'

@@ -132,36 +132,44 @@ class MediaDetailPresenter @Inject constructor(
     private fun showShow(show: ShowDetail) {
         showDetail = show
         view?.showBasicInfo(show.year, show.certification, show.rating ?: 0.0, show.votes ?: 0)
-        showModel(MediaDetailModel(MediaDetailModel.MediaDetailInfo(
-            description = show.overview,
-            homepage = show.homepage,
-            traktPage = "https://trakt.tv/shows/${show.ids.slug}",
-            rating = show.rating ?: 0.0,
-            certification = show.certification,
-            votes = show.votes ?: 0,
-            network = show.network,
-            genres = show.genres,
-            date = show.first_aired,
-            trailer = show.trailer,
-            status = show.status,
-            language = show.language
-        )))
+        showModel(
+            MediaDetailModel(
+                MediaDetailModel.MediaDetailInfo(
+                    description = show.overview,
+                    homepage = show.homepage,
+                    traktPage = "https://trakt.tv/shows/${show.ids.slug}",
+                    rating = show.rating ?: 0.0,
+                    certification = show.certification,
+                    votes = show.votes ?: 0,
+                    network = show.network,
+                    genres = show.genres,
+                    date = show.first_aired,
+                    trailer = show.trailer,
+                    status = show.status,
+                    language = show.language
+                )
+            )
+        )
 
+        loadEpisodes(show.ids.trakt)
+    }
+
+    private fun loadEpisodes(showId: Long) {
         view?.showLoading()
-        Timber.d("showShow - last episode")
+        Timber.d("loadEpisodes ")
         disposables.add(
-            dataSource.loadShowLastEpisode(show.ids.trakt)
+            dataSource.loadShowSeasonsWithEpisodes(showId)
                 .subscribe(
-                    { response ->
-                        Timber.d("showShow - last episode result")
-                        if (response.code() == 204) {
-                            Timber.d("No last episode")
-                        } else {
-                            val latestEpisode = response.body()
-                            Timber.d("Last episode %s", latestEpisode)
-                            showModel(model?.copy(latestEpisode = latestEpisode))
+                    { seasons ->
+                        view?.hideLoading()
+                        val seasonsWithProgress = seasons.map { season ->
+                            SeasonWithProgress(
+                                season = season,
+                                episodes = season.episodes?.map { ep -> EpisodeWithProgress(ep) } ?: emptyList()
+                            )
                         }
-                        loadEpisodes(show.ids.trakt)
+                        showModel(model?.copy(seasons = seasonsWithProgress))
+                        loadProgress(showId)
                     },
                     getOnError()
                 )
@@ -169,19 +177,41 @@ class MediaDetailPresenter @Inject constructor(
         )
     }
 
-    private fun loadEpisodes(showId: Long) {
-        Timber.d("loadEpisodes ")
+    private fun loadProgress(showId: Long) {
+        view?.showLoading()
+        Timber.d("loadProgress  ")
         disposables.add(
-            dataSource.loadShowSeasonsWithEpisodes(showId)
+            dataSource.loadShowWatchedProgress(showId)
                 .subscribe(
-                    { seasons ->
+                    { progress ->
                         view?.hideLoading()
-                        showModel(model?.copy(seasons = seasons))
+                        model?.let { model ->
+                            val seasonsWithProgress = combineSeasonDataWithProgress(model.seasons, progress)
+                            showModel(model.copy(seasons = seasonsWithProgress, showProgress = progress))
+                        }
                     },
                     getOnError()
                 )
 
         )
+    }
+
+    internal fun combineSeasonDataWithProgress(original: List<SeasonWithProgress>, progress: ShowWatchedProgress): List<SeasonWithProgress> {
+        return original.map { swp ->
+            val newSeasonProgress = progress.seasons.find { it.number == swp.season.number }
+                ?: ShowWatchedProgress.SeasonWatchedProgress(number = swp.season.number)
+
+            SeasonWithProgress(
+                season = swp.season,
+                progress = newSeasonProgress,
+                episodes = swp.episodes.map { episodeWithProgress ->
+                    episodeWithProgress.copy(
+                        progress = newSeasonProgress.episodes.find { ep -> ep.number == episodeWithProgress.episode.number }
+                            ?: ShowWatchedProgress.EpisodeWatchedProgress(episodeWithProgress.episode.number)
+                    )
+                }
+            )
+        }
     }
 
     private fun showMovie(movie: MovieDetail) {

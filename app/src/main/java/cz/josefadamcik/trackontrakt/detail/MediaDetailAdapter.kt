@@ -29,7 +29,8 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.Episode
-import cz.josefadamcik.trackontrakt.data.api.model.Season
+import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
+import cz.josefadamcik.trackontrakt.data.api.model.SeasonWithProgress
 import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
 import java.text.DateFormat
 
@@ -91,14 +92,15 @@ class MediaDetailAdapter(
                 list.add(itemFormInfoRow(R.string.label_traktpage, traktPage, traktPage))
             }
 
-            if (model.latestEpisode != null) {
-                list.add(Item(VIEWTYPE_LAST_EPISODE_HEADER))
-                list.add(Item(VIEWTYPE_EPISODE, episode = model.latestEpisode))
-            }
+            //fixme: handle latest episode
+//            if (model.latestEpisode != null) {
+//                list.add(Item(VIEWTYPE_LAST_EPISODE_HEADER))
+//                list.add(Item(VIEWTYPE_EPISODE, episode = model.latestEpisode))
+//            }
             if (model.seasons.isNotEmpty()) {
                 model.seasons.forEach { season ->
                     list.add(Item(VIEWTYPE_SEASON_HEADER, season = season))
-                    season.episodes?.mapTo(list, transform = { ep -> Item(VIEWTYPE_EPISODE, season, ep) })
+                    season.episodes.mapTo(list, transform = { ep -> Item(VIEWTYPE_EPISODE, season, ep) })
                 }
             }
         }
@@ -111,7 +113,8 @@ class MediaDetailAdapter(
             infoItem = InfoItem(resources.getString(labelResource), value, link)
         )
     }
-    private fun hasLatestEpisode() = model?.latestEpisode != null
+
+    private fun hasLatestEpisode() = false //model?.latestEpisode != null
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (holder) {
@@ -146,38 +149,38 @@ class MediaDetailAdapter(
             }
             is EpisodeInfoViewHolder -> {
                 items[position].episode?.let {
-                    holder.txtEpisodeInfo.text = resources.getString(R.string.episode_item_number_and_season_info, it.season, it.number)
-                    holder.txtTitle.text = it.title
-                    if (it.overview.isNullOrEmpty()) {
+                    holder.txtEpisodeInfo.text = resources.getString(R.string.episode_item_number_and_season_info, it.episode.season, it.episode.number)
+                    holder.txtTitle.text = it.episode.title
+                    if (it.episode.overview.isNullOrEmpty()) {
                         holder.txtOverview.visibility = View.GONE
                     } else {
                         holder.txtOverview.visibility = View.VISIBLE
-                        holder.txtOverview.text = it.overview
+                        holder.txtOverview.text = it.episode.overview
                     }
 
 
-                    if (it.rating == null || it.votes == null) {
+                    if (it.episode.rating == null || it.episode.votes == null) {
                         holder.txtRating.visibility = View.GONE
                     } else {
                         holder.txtRating.visibility = View.VISIBLE
-                        holder.txtRating.text = resources.getString(R.string.media_detail_votes, it.rating * 10, it.votes);
+                        holder.txtRating.text = resources.getString(R.string.media_detail_votes, it.episode.rating * 10, it.episode.votes);
                     }
                 }
             }
             is SeasonHeaderViewHolder -> {
                 items[position].season?.let {
-                    if (!it.title.isNullOrEmpty()) {
-                        holder.txtTitle.text = it.title
+                    if (!it.season.title.isNullOrEmpty()) {
+                        holder.txtTitle.text = it.season.title
                     } else {
-                        if (it.number == 0) {
+                        if (it.season.number == 0) {
                             holder.txtTitle.text = resources.getString(R.string.season_specials_title)
                         } else {
-                            holder.txtTitle.text = resources.getString(R.string.season_info, it.number)
+                            holder.txtTitle.text = resources.getString(R.string.season_info, it.season.number)
                         }
                     }
 
-                    if (!it.overview.isNullOrEmpty()) {
-                        holder.txtOverview.text = it.overview
+                    if (!it.season.overview.isNullOrEmpty()) {
+                        holder.txtOverview.text = it.season.overview
                         holder.txtOverview.visibility = View.VISIBLE
                     } else {
                         holder.txtOverview.visibility = View.GONE
@@ -256,7 +259,7 @@ class MediaDetailAdapter(
         @BindView(R.id.episode_info) lateinit var txtEpisodeInfo: TextView
         @BindView(R.id.rating) lateinit var txtRating: TextView
         @OnClick(R.id.btn_checkin) fun onCheckinClick() {
-            items[adapterPosition].episode?.let { listener.onEpisodeCheckInClick(it) }
+            items[adapterPosition].episode?.let { listener.onEpisodeCheckInClick(it.episode) }
         }
 
     }
@@ -266,6 +269,6 @@ class MediaDetailAdapter(
         @BindView(R.id.overview) lateinit var txtOverview: TextView
     }
 
-    data class Item(val viewType: Int, val season: Season? = null, val episode: Episode? = null, val infoItem: InfoItem? = null)
+    data class Item(val viewType: Int, val season: SeasonWithProgress? = null, val episode: EpisodeWithProgress? = null, val infoItem: InfoItem? = null)
     data class InfoItem(val label: String, val value: String, val link: String? = null)
 }

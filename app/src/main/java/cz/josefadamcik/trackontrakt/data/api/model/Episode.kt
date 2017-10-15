@@ -22,9 +22,9 @@ data class Episode(
     val number: Int,
     val title: String,
     val ids: MediaIds,
-    val overview: String?,
-    val rating: Float?,
-    val votes: Int?,
-    val first_aired: Date?,
-    val runtime: Int?
+    val overview: String? = null,
+    val rating: Float? = 0.0f,
+    val votes: Int? = 0,
+    val first_aired: Date? = null,
+    val runtime: Int? = 0
 )

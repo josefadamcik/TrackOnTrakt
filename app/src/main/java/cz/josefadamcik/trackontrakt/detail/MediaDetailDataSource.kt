@@ -51,6 +51,13 @@ class MediaDetailDataSource @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    fun loadShowWatchedProgress(showId: Long): Single<ShowWatchedProgress> {
+        return traktApi.showWatchedProgress(tokenHolder.httpAuth(), showId, specials = true, countSpecials = false)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { t: Response<ShowWatchedProgress> -> t.body() }
+    }
+
     fun loadShowLastEpisode(showId: Long): Single<Response<Episode>> {
         return traktApi.showLastEpisode(tokenHolder.httpAuth(), showId)
             .subscribeOn(Schedulers.io())
