@@ -16,6 +16,7 @@
 package cz.josefadamcik.trackontrakt.detail
 
 import com.hannesdorfmann.mosby3.mvp.MvpView
+import java.util.*
 
 interface MediaDetailView : MvpView {
     fun showTitle(name: String)
@@ -28,4 +29,5 @@ interface MediaDetailView : MvpView {
     fun showMedia(model: MediaDetailModel)
     fun showCheckinSuccess()
     fun showCheckinAlreadyInProgress()
+    fun showAlreadyWatchedStats(number: Int, last_watched_at: Date?)
 }

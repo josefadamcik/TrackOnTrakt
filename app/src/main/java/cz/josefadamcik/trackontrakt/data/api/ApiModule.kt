@@ -46,7 +46,7 @@ open class ApiModule(private val app: TrackOnTraktApplication) {
     @ApplicationScope
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
-            .add(Date::class.java, Rfc3339DateJsonAdapter())
+            .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
             .build()
     }
 
@@ -80,7 +80,7 @@ open class ApiModule(private val app: TrackOnTraktApplication) {
             val loggingInterceptor = HttpLoggingInterceptor({
                 Timber.tag("OkHttpNetwork").d(it)
             })
-            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
             builder.addInterceptor(loggingInterceptor)
 
             builder.addInterceptor(OkHttpCacheLoggingInterceptor())

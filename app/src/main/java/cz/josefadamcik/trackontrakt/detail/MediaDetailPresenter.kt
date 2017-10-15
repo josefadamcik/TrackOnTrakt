@@ -87,14 +87,20 @@ class MediaDetailPresenter @Inject constructor(
         }
     }
 
-    fun checkinActionClicked(episode: Episode) {
-        Timber.d("checkinActionClicked for $episode")
-        val request = CheckinRequest(
-            episode = episode,
-            app_version = BuildConfig.VERSION_NAME,
-            app_date = BuildConfig.BUILD_DATE
-        )
-        doCheckinRequest(request)
+    fun checkinActionClicked(episodeWProgress: EpisodeWithProgress) {
+        if (episodeWProgress.progress.completed) {
+            //display info
+            view?.showAlreadyWatchedStats(episodeWProgress.progress.number, episodeWProgress.progress.last_watched_at)
+        } else {
+            Timber.d("checkinActionClicked for $episodeWProgress")
+            val request = CheckinRequest(
+                episode = episodeWProgress.episode,
+                app_version = BuildConfig.VERSION_NAME,
+                app_date = BuildConfig.BUILD_DATE
+            )
+            doCheckinRequest(request)
+
+        }
     }
 
 
@@ -124,6 +130,7 @@ class MediaDetailPresenter @Inject constructor(
 
     private fun getOnError(): (Throwable?) -> Unit {
         return { t: Throwable? ->
+            Timber.e(t)
             view?.hideLoading()
             view?.showError(t)
         }

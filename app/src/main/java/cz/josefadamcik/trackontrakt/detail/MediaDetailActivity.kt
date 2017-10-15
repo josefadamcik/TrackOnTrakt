@@ -21,9 +21,10 @@ import com.evernote.android.state.StateSaver
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
-import cz.josefadamcik.trackontrakt.data.api.model.Episode
+import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
 import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
+import java.util.*
 import javax.inject.Inject
 
 class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(), MediaDetailView, MediaDetailAdapter.InteractionListener {
@@ -114,7 +115,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         presenter.checkinActionClicked()
     }
 
-    override fun onEpisodeCheckInClick(episode: Episode) {
+    override fun onEpisodeCheckInClick(episode: EpisodeWithProgress) {
         presenter.checkinActionClicked(episode)
     }
 
@@ -176,6 +177,10 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
 
     override fun showMedia(model: MediaDetailModel) {
         adapter.model = model
+    }
+
+    override fun showAlreadyWatchedStats(number: Int, last_watched_at: Date?) {
+        Snackbar.make(progress, getString(R.string.media_detail_show_watched_stats, number, last_watched_at), Snackbar.LENGTH_LONG).show()
     }
 
     override fun showError(e: Throwable?) {

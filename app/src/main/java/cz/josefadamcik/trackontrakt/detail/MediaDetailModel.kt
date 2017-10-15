@@ -15,6 +15,7 @@
 */
 package cz.josefadamcik.trackontrakt.detail
 
+import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
 import cz.josefadamcik.trackontrakt.data.api.model.SeasonWithProgress
 import cz.josefadamcik.trackontrakt.data.api.model.ShowWatchedProgress
 import java.text.SimpleDateFormat
@@ -26,6 +27,20 @@ data class MediaDetailModel(
     val showProgress: ShowWatchedProgress = ShowWatchedProgress()
 ) {
 
+    val nextShowEpisodeToWatch: Pair<SeasonWithProgress, EpisodeWithProgress>?
+        get() {
+            if (showProgress.next_episode != null) {
+                val episode = seasons.flatMap { it.episodes }.find { ep -> ep.episode.ids.trakt == showProgress.next_episode.ids.trakt }
+                if (episode != null) {
+                    val season = seasons.find { it.season.number == episode.episode.season }
+                    if (season != null) {
+                        return Pair(season, episode)
+                    }
+                }
+            }
+
+            return null
+        }
 
     data class MediaDetailInfo(
         val tagline: String? = null,
@@ -48,5 +63,6 @@ data class MediaDetailModel(
         }
 
         val year: CharSequence get() = if (date == null) "" else YEAR_FORMAT.format(date)
+
     }
 }

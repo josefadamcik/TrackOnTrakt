@@ -16,6 +16,7 @@
 package cz.josefadamcik.trackontrakt.detail
 
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.annotation.StringRes
 import android.support.v7.widget.RecyclerView
@@ -23,12 +24,13 @@ import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
+import butterknife.BindDrawable
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import cz.josefadamcik.trackontrakt.R
-import cz.josefadamcik.trackontrakt.data.api.model.Episode
 import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
 import cz.josefadamcik.trackontrakt.data.api.model.SeasonWithProgress
 import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
@@ -46,12 +48,12 @@ class MediaDetailAdapter(
         const val VIEWTYPE_MEDIA_INFO_ROW = 2
         const val VIEWTYPE_EPISODE = 3
         const val VIEWTYPE_SEASON_HEADER = 4
-        const val VIEWTYPE_LAST_EPISODE_HEADER = 5
+        const val VIEWTYPE_NEXT_EPISODE_HEADER = 5
         val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
     }
 
     interface InteractionListener {
-        fun onEpisodeCheckInClick(episode: Episode)
+        fun onEpisodeCheckInClick(episode: EpisodeWithProgress)
         fun onOpenWebPageClick(uri: Uri)
     }
 
@@ -92,11 +94,11 @@ class MediaDetailAdapter(
                 list.add(itemFormInfoRow(R.string.label_traktpage, traktPage, traktPage))
             }
 
-            //fixme: handle latest episode
-//            if (model.latestEpisode != null) {
-//                list.add(Item(VIEWTYPE_LAST_EPISODE_HEADER))
-//                list.add(Item(VIEWTYPE_EPISODE, episode = model.latestEpisode))
-//            }
+            model.nextShowEpisodeToWatch?.let { (season, episode) ->
+                list.add(Item(VIEWTYPE_NEXT_EPISODE_HEADER))
+                list.add(Item(VIEWTYPE_EPISODE, season, episode))
+            }
+
             if (model.seasons.isNotEmpty()) {
                 model.seasons.forEach { season ->
                     list.add(Item(VIEWTYPE_SEASON_HEADER, season = season))
@@ -113,8 +115,6 @@ class MediaDetailAdapter(
             infoItem = InfoItem(resources.getString(labelResource), value, link)
         )
     }
-
-    private fun hasLatestEpisode() = false //model?.latestEpisode != null
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder?, position: Int) {
         when (holder) {
@@ -165,6 +165,14 @@ class MediaDetailAdapter(
                         holder.txtRating.visibility = View.VISIBLE
                         holder.txtRating.text = resources.getString(R.string.media_detail_votes, it.episode.rating * 10, it.episode.votes);
                     }
+
+
+
+                    if (it.progress.completed) {
+                        holder.btnCheckin.setImageDrawable(holder.drawableIcEye)
+                    } else {
+                        holder.btnCheckin.setImageDrawable(holder.drawableIcCheck)
+                    }
                 }
             }
             is SeasonHeaderViewHolder -> {
@@ -202,7 +210,7 @@ class MediaDetailAdapter(
             VIEWTYPE_MEDIA_INFO_ROW -> InfoRowViewHolder(inflater.inflate(R.layout.item_media_info_row, parent, false), listener)
             VIEWTYPE_EPISODE -> EpisodeInfoViewHolder(inflater.inflate(R.layout.item_media_info_episode, parent, false))
             VIEWTYPE_SEASON_HEADER -> SeasonHeaderViewHolder(inflater.inflate(R.layout.item_media_info_season_header, parent, false))
-            VIEWTYPE_LAST_EPISODE_HEADER -> ViewHolder(inflater.inflate(R.layout.item_media_info_latest_episode_separator, parent, false))
+            VIEWTYPE_NEXT_EPISODE_HEADER -> ViewHolder(inflater.inflate(R.layout.item_media_info_next_episode_separator, parent, false))
             else -> ViewHolder(null)
         }
 
@@ -218,27 +226,6 @@ class MediaDetailAdapter(
     class MainInfoViewHolder(itemView: View?, private val listener: InteractionListener) : ViewHolder(itemView) {
         @BindView(R.id.txt_description) lateinit var txtDescription: TextView
         @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
-        var homepageUri: Uri? = null
-        var trailerUri: Uri? = null
-        var traktUri: Uri? = null
-
-        fun onClickHomepage() {
-            if (homepageUri != null) {
-                listener.onOpenWebPageClick(homepageUri as Uri)
-            }
-        }
-
-        fun onClickTrailer() {
-            if (trailerUri != null) {
-                listener.onOpenWebPageClick(trailerUri as Uri)
-            }
-        }
-
-        fun onClickTraktpage() {
-            if (traktUri != null) {
-                listener.onOpenWebPageClick(traktUri as Uri)
-            }
-        }
     }
 
     inner class InfoRowViewHolder(itemView: View?, listener: InteractionListener) : ViewHolder(itemView), View.OnClickListener {
@@ -258,8 +245,11 @@ class MediaDetailAdapter(
         @BindView(R.id.overview) lateinit var txtOverview: TextView
         @BindView(R.id.episode_info) lateinit var txtEpisodeInfo: TextView
         @BindView(R.id.rating) lateinit var txtRating: TextView
+        @BindView(R.id.btn_checkin) lateinit var btnCheckin: ImageView
+        @BindDrawable(R.drawable.ic_check_circle_black_24dp) lateinit var drawableIcCheck: Drawable
+        @BindDrawable(R.drawable.ic_remove_red_eye_black_24dp) lateinit var drawableIcEye: Drawable
         @OnClick(R.id.btn_checkin) fun onCheckinClick() {
-            items[adapterPosition].episode?.let { listener.onEpisodeCheckInClick(it.episode) }
+            items[adapterPosition].episode?.let { listener.onEpisodeCheckInClick(it) }
         }
 
     }
