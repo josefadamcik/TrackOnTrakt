@@ -15,7 +15,6 @@
 */
 package cz.josefadamcik.trackontrakt.detail
 
-import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.model.*
 import timber.log.Timber
@@ -78,11 +77,7 @@ class MediaDetailPresenter @Inject constructor(
 
     fun checkinActionClicked() {
         this.movieDetail?.let { (title, ids, year) ->
-            val request = CheckinRequest(
-                movie = Movie(title, year, ids),
-                app_version = BuildConfig.VERSION_NAME,
-                app_date = BuildConfig.BUILD_DATE
-            )
+            val request = CheckinRequest(movie = Movie(title, year, ids))
             doCheckinRequest(request)
         }
     }
@@ -93,11 +88,7 @@ class MediaDetailPresenter @Inject constructor(
             view?.showAlreadyWatchedStats(episodeWProgress.progress.number, episodeWProgress.progress.last_watched_at)
         } else {
             Timber.d("checkinActionClicked for $episodeWProgress")
-            val request = CheckinRequest(
-                episode = episodeWProgress.episode,
-                app_version = BuildConfig.VERSION_NAME,
-                app_date = BuildConfig.BUILD_DATE
-            )
+            val request = CheckinRequest(episode = episodeWProgress.episode)
             doCheckinRequest(request)
 
         }
