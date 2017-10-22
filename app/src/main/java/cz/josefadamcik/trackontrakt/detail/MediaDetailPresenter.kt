@@ -17,6 +17,7 @@ package cz.josefadamcik.trackontrakt.detail
 
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.model.*
+import khronos.Dates
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class MediaDetailPresenter @Inject constructor(
     private var identifier: MediaIdentifier? = null
     private var movieDetail: MovieDetail? = null
     private var showDetail: ShowDetail? = null
-    private var model: MediaDetailModel? = null
+    internal var model: MediaDetailModel? = null
 
     fun load(mediaId: MediaIdentifier?, name: String?) {
         Timber.i("load: %s", mediaId)
@@ -106,6 +107,10 @@ class MediaDetailPresenter @Inject constructor(
                         view?.itemCheckInactionEnabled(true)
                         if (result.isSuccessful && result.code() == 201) {
                             view?.showCheckinSuccess()
+                            model?.let { it ->
+                                model = applyCheckinOnDataModel(it, request)
+                                showModel(model)
+                            }
                         } else if (result.code() == 409) {
                             view?.showCheckinAlreadyInProgress()
                         } else {
@@ -115,6 +120,37 @@ class MediaDetailPresenter @Inject constructor(
                     },
                 getOnError()
 
+            )
+        )
+    }
+
+    private fun applyCheckinOnDataModel(model: MediaDetailModel, request: CheckinRequest): MediaDetailModel {
+        var episodeFoundAndCompletedStatusChanged = false
+        val modifiedSeasons = model.seasons.map { season ->
+            if (season.season.number == request.episode?.season) {
+                val modifiedEpisodes = season.episodes.map { e ->
+                    if (e.episode.number == request.episode.number) {
+                        episodeFoundAndCompletedStatusChanged = true;
+                        e.copy(progress = ShowWatchedProgress.EpisodeWatchedProgress(
+                            e.episode.number,
+                            true,
+                            Dates.today
+                        ))
+                    } else {
+                        e
+                    }
+                }
+                season.copy(episodes = modifiedEpisodes)
+            } else {
+                season
+            }
+
+        }
+        return model.copy(
+            seasons = modifiedSeasons,
+            showProgress = model.showProgress.copy(
+                completed = model.showProgress.completed + if (episodeFoundAndCompletedStatusChanged) 1 else 0,
+                last_watched_at = Dates.today
             )
         )
     }

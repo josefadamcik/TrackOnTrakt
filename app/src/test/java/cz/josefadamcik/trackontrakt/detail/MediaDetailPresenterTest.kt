@@ -65,6 +65,13 @@ class MediaDetailPresenterTest {
         val view = mock<MediaDetailView>()
         presenter.view = view
 
+        // inject model into presenter -> we will observe if the model changed
+        presenter.model = MediaDetailModel(
+            MediaDetailModel.MediaDetailInfo(),
+            seasons = listOf(season),
+            showProgress = arrangeShowWatchedProgress(seasonEpisodes, 0, testSeasonNumber, testSeasonEpisodeCount)
+        )
+
         // act / when
         presenter.checkinActionClicked(episodeToCheckIn)
 
@@ -74,6 +81,16 @@ class MediaDetailPresenterTest {
         verify(view).showLoading()
         verify(view).hideLoading()
         verify(view).showCheckinSuccess()
+        argumentCaptor<MediaDetailModel>().apply {
+            verify(view).showMedia(capture())
+
+            val model = lastValue
+            val modelEpisode = model.seasons.firstOrNull()?.episodes?.firstOrNull()
+            assertThat("checked episode exists in model", modelEpisode, notNullValue())
+            assertThat("checked episode in model is watched", modelEpisode?.progress?.completed ?: false, equalTo(true))
+            assertThat("number of watched episodes is increased", model.showProgress.completed, equalTo(1))
+        }
+
     }
 
     @Test
@@ -86,7 +103,7 @@ class MediaDetailPresenterTest {
             episodes = seasonEpisodes.map { EpisodeWithProgress(it, ShowWatchedProgress.EpisodeWatchedProgress(it.number, it.number == 1)) },
             progress = arrangeSeasonWathchedProgress(testSeasonNumber, seasonEpisodes, 1, testSeasonEpisodeCount)
         )
-        val episodeToCheckIn = season.episodes.first();
+        val episodeToCheckIn = season.episodes.first()
 
         val presenter = arrangePresenterInstanceWithMockedDataService({ })
 
@@ -136,7 +153,7 @@ class MediaDetailPresenterTest {
         return ShowWatchedProgress(
             aired = seasonEpisodes.size,
             completed = watchedEpisodes,
-            last_episode = seasonEpisodes[watchedEpisodes - 1],
+            last_episode = if (watchedEpisodes > 0) seasonEpisodes[watchedEpisodes - 1] else null,
             next_episode = seasonEpisodes[watchedEpisodes],
             last_watched_at = Dates.today - 1.day,
             seasons = listOf(arrangeSeasonWathchedProgress(seasonNumber, seasonEpisodes, watchedEpisodes, episodeCount))

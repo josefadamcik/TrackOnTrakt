@@ -91,7 +91,7 @@ class MediaDetailAdapter(
                 status?.let { list.add(itemFormInfoRow(R.string.label_status, it)) }
                 trailer?.let { list.add(itemFormInfoRow(R.string.label_trailer, it, it)) }
                 homepage?.let { list.add(itemFormInfoRow(R.string.label_homepage, it, it)) }
-                list.add(itemFormInfoRow(R.string.label_traktpage, traktPage, traktPage))
+                list.add(itemFormInfoRow(R.string.label_traktpage, traktPage ?: "", traktPage))
             }
 
             model.nextShowEpisodeToWatch?.let { (season, episode) ->
