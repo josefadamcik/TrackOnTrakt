@@ -23,7 +23,7 @@ data class HistoryItem(
     val watched_at: Date,
     val action: Action,
     override val type: MediaType,
-    override val movie: Movie?,
-    override val episode: Episode?,
-    override val show: Show?
+    override val movie: Movie? = null,
+    override val episode: Episode? = null,
+    override val show: Show? = null
 ) : MediaItem

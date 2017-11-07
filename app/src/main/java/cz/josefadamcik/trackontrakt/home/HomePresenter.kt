@@ -15,45 +15,33 @@
 */
 package cz.josefadamcik.trackontrakt.home
 
-import com.hannesdorfmann.mosby3.mvp.MvpPresenter
-import cz.josefadamcik.trackontrakt.data.api.TraktApi
-import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenProvider
-import cz.josefadamcik.trackontrakt.data.api.UserAccountManager
-import io.reactivex.disposables.CompositeDisposable
+import cz.josefadamcik.trackontrakt.base.BasePresenter
 import timber.log.Timber
 import javax.inject.Inject
 
 
 class HomePresenter @Inject constructor(
-    val userAccountManager: UserAccountManager,
-    val traktApi: TraktApi,
-    val tokenHolder: TraktAuthTokenProvider
-) : MvpPresenter<HomeView> {
-    var view: HomeView? = null
-    val disposable = CompositeDisposable()
+    private val userHistoryManager: UserHistoryManager
+) : BasePresenter<HomeView>() {
 
-    override fun attachView(view: HomeView?) {
-        this.view = view
+    override fun attachView(view: HomeView) {
+        super.attachView(view)
 
         loadHomeStreamData(false)
     }
 
-    override fun detachView(retainInstance: Boolean) {
-        view = view
-        disposable.clear()
-
-    }
 
     fun loadHomeStreamData(forceRefresh: Boolean) {
         Timber.i("loadHomeStreamData: start")
         if (!forceRefresh) {
             view?.showLoading()
         }
-        disposable.add(
-            userAccountManager.loadUserHistory()
+        disposables.add(
+            userHistoryManager.loadUserHistory()
                 .subscribe(
                     { history ->
                         Timber.d("loadHomeStreamData ")
+                        view?.hideLoading()
                         view?.showHistory(history)
                     },
                     { t ->

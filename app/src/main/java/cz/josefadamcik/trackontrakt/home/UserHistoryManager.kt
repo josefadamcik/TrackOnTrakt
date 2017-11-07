@@ -13,34 +13,31 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 */
-package cz.josefadamcik.trackontrakt.data.api
+package cz.josefadamcik.trackontrakt.home
 
 import cz.josefadamcik.trackontrakt.ApplicationScope
-import cz.josefadamcik.trackontrakt.data.api.model.Settings
+import cz.josefadamcik.trackontrakt.data.api.TraktApi
+import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenProvider
+import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-
 @ApplicationScope
-class UserAccountManager
+class UserHistoryManager
 @Inject constructor(
     private val traktApi: TraktApi,
     private val authTokenProvider: TraktAuthTokenProvider
 ) {
-    /**
-     * Produces IllegalStateException when not authorised (missing auth token).
-     */
-    fun obtainUserSettings(): Single<Settings> {
+
+    fun loadUserHistory(): Single<List<HistoryItem>> {
         if (authTokenProvider.hasToken().not()) {
             return Single.error(IllegalStateException("Missing authorisation token"));
         } else {
-            return traktApi.userSettings(authTokenProvider.httpAuth())
+            return traktApi.myHistory(authTokenProvider.httpAuth(), 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
         }
     }
-
-
 }

@@ -1,6 +1,5 @@
 package cz.josefadamcik.trackontrakt.home
 
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
@@ -25,7 +24,6 @@ import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
-import cz.josefadamcik.trackontrakt.data.api.UserAccountManager
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
@@ -43,8 +41,6 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
         Search
     }
 
-    @Inject lateinit var preferences: SharedPreferences
-    @Inject lateinit var userAccountManager: UserAccountManager
     @Inject lateinit var homePresenter: HomePresenter
 
     @BindView(R.id.app_bar) lateinit var appbar: AppBarLayout
@@ -110,7 +106,6 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
 
     override fun showHistory(items: List<HistoryItem>) {
-        hideLoading()
         hidePullToRefreshRefreshing()
         currentMode = Mode.History
         historyAdapter.items = items
