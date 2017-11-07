@@ -33,5 +33,6 @@
     <string name="label_traktpage">Trakt.tv:</string>
     <string name="media_detail_show_watched_stats">Watched %d times (last %s).</string>
     <string name="media_detail_next_episode_separator">Next to watch</string>
+    <string name="pager_load_more">Load older</string>
 
 </resources>

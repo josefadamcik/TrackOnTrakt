@@ -43,7 +43,7 @@ interface TraktApi {
     fun myHistory(@Header("Authorization") authorization: String,
                   @Query("page") page: Int = 1,
                   @Query("limit") limit: Int = 20)
-        : Single<List<HistoryItem>>
+        : Single<Response<List<HistoryItem>>>
 
     @GET("/users/me/watching")
     fun watching(@Header("Authorization") authorization: String,

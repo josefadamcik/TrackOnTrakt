@@ -15,11 +15,9 @@
 */
 package cz.josefadamcik.trackontrakt.home
 
-import com.hannesdorfmann.mosby3.mvp.MvpView
+import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 
-interface HomeView : MvpView {
-    fun showHistory(items: HistoryModel)
-    fun showLoading()
-    fun hideLoading()
-    fun showError(e: Throwable?)
-}
+data class HistoryModel(
+    val items: List<HistoryItem> = emptyList(),
+    val hasNextPage: Boolean = false
+)

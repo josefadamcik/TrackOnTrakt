@@ -15,6 +15,7 @@
 */
 package cz.josefadamcik.trackontrakt.home
 
+import android.support.annotation.VisibleForTesting
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import timber.log.Timber
 import javax.inject.Inject
@@ -24,33 +25,59 @@ class HomePresenter @Inject constructor(
     private val userHistoryManager: UserHistoryManager
 ) : BasePresenter<HomeView>() {
 
+    @VisibleForTesting
+    private var lastPage = 0
+    private var loadingPage = -1
+    private var loadedHistoryModel = HistoryModel()
+
+
     override fun attachView(view: HomeView) {
         super.attachView(view)
 
         loadHomeStreamData(false)
     }
 
-
     fun loadHomeStreamData(forceRefresh: Boolean) {
         Timber.i("loadHomeStreamData: start")
         if (!forceRefresh) {
             view?.showLoading()
         }
+        if (forceRefresh) {
+            lastPage = 0
+            loadedHistoryModel = HistoryModel()
+        }
+        loadingPage = lastPage + 1
+        Timber.d("loadHomeStreamData page {$loadingPage}")
         disposables.add(
-            userHistoryManager.loadUserHistory()
+            userHistoryManager.loadUserHistory(loadingPage)
                 .subscribe(
                     { history ->
-                        Timber.d("loadHomeStreamData ")
+                        Timber.d("loadHomeStreamData {$loadingPage}")
+                        lastPage = loadingPage
+                        loadingPage = -1
                         view?.hideLoading()
-                        view?.showHistory(history)
+                        val allItems = loadedHistoryModel.items.toMutableList()
+                        allItems.addAll(history.items)
+
+                        loadedHistoryModel = loadedHistoryModel.copy(
+                            items = allItems.toList(),
+                            hasNextPage = lastPage < history.pageCount
+                        )
+
+                        view?.showHistory(loadedHistoryModel)
                     },
                     { t ->
-                        Timber.e(t, "loadHomeStreamData error")
+                        Timber.e(t, "loadHomeStreamData error, page {$loadingPage}")
+                        loadingPage = -1
                         view?.hideLoading()
                         view?.showError(t)
                     }
                 )
         )
+    }
+
+    fun loadNextPage() {
+        loadHomeStreamData(false)
     }
 
 

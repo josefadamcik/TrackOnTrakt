@@ -34,58 +34,102 @@ import java.text.DateFormat
 
 
 class HistoryAdapter(
-    val layoutInflater: LayoutInflater,
-    val resources: Resources,
-    val itemInteractionListener: OnItemInteractionListener,
-    val icoMovieTypeDrawable: Drawable,
-    val icoShowTypeDrawable: Drawable
+    private val layoutInflater: LayoutInflater,
+    private val resources: Resources,
+    private val itemInteractionListener: OnItemInteractionListener,
+    private val icoMovieTypeDrawable: Drawable,
+    private val icoShowTypeDrawable: Drawable
 ) : RecyclerView.Adapter<ViewHolder>() {
 
-    val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
-    var items: List<HistoryItem> = emptyList()
+    private val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+    var model: HistoryModel = HistoryModel()
         set(value) {
             field = value
+            val newItems = mutableListOf<RowItem>()
+            value.items.mapTo(newItems) { RowItem.HistoryRowItem(it) }
+            if (value.hasNextPage) {
+                newItems.add(RowItem.PagerRowItem)
+            }
+            items = newItems.toList()
+            //TODO: use diffutils to do a propper notify
             notifyDataSetChanged()
         }
+    var items: List<RowItem> = emptyList()
 
 
     interface OnItemInteractionListener {
         fun onHistoryItemClicked(item: HistoryItem, position: Int)
+        fun onPagerClicked()
     }
 
+    override fun getItemViewType(position: Int): Int = items[position].viewType
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        return ViewHolder(layoutInflater.inflate(R.layout.item_history, parent, false))
+        if (viewType == RowItem.VIEW_TYPE_PAGER) {
+            return PagerViewHolder(layoutInflater.inflate(R.layout.item_history_pager, parent, false))
+        } else {
+            return HistoryViewHolder(layoutInflater.inflate(R.layout.item_history, parent, false))
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val item = items[position]
-        holder?.title?.text = item.title
-        if (TextUtils.isEmpty(item.subtitle)) {
-            holder?.subtitle?.visibility = View.GONE
-        } else {
-            holder?.subtitle?.visibility = View.VISIBLE
-            holder?.subtitle?.text = item.subtitle
+
+        when (item) {
+            is RowItem.HistoryRowItem -> item.historyItem.let { it ->
+                if (holder is HistoryViewHolder) {
+                    bindHistoryViewHolder(it, holder)
+                }
+            }
+            is RowItem.PagerRowItem -> {
+                //nop
+            }
         }
 
-        holder?.date?.text = dateFormat.format(item.watched_at)
 
+    }
 
-        val typeIcoDrawable = when (item.type) {
+    private fun bindHistoryViewHolder(it: HistoryItem, holder: HistoryViewHolder) {
+        val typeIcoDrawable = when (it.type) {
             MediaType.movie -> icoMovieTypeDrawable
             MediaType.episode -> icoShowTypeDrawable
             MediaType.show -> icoShowTypeDrawable
         }
 
-        holder?.typeInfo?.setCompoundDrawablesWithIntrinsicBounds(typeIcoDrawable, null, null, null)
-        holder?.typeInfo?.text = resources.getString(R.string.media_item_type_info, item.type.toString(), item.year.toString())
 
+        holder.title.text = it.title
+        if (TextUtils.isEmpty(it.subtitle)) {
+            holder.subtitle.visibility = View.GONE
+        } else {
+            holder.subtitle.visibility = View.VISIBLE
+            holder.subtitle.text = it.subtitle
+        }
+
+        holder.date.text = dateFormat.format(it.watched_at)
+
+        holder.typeInfo.setCompoundDrawablesWithIntrinsicBounds(typeIcoDrawable, null, null, null)
+        holder.typeInfo.text = resources.getString(R.string.media_item_type_info, it.type.toString(), it.year.toString())
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+
+    sealed class RowItem(val viewType: Int) {
+        companion object {
+            val VIEW_TYPE_HISTORY = 1
+            val VIEW_TYPE_PAGER = 2
+        }
+
+        data class HistoryRowItem(val historyItem: HistoryItem) : RowItem(VIEW_TYPE_HISTORY)
+        object PagerRowItem : RowItem(VIEW_TYPE_PAGER)
+    }
+
+
+    open class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+    inner class HistoryViewHolder(view: View) : ViewHolder(view), View.OnClickListener {
         @BindView(R.id.title) lateinit var title: TextView
         @BindView(R.id.subtitle) lateinit var subtitle: TextView
         @BindView(R.id.date) lateinit var date: TextView
@@ -94,13 +138,24 @@ class HistoryAdapter(
         private var unbinder: Unbinder
 
         init {
-            ButterKnife.setDebug(true)
+//            ButterKnife.setDebug(true)
             unbinder = ButterKnife.bind(this, view)
             view.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
-            itemInteractionListener.onHistoryItemClicked(items[adapterPosition], adapterPosition)
+            itemInteractionListener.onHistoryItemClicked(model.items[adapterPosition], adapterPosition)
         }
     }
+
+    inner class PagerViewHolder(view: View) : ViewHolder(view), View.OnClickListener {
+        init {
+            view.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            itemInteractionListener.onPagerClicked()
+        }
+    }
+
 }

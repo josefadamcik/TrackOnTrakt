@@ -105,10 +105,10 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
 
-    override fun showHistory(items: List<HistoryItem>) {
+    override fun showHistory(items: HistoryModel) {
         hidePullToRefreshRefreshing()
         currentMode = Mode.History
-        historyAdapter.items = items
+        historyAdapter.model = items
         setAdapterForMode()
     }
 
@@ -137,7 +137,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds model to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_home, menu)
         return true
     }
@@ -163,7 +163,9 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
         startActivity(MediaDetailActivity.createIntent(this, MediaIdentifier.fromMediaItemButShowForEpisode(item), title ?: getString(R.string.media_title_placeholder)))
     }
 
-
+    override fun onPagerClicked() {
+        presenter.loadNextPage()
+    }
 
     private fun hidePullToRefreshRefreshing() {
         if (swipeRefreshLayout.isRefreshing) {
