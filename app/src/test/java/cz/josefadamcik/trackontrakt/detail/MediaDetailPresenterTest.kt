@@ -37,7 +37,7 @@ class MediaDetailPresenterTest {
         const val testSeasonWatchedEpisodes = 3
     }
 
-    private lateinit var mediaDataSource: MediaDetailDataSource
+    private lateinit var mediaManager: MediaDetailManager
     private lateinit var presenter: MediaDetailPresenter
 
 
@@ -76,7 +76,7 @@ class MediaDetailPresenterTest {
         presenter.checkinActionClicked(episodeToCheckIn)
 
         // assert / then
-        verify(mediaDataSource).doCheckin(any())
+        verify(mediaManager).doCheckin(any())
 
         verify(view).showLoading()
         verify(view).hideLoading()
@@ -172,9 +172,9 @@ class MediaDetailPresenterTest {
     }
 
 
-    private fun arrangePresenterInstanceWithMockedDataService(dataServiceStubbing: KStubbing<MediaDetailDataSource>.(MediaDetailDataSource) -> Unit): MediaDetailPresenter {
-        mediaDataSource = mock<MediaDetailDataSource>(stubbing = dataServiceStubbing)
-        presenter = MediaDetailPresenter(mediaDataSource)
+    private fun arrangePresenterInstanceWithMockedDataService(dataServiceStubbing: KStubbing<MediaDetailManager>.(MediaDetailManager) -> Unit): MediaDetailPresenter {
+        mediaManager = mock<MediaDetailManager>(stubbing = dataServiceStubbing)
+        presenter = MediaDetailPresenter(mediaManager)
 
         return presenter
     }

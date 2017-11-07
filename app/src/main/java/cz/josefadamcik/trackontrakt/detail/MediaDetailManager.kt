@@ -29,7 +29,7 @@ import retrofit2.Response
 import timber.log.Timber
 import javax.inject.Inject
 
-class MediaDetailDataSource @Inject constructor(
+class MediaDetailManager @Inject constructor(
     private val traktApi: TraktApi,
     private val tokenHolder: TraktAuthTokenProvider) {
 

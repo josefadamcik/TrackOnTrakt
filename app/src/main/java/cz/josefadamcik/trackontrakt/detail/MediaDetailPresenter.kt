@@ -22,7 +22,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MediaDetailPresenter @Inject constructor(
-    private val dataSource: MediaDetailDataSource
+    private val manager: MediaDetailManager
 ) : BasePresenter<MediaDetailView>() {
 
     private var identifier: MediaIdentifier? = null
@@ -48,7 +48,7 @@ class MediaDetailPresenter @Inject constructor(
         view?.showLoading()
         if (mediaId.type == MediaType.movie) {
             disposables.add(
-                dataSource.loadMovieInfo(mediaId)
+                manager.loadMovieInfo(mediaId)
                     .subscribe(
                         { movie ->
                             view?.hideLoading()
@@ -60,7 +60,7 @@ class MediaDetailPresenter @Inject constructor(
             )
         } else if (mediaId.type == MediaType.show) {
             disposables.add(
-                dataSource.loadShowInfo(mediaId)
+                manager.loadShowInfo(mediaId)
                     .subscribe(
                         { show ->
                             view?.hideLoading()
@@ -100,7 +100,7 @@ class MediaDetailPresenter @Inject constructor(
         view?.showLoading()
         view?.itemCheckInactionEnabled(false)
         disposables.add(
-            dataSource.doCheckin(request).subscribe(
+            manager.doCheckin(request).subscribe(
                 { result ->
                         Timber.d("checkin complete $result")
                         view?.hideLoading()
@@ -192,7 +192,7 @@ class MediaDetailPresenter @Inject constructor(
         view?.showLoading()
         Timber.d("loadEpisodes ")
         disposables.add(
-            dataSource.loadShowSeasonsWithEpisodes(showId)
+            manager.loadShowSeasonsWithEpisodes(showId)
                 .subscribe(
                     { seasons ->
                         view?.hideLoading()
@@ -215,7 +215,7 @@ class MediaDetailPresenter @Inject constructor(
         view?.showLoading()
         Timber.d("loadProgress  ")
         disposables.add(
-            dataSource.loadShowWatchedProgress(showId)
+            manager.loadShowWatchedProgress(showId)
                 .subscribe(
                     { progress ->
                         view?.hideLoading()
