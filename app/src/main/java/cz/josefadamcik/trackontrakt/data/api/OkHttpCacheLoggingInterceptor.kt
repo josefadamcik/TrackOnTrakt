@@ -53,7 +53,7 @@ class OkHttpCacheLoggingInterceptor : Interceptor {
         val networkResponse = response.networkResponse()
         val cacheResponse = response.cacheResponse()
 
-        var cacheInfo: String? = null
+        var cacheInfo: String
         if (cacheResponse != null && networkResponse == null) {
             Timber.d("CACHE-HIT: %s %s", request.method(), request.url())
             cacheInfo = CACHE_HIT

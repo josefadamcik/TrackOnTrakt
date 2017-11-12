@@ -18,8 +18,10 @@ package cz.josefadamcik.trackontrakt
 
 
 import android.app.Application
+import com.crashlytics.android.Crashlytics
 import com.jakewharton.threetenabp.AndroidThreeTen
 import cz.josefadamcik.trackontrakt.data.api.ApiModule
+import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
 class TrackOnTraktApplication : Application() {
@@ -28,6 +30,7 @@ class TrackOnTraktApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        Fabric.with(this, Crashlytics())
         AndroidThreeTen.init(this)
 
         component = DaggerApplicationComponent.builder()
