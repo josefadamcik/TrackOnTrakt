@@ -1,0 +1,70 @@
+[
+  {
+    "number": 0,
+    "ids": {
+      "trakt": 75225,
+      "tvdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "rating": 8.375,
+    "votes": 24,
+    "episode_count": 22,
+    "aired_episodes": 18,
+    "title": "Specials",
+    "overview": null,
+    "first_aired": "2006-10-02T03:30:00.000Z",
+    "network": "Adult Swim"
+  },
+  {
+    "number": 1,
+    "ids": {
+      "trakt": 75308,
+      "tvdb": 567215,
+      "tmdb": 60059,
+      "tvrage": null
+    },
+    "rating": 8.94889,
+    "votes": 763,
+    "episode_count": 11,
+    "aired_episodes": 11,
+    "title": "Season 1",
+    "overview": null,
+    "first_aired": "2013-12-03T04:30:00.000Z",
+    "network": "Adult Swim"
+  },
+  {
+    "number": 2,
+    "ids": {
+      "trakt": 104163,
+      "tvdb": 623124,
+      "tmdb": 66738,
+      "tvrage": null
+    },
+    "rating": 9.19231,
+    "votes": 624,
+    "episode_count": 10,
+    "aired_episodes": 10,
+    "title": "Season 2",
+    "overview": null,
+    "first_aired": "2015-07-27T03:30:00.000Z",
+    "network": "Adult Swim"
+  },
+  {
+    "number": 3,
+    "ids": {
+      "trakt": 141578,
+      "tvdb": 216,
+      "tmdb": 86926,
+      "tvrage": null
+    },
+    "rating": 8.91786,
+    "votes": 280,
+    "episode_count": 10,
+    "aired_episodes": 10,
+    "title": "Season 3",
+    "overview": null,
+    "first_aired": "2017-04-02T03:30:00.000Z",
+    "network": "Adult Swim"
+  }
+]

@@ -16,6 +16,7 @@
 
 package cz.josefadamcik.trackontrakt.detail
 
+import cz.josefadamcik.trackontrakt.data.api.ApiException
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenProvider
 import cz.josefadamcik.trackontrakt.data.api.model.*
@@ -60,7 +61,11 @@ class MediaDetailManager @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError({ Timber.e(it, "loadShowWatchedProgress error") })
-            .map { t: Response<ShowWatchedProgress> -> t.body() }
+            .map { t: Response<ShowWatchedProgress> ->
+                if (!t.isSuccessful)
+                    throw ApiException("Unable to load watched progress", t.code(), t.message())
+                else t.body()
+            }
     }
 
     fun loadShowLastEpisode(showId: Long): Single<Response<Episode>> {
@@ -81,6 +86,9 @@ class MediaDetailManager @Inject constructor(
             .doOnError({ Timber.e(it, "loadShowSeasonsInner error") })
             .map { response ->
                 Timber.d("loadShowSeasonsWithEpisodes - result %s", response.code())
+                if (!response.isSuccessful) {
+                    throw ApiException("Response is not successful ${response.code()} ${response.message()}", response.code(), response.message())
+                }
                 var seasons = response.body()
                 if (seasons.isNotEmpty() && seasons.first().number == 0) {
                     //Season 0 -> specials, put them to an and and rename to specials
@@ -103,6 +111,12 @@ class MediaDetailManager @Inject constructor(
                     Single.just(season),
                     BiFunction { t1: Response<List<Episode>>, t2: Season -> Pair(t1, t2) }
                 )
+            }
+            .map { pair ->
+                if (!pair.first.isSuccessful) {
+                    throw ApiException("Unable to load data for season ${pair.second.number}, ${pair.first.code()} ${pair.first.message()}", pair.first.code(), pair.first.message())
+                }
+                pair
             }
             .map { pair -> pair.second.copy(episodes = pair.first.body()) }
             .toList()

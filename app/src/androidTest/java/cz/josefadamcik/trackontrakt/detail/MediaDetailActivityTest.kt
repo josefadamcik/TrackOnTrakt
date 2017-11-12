@@ -60,14 +60,14 @@ class MediaDetailActivityTest {
         assertDescriptionViewValue("A sociopathic scientist drags his unintelligent grandson on insanely dangerous adventures across the universe.")
 
         val textView2 = onView(
-            allOf(withText("Latest aired episode"),
+            allOf(withText("Next to watch"),
                 childAtPosition(
                     childAtPosition(
                         withId(R.id.list),
-                        1),
-                    0),
+                        8),
+                    1),
                 isDisplayed()))
-        textView2.check(matches(withText("Latest aired episode")))
+        textView2.check(matches(withText("Next to watch")))
     }
 
     @Test
@@ -136,10 +136,32 @@ class MediaDetailActivityTest {
     private fun arrangeApiStubForShowSeasons(appContext: Context) {
         wireMockRule.stubFor(
             get(urlPathEqualTo("/shows/69829/seasons"))
-                .withQueryParam("extended", equalTo("episodes"))
+                .withQueryParam("extended", equalTo("full"))
                 .willReturn(aResponse()
                     .withStatus(200)
-                    .withBody(asset(appContext, "shows_69829_seasons_extendedepisodes.json"))
+                    .withBody(asset(appContext, "shows_69829_seasons_extendedfull.json"))
+                )
+        )
+
+        (0..3).forEach { seasonIndex ->
+            wireMockRule.stubFor(
+                get(urlPathEqualTo("/shows/69829/seasons/$seasonIndex"))
+                    .withQueryParam("extended", equalTo("full"))
+                    .willReturn(aResponse()
+                        .withStatus(200)
+                        .withBody(asset(appContext, "shows_69829_seasons_${seasonIndex}_extendedfull.json"))
+                    )
+            )
+        }
+
+        wireMockRule.stubFor(
+            get(urlPathEqualTo("/shows/69829/progress/watched"))
+                .withQueryParam("hidden", equalTo("false"))
+                .withQueryParam("specials", equalTo("true"))
+                .withQueryParam("count_specials", equalTo("false"))
+                .willReturn(aResponse()
+                    .withStatus(200)
+                    .withBody(asset(appContext, "shows_69829_progress.json"))
                 )
         )
     }

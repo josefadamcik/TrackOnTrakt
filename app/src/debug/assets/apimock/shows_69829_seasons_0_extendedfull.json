@@ -1,0 +1,442 @@
+[
+  {
+    "season": 0,
+    "number": 1,
+    "title": "The Real Animated Adventures of Doc and Mharti",
+    "ids": {
+      "trakt": 1166595,
+      "tvdb": 4721616,
+      "imdb": "tt2930486",
+      "tmdb": 0,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Justin actually made this as a way to poke fun at the idea of getting cease and desist letters. \r\n\r\nAt the time (October 2006) he had nothing to lose and his original intention was to call this \"back to the future: the new official universal studios cartoon featuring the new Doc Brown and Marty McFly\" and then just sit back and wait for a letter from their lawyers to arrive. That's actually why it's so filthy. He was just looking to \"troll\" a big studio.\r\n\r\n7 years later, hit new animated TV show on adult swim. ",
+    "rating": 7.48101,
+    "votes": 79,
+    "first_aired": "2006-10-02T03:30:00.000Z",
+    "updated_at": "2017-11-10T02:59:03.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 2,
+    "title": "Gatorade Commercial #4",
+    "ids": {
+      "trakt": 1166743,
+      "tvdb": 4779718,
+      "imdb": null,
+      "tmdb": 0,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "For the Channel 101 2007 Channy Awards, sponsored by Gatorade, a Gatorade commercial made by Justin Roiland (House of Cosbys, Mr. Sprinkles) featuring DOC and MHARTI! Animation by Kelsy Abbott",
+    "rating": 6.86667,
+    "votes": 15,
+    "first_aired": null,
+    "updated_at": "2017-11-10T02:59:05.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 3,
+    "title": "SCUD VLOG #12",
+    "ids": {
+      "trakt": 1166870,
+      "tvdb": 4779719,
+      "imdb": null,
+      "tmdb": 0,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "A delightful VLOG made for the deserved promotion of the the issues of SCUD: The Disposable Assassin. \r\nBy Justin Roiland and Kelsy Abbott",
+    "rating": 6.22222,
+    "votes": 18,
+    "first_aired": null,
+    "updated_at": "2017-08-29T13:41:19.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 4,
+    "title": "The Freedom of Channel 101",
+    "ids": {
+      "trakt": 1166988,
+      "tvdb": 4779720,
+      "imdb": null,
+      "tmdb": 0,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "One of the few appearances of who would seven years later become Rick and Morty, as they present the benefits of R&M co-creator Dan Harmon's Channel 101, a short film festival in which you can have more freedom to express yourself than you can on television or even YouTube for that matter. You'll have to look up the original version for yourself if you want to see what I censored (it's not Doc's balls, YouTube haven't done anything about that in years)",
+    "rating": 6.35294,
+    "votes": 17,
+    "first_aired": null,
+    "updated_at": "2017-11-10T02:59:04.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 5,
+    "title": "Rick and Morty Panel SDCC 2013",
+    "ids": {
+      "trakt": 1167106,
+      "tvdb": 4993904,
+      "imdb": null,
+      "tmdb": 0,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Six months before the show premieres Dan Harmon, Justin Roiland, Chris Parnell, Spencer Grammer, Kari Wahlgren, and Ryan Ridley try to explain what Rick and Morty is all about to a bunch of confused strangers at San Diego Comic-Con 2013.",
+    "rating": 7.0,
+    "votes": 4,
+    "first_aired": "2013-07-30T03:30:00.000Z",
+    "updated_at": "2017-10-01T15:57:08.000Z",
+    "available_translations": [],
+    "runtime": 37
+  },
+  {
+    "season": 0,
+    "number": 6,
+    "title": "Season 1 Blu-Ray Promo w/R&M Puppets",
+    "ids": {
+      "trakt": 1167225,
+      "tvdb": 5001291,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Rick and Morty Summon Mr. Meeseeks for a Very Important Task.",
+    "rating": 6.14286,
+    "votes": 7,
+    "first_aired": null,
+    "updated_at": "2017-05-06T20:10:14.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 7,
+    "title": "Behind the Scenes",
+    "ids": {
+      "trakt": 1167367,
+      "tvdb": 5014929,
+      "imdb": null,
+      "tmdb": 0,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Behind the Scenes of Season 1",
+    "rating": 6.6,
+    "votes": 20,
+    "first_aired": "2014-10-08T03:30:00.000Z",
+    "updated_at": "2017-11-10T02:59:05.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 8,
+    "title": "State of Georgia Vs. Denver Fenton Allen",
+    "ids": {
+      "trakt": 2304287,
+      "tvdb": 5702078,
+      "imdb": null,
+      "tmdb": 0,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Judge Morty presides over this real life case as a court transcript is recreated word-for-word.",
+    "rating": 7.8,
+    "votes": 50,
+    "first_aired": "2016-08-05T03:30:00.000Z",
+    "updated_at": "2017-11-10T02:59:04.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 9,
+    "title": "Rick and Morty Panel SDCC 2014",
+    "ids": {
+      "trakt": 2468825,
+      "tvdb": 5925773,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Showrunners, Birdperson, Gazorpazorpfield, Chip Chompers and Pizza McLizza sit down at Sand Diego Comic-Con 2014 to tell us more about the upcoming second season.",
+    "rating": 5.0,
+    "votes": 2,
+    "first_aired": "2014-08-01T03:30:00.000Z",
+    "updated_at": "2017-10-14T07:49:14.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 10,
+    "title": "Rick and Morty Summon Mr. Meeseeks for a Very Important Task",
+    "ids": {
+      "trakt": 2468827,
+      "tvdb": 5925775,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Rick and Morty enlist the help of Mr Meeseeks to shill the first season of their hit series on DVD.",
+    "rating": 5.72727,
+    "votes": 11,
+    "first_aired": "2014-09-24T03:30:00.000Z",
+    "updated_at": "2017-10-14T07:49:18.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 11,
+    "title": "Rick and Morty Panel NYCC 2014",
+    "ids": {
+      "trakt": 2468830,
+      "tvdb": 5925776,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "The shows creators Justin Roiland and Dan Harmon are joined by Sarah Chalke, Chris Parnell and moderator Steve Brandano to discuss the world of Rick and Morty at New York Comic-Con 2014.",
+    "rating": 5.33333,
+    "votes": 3,
+    "first_aired": "2014-10-16T03:30:00.000Z",
+    "updated_at": "2017-10-14T07:49:31.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 12,
+    "title": "Simpsons Couch Gag",
+    "ids": {
+      "trakt": 2468832,
+      "tvdb": 5925779,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Two great animated worlds collide and it doesn’t go well.",
+    "rating": 8.17391,
+    "votes": 23,
+    "first_aired": "2015-05-15T03:30:00.000Z",
+    "updated_at": "2017-10-14T07:49:31.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 13,
+    "title": "Rick and Morty Panel SDCC 2015",
+    "ids": {
+      "trakt": 2468834,
+      "tvdb": 5925781,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Co-creators Dan Harmon and Justin Roiland are joined by Ryan Ridley and moderator Brian Quinn to discuss all things Rick and Morty at San Diego Comic-Con 2015.",
+    "rating": 6.5,
+    "votes": 4,
+    "first_aired": "2015-07-14T03:30:00.000Z",
+    "updated_at": "2017-10-14T07:48:51.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 14,
+    "title": "The Misadventures of Rick and Morty",
+    "ids": {
+      "trakt": 2468835,
+      "tvdb": 5925784,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "A stop motion short film featuring Rick and Morty getting into trouble.",
+    "rating": 7.21429,
+    "votes": 14,
+    "first_aired": "2015-11-12T04:30:00.000Z",
+    "updated_at": "2017-11-10T02:59:05.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 15,
+    "title": "Carl's Jr and Hardee's Commercial",
+    "ids": {
+      "trakt": 2468836,
+      "tvdb": 5925785,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Rick informs Morty that they are in a commercial for Carl’s Jr and Hardee’s and introduces him to a range of over-excited burgers.",
+    "rating": 6.5,
+    "votes": 10,
+    "first_aired": "2015-12-01T04:30:00.000Z",
+    "updated_at": "2017-10-17T18:55:09.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 16,
+    "title": "Rick and Morty: The Non-Canonical Adventures #1 - The Thing",
+    "ids": {
+      "trakt": 2468837,
+      "tvdb": 5925787,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "A claymation recreation of a classic scene from ‘The Thing’.",
+    "rating": 6.54545,
+    "votes": 11,
+    "first_aired": "2016-10-27T03:30:00.000Z",
+    "updated_at": "2017-10-17T18:55:20.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 17,
+    "title": "Rick and Morty: The Non-Canonical Adventures #2 - The Fly",
+    "ids": {
+      "trakt": 2468838,
+      "tvdb": 5925790,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "A claymation recreation of a classic scene from ‘The Fly’.",
+    "rating": 6.55556,
+    "votes": 9,
+    "first_aired": "2016-10-27T03:30:00.000Z",
+    "updated_at": "2017-10-17T18:55:23.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 18,
+    "title": "Rick and Morty: The Non-Canonical Adventures #3 - Honey I Shrunk The Kids",
+    "ids": {
+      "trakt": 2468839,
+      "tvdb": 5925793,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "A claymation recreation of a classic scene from ‘Honey, I Shrunk the Kids’.",
+    "rating": 5.625,
+    "votes": 8,
+    "first_aired": "2016-10-27T03:30:00.000Z",
+    "updated_at": "2017-10-17T18:55:23.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 19,
+    "title": "Rick and Morty: The Non-Canonical Adventures #4 - Ex Machina",
+    "ids": {
+      "trakt": 2468840,
+      "tvdb": 5925794,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "A claymation recreation of a classic scene from ‘Ex Machina’.",
+    "rating": 5.625,
+    "votes": 8,
+    "first_aired": "2016-10-28T03:30:00.000Z",
+    "updated_at": "2017-10-17T18:55:29.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 20,
+    "title": "Rick and Morty: The Non-Canonical Adventures #5 - Halloween",
+    "ids": {
+      "trakt": 2468841,
+      "tvdb": 5925795,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "A claymation recreation of a classic scene from ‘Halloween’.",
+    "rating": 6.54545,
+    "votes": 11,
+    "first_aired": "2016-11-04T03:30:00.000Z",
+    "updated_at": "2017-11-10T02:59:03.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 21,
+    "title": "Rick and Morty 8-Bit Intro",
+    "ids": {
+      "trakt": 2468842,
+      "tvdb": 5925798,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "The show intro for interdimensional duo Rick and Morty is given a retro twist.",
+    "rating": 8.59091,
+    "votes": 22,
+    "first_aired": "2017-01-12T04:30:00.000Z",
+    "updated_at": "2017-11-10T02:59:04.000Z",
+    "available_translations": [],
+    "runtime": 22
+  },
+  {
+    "season": 0,
+    "number": 22,
+    "title": "Rick and Morty Panel SDCC 2016",
+    "ids": {
+      "trakt": 2491776,
+      "tvdb": 5962577,
+      "imdb": null,
+      "tmdb": null,
+      "tvrage": null
+    },
+    "number_abs": null,
+    "overview": "Brian Quinn attempts to moderate a panel made up of Dan Harmon, Justin Roiland, Ryan Ridley, Spencer Grammer, Sarah Chalke, and Chris Parnell as they answer questions and question answers at San Diego Comic-Con 2016.",
+    "rating": 6.25,
+    "votes": 4,
+    "first_aired": "2016-08-08T03:30:00.000Z",
+    "updated_at": "2017-10-17T18:55:17.000Z",
+    "available_translations": [],
+    "runtime": 22
+  }
+]
