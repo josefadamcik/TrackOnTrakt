@@ -17,6 +17,7 @@ package cz.josefadamcik.trackontrakt.home
 
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -30,6 +31,7 @@ import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.home.HistoryAdapter.ViewHolder
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import java.text.DateFormat
 
 
@@ -48,11 +50,15 @@ class HistoryAdapter(
             val newItems = mutableListOf<RowItem>()
             value.items.mapTo(newItems) { RowItem.HistoryRowItem(it) }
             if (value.hasNextPage) {
-                newItems.add(RowItem.PagerRowItem)
+                newItems.add(RowItem.PagerRowItem(value.loadingNextPage))
             }
+
+            //use DiffUtil to do a proper change propagation
+            val duCallback = DiffUtilCallback(items, newItems)
+            val diffResult = DiffUtil.calculateDiff(duCallback, true)
             items = newItems.toList()
-            //TODO: use diffutils to do a propper notify
-            notifyDataSetChanged()
+            diffResult.dispatchUpdatesTo(this)
+
         }
     var items: List<RowItem> = emptyList()
 
@@ -77,17 +83,21 @@ class HistoryAdapter(
 
         when (item) {
             is RowItem.HistoryRowItem -> item.historyItem.let { it ->
-                if (holder is HistoryViewHolder) {
-                    bindHistoryViewHolder(it, holder)
-                }
+                it
+                bindHistoryViewHolder(it, holder as HistoryViewHolder)
             }
-            is RowItem.PagerRowItem -> {
-                //nop
+            is RowItem.PagerRowItem ->
+                bindPagerViewHolder(item, holder as PagerViewHolder)
             }
-        }
-
 
     }
+
+    private fun bindPagerViewHolder(item: RowItem.PagerRowItem, viewHolder: PagerViewHolder) {
+        viewHolder.pagerProgress.visibility = if (item.isLoading) View.VISIBLE else View.GONE
+        viewHolder.text.text = resources.getString(if (item.isLoading) R.string.pager_loading else R.string.pager_load_more)
+    }
+
+
 
     private fun bindHistoryViewHolder(it: HistoryItem, holder: HistoryViewHolder) {
         val typeIcoDrawable = when (it.type) {
@@ -123,7 +133,7 @@ class HistoryAdapter(
         }
 
         data class HistoryRowItem(val historyItem: HistoryItem) : RowItem(VIEW_TYPE_HISTORY)
-        object PagerRowItem : RowItem(VIEW_TYPE_PAGER)
+        data class PagerRowItem(val isLoading: Boolean) : RowItem(VIEW_TYPE_PAGER)
     }
 
 
@@ -135,11 +145,9 @@ class HistoryAdapter(
         @BindView(R.id.date) lateinit var date: TextView
         @BindView(R.id.type_info) lateinit var typeInfo: TextView
 
-        private var unbinder: Unbinder
+        private var unbinder: Unbinder = ButterKnife.bind(this, view)
 
         init {
-//            ButterKnife.setDebug(true)
-            unbinder = ButterKnife.bind(this, view)
             view.setOnClickListener(this)
         }
 
@@ -148,7 +156,12 @@ class HistoryAdapter(
         }
     }
 
+
     inner class PagerViewHolder(view: View) : ViewHolder(view), View.OnClickListener {
+        @BindView(R.id.text) lateinit var text: TextView
+        @BindView(R.id.pager_progress) lateinit var pagerProgress: MaterialProgressBar
+        private var unbinder: Unbinder = ButterKnife.bind(this, view)
+
         init {
             view.setOnClickListener(this)
         }
@@ -158,4 +171,29 @@ class HistoryAdapter(
         }
     }
 
+
+    class DiffUtilCallback(
+        private val oldList: List<RowItem>,
+        private val newList: List<RowItem>) : DiffUtil.Callback() {
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldList[oldItemPosition]
+            val newItem = newList[newItemPosition]
+
+            return (oldItem is RowItem.PagerRowItem && newItem is RowItem.PagerRowItem)
+                || (oldItem is RowItem.HistoryRowItem && newItem is RowItem.HistoryRowItem && oldItem.historyItem.id == newItem.historyItem.id)
+        }
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            val oldItem = oldList[oldItemPosition]
+            val newItem = newList[newItemPosition]
+
+            return oldItem == newItem //data classes have implemented equals...
+        }
+
+    }
 }

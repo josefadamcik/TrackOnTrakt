@@ -51,7 +51,13 @@ class HomePresenterTest {
 
         verify(view).showLoading()
         verify(view).hideLoading()
-        verify(view).showHistory(any())
+        argumentCaptor<HistoryModel>().apply {
+            verify(view, times(1)).showHistory(capture())
+            assertThat("Model has flag that there are more pages", firstValue.hasNextPage, equalTo(true))
+            assertThat("Model has flag that its not loading next page ATM.", firstValue.loadingNextPage, equalTo(false))
+        }
+
+
     }
 
     @Test
@@ -83,37 +89,29 @@ class HomePresenterTest {
         //when
 
         presenter.attachView(view)
-        presenter.loadHomeStreamData(false)
-
-        //then
-
-
-        verify(view, times(2)).showLoading()
-        verify(view, times(2)).hideLoading()
-        verify(view, times(2)).showHistory(any())
-    }
-
-    @Test
-    fun loadMoreData() {
-        //given
-        val userHistoryManager = givenHistoryManagerReturningList()
-        val view = givenMockView()
-        val presenter = givenPresenter(userHistoryManager)
-
-
-        //when
-
-        presenter.attachView(view)
         presenter.loadNextPage()
 
         //then
+        verify(view, times(1)).showLoading()
+        verify(view, atLeastOnce()).hideLoading()
 
-        verify(view, times(2)).showLoading()
-        verify(view, times(2)).hideLoading()
         argumentCaptor<HistoryModel>().apply {
-            verify(view, times(2)).showHistory(capture())
-            assertThat("got two results", allValues.size, equalTo(2))
-            assertThat("second result has more model", secondValue.items.size, Matchers.greaterThan(firstValue.items.size))
+            //first invocation is initial load, than 2 calls for next loadHomeStreet
+            verify(view, times(3)).showHistory(capture())
+
+            assertThat("got three model updates", allValues.size, equalTo(3))
+
+            //the first model update is initial load
+            assertThat("First model with flag that there are more pages", firstValue.hasNextPage, equalTo(true))
+            assertThat("First model without flag that it's loading more pages", firstValue.loadingNextPage, equalTo(false))
+
+            //then second model update is just loader stat update
+            assertThat("First and second model has same amount of items", firstValue.items.size, Matchers.equalTo(secondValue.items.size))
+            assertThat("Second model update with flag that its loading next page ATM.", secondValue.loadingNextPage, equalTo(true))
+
+            //and the third comes with new items and "loading" state reset
+            assertThat("Final model update has more items", thirdValue.items.size, Matchers.greaterThan(secondValue.items.size))
+            assertThat("Final model update with reset of loading flag", thirdValue.loadingNextPage, equalTo(false))
         }
 
     }

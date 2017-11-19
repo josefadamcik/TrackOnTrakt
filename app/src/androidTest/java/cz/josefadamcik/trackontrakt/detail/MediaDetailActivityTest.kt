@@ -213,7 +213,7 @@ class MediaDetailActivityTest {
             }
 
             override fun describeTo(description: Description) {
-                description.appendText("with collapsing toolbar title: ")
+                description.appendText("with collapsing toolbar text: ")
                 textMatcher.describeTo(description)
             }
         }

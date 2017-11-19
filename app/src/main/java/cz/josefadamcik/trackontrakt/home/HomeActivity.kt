@@ -89,7 +89,9 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
     private fun setAdapterForMode() {
-        recyclerView.adapter = historyAdapter
+        if (recyclerView.adapter != historyAdapter) {
+            recyclerView.adapter = historyAdapter
+        }
     }
 
 
