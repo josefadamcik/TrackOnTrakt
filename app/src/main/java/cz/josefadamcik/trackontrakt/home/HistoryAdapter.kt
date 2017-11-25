@@ -1,18 +1,3 @@
-/*
- Copyright 2017 Josef Adamcik <josef.adamcik@gmail.com>
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
-*/
 package cz.josefadamcik.trackontrakt.home
 
 import android.content.res.Resources
@@ -43,7 +28,6 @@ class HistoryAdapter(
     private val icoShowTypeDrawable: Drawable
 ) : RecyclerView.Adapter<ViewHolder>() {
 
-    private val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
     var model: HistoryModel = HistoryModel()
         set(value) {
             field = value
@@ -81,14 +65,9 @@ class HistoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
         val item = items[position]
 
-        when (item) {
-            is RowItem.HistoryRowItem -> item.historyItem.let { it ->
-                it
-                bindHistoryViewHolder(it, holder as HistoryViewHolder)
-            }
-            is RowItem.PagerRowItem ->
-                bindPagerViewHolder(item, holder as PagerViewHolder)
-            }
+        holder?.let { item.bindViewHolder(it) }
+
+
 
     }
 
@@ -99,27 +78,7 @@ class HistoryAdapter(
 
 
 
-    private fun bindHistoryViewHolder(it: HistoryItem, holder: HistoryViewHolder) {
-        val typeIcoDrawable = when (it.type) {
-            MediaType.movie -> icoMovieTypeDrawable
-            MediaType.episode -> icoShowTypeDrawable
-            MediaType.show -> icoShowTypeDrawable
-        }
 
-
-        holder.title.text = it.title
-        if (TextUtils.isEmpty(it.subtitle)) {
-            holder.subtitle.visibility = View.GONE
-        } else {
-            holder.subtitle.visibility = View.VISIBLE
-            holder.subtitle.text = it.subtitle
-        }
-
-        holder.date.text = dateFormat.format(it.watched_at)
-
-        holder.typeInfo.setCompoundDrawablesWithIntrinsicBounds(typeIcoDrawable, null, null, null)
-        holder.typeInfo.text = resources.getString(R.string.media_item_type_info, it.type.toString(), it.year.toString())
-    }
 
     override fun getItemCount(): Int {
         return items.size
@@ -132,12 +91,44 @@ class HistoryAdapter(
             val VIEW_TYPE_PAGER = 2
         }
 
-        data class HistoryRowItem(val historyItem: HistoryItem) : RowItem(VIEW_TYPE_HISTORY)
-        data class PagerRowItem(val isLoading: Boolean) : RowItem(VIEW_TYPE_PAGER)
+        abstract fun bindViewHolder(holder: ViewHolder)
+
+        class HistoryRowItem(val historyItem: HistoryItem) : RowItem(VIEW_TYPE_HISTORY) {
+            private val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+
+            override fun bindViewHolder(holder: ViewHolder) {
+                if (holder is HistoryViewHolder) {
+                    holder.title.text = historyItem.title
+                    if (TextUtils.isEmpty(historyItem.subtitle)) {
+                        holder.subtitle.visibility = View.GONE
+                    } else {
+                        holder.subtitle.visibility = View.VISIBLE
+                        holder.subtitle.text = historyItem.subtitle
+                    }
+
+                    holder.date.text = dateFormat.format(historyItem.watched_at)
+                    holder.chooseTypeInfoIconAndText(historyItem.type, historyItem.year)
+
+
+                }
+            }
+
+        }
+
+        class PagerRowItem(val isLoading: Boolean) : RowItem(VIEW_TYPE_PAGER) {
+            override fun bindViewHolder(holder: ViewHolder) {
+                if (holder is PagerViewHolder) {
+                    holder.pagerProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
+                    holder.chooseText(isLoading)
+                }
+            }
+        }
     }
 
 
-    open class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    open class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+    }
 
     inner class HistoryViewHolder(view: View) : ViewHolder(view), View.OnClickListener {
         @BindView(R.id.title) lateinit var title: TextView
@@ -154,6 +145,17 @@ class HistoryAdapter(
         override fun onClick(v: View?) {
             itemInteractionListener.onHistoryItemClicked(model.items[adapterPosition], adapterPosition)
         }
+
+        fun chooseTypeInfoIconAndText(type: MediaType, year: Int?) {
+            val typeIcoDrawable = when (type) {
+                MediaType.movie -> icoMovieTypeDrawable
+                MediaType.episode -> icoShowTypeDrawable
+                MediaType.show -> icoShowTypeDrawable
+            }
+
+            typeInfo.setCompoundDrawablesWithIntrinsicBounds(typeIcoDrawable, null, null, null)
+            typeInfo.text = resources.getString(R.string.media_item_type_info, type.toString(), year?.toString() ?: "")
+        }
     }
 
 
@@ -168,6 +170,10 @@ class HistoryAdapter(
 
         override fun onClick(v: View?) {
             itemInteractionListener.onPagerClicked()
+        }
+
+        fun chooseText(isLoading: Boolean) {
+            text.text = resources.getString(if (isLoading) R.string.pager_loading else R.string.pager_load_more)
         }
     }
 

@@ -18,7 +18,7 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         // We recommend changing it to the latest version from our changelog:
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
