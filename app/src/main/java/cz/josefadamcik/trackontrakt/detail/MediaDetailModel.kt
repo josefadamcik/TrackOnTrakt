@@ -4,6 +4,7 @@ package cz.josefadamcik.trackontrakt.detail
 import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
 import cz.josefadamcik.trackontrakt.data.api.model.SeasonWithProgress
 import cz.josefadamcik.trackontrakt.data.api.model.ShowWatchedProgress
+import org.threeten.bp.LocalDate
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +37,7 @@ data class MediaDetailModel(
         val rating: Double = 0.0,
         val certification: String? = null,
         val votes: Long = 0,
-        val date: Date? = null,
+        val date: LocalDate? = null,
         val network: String? = null,
         val genres: List<String> = emptyList(),
         val trailer: String? = null,

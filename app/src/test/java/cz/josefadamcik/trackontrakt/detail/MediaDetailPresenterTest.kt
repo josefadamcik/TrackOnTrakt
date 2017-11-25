@@ -4,15 +4,15 @@ package cz.josefadamcik.trackontrakt.detail
 import com.nhaarman.mockito_kotlin.*
 import cz.josefadamcik.trackontrakt.data.api.model.*
 import io.reactivex.Single
-import khronos.Dates
-import khronos.day
-import khronos.minus
+import kxdate.threeten.bp.ago
+import kxdate.threeten.bp.days
 import okhttp3.Protocol
 import okhttp3.Request
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
 import org.junit.Assert.assertThat
 import org.junit.Test
+import org.threeten.bp.LocalDateTime
 import retrofit2.Response
 
 class MediaDetailPresenterTest {
@@ -42,7 +42,7 @@ class MediaDetailPresenterTest {
         val presenter = arrangePresenterInstanceWithMockedDataService({
             on { doCheckin(any()) } doReturn Single.just(
                 Response.success(
-                    CheckinResponse(1, Dates.today, null),
+                    CheckinResponse(1, LocalDateTime.now(), null),
                     arrangeOkhttpResponse201()
                 )
             )
@@ -141,7 +141,7 @@ class MediaDetailPresenterTest {
             completed = watchedEpisodes,
             last_episode = if (watchedEpisodes > 0) seasonEpisodes[watchedEpisodes - 1] else null,
             next_episode = seasonEpisodes[watchedEpisodes],
-            last_watched_at = Dates.today - 1.day,
+            last_watched_at = 1.days.ago.atStartOfDay(),
             seasons = listOf(arrangeSeasonWathchedProgress(seasonNumber, seasonEpisodes, watchedEpisodes, episodeCount))
         )
     }
@@ -152,7 +152,7 @@ class MediaDetailPresenterTest {
             aired = seasonEpisodes.size,
             completed = watchedEpisodes,
             episodes = (1..episodeCount).map {
-                ShowWatchedProgress.EpisodeWatchedProgress(it, it <= watchedEpisodes, last_watched_at = Dates.today - 1.day)
+                ShowWatchedProgress.EpisodeWatchedProgress(it, it <= watchedEpisodes, last_watched_at = 1.days.ago.atStartOfDay())
             }
         )
     }

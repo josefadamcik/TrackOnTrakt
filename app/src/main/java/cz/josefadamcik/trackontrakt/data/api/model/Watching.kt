@@ -1,11 +1,12 @@
 
 package cz.josefadamcik.trackontrakt.data.api.model
 
-import java.util.*
+import org.threeten.bp.LocalDateTime
+
 
 data class Watching(
-    val expires_at: Date,
-    val started_at: Date,
+    val expires_at: LocalDateTime,
+    val started_at: LocalDateTime,
     val action: String,
     override val type: MediaType,
     override val movie: Movie?,

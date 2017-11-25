@@ -17,6 +17,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 import java.io.File
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
@@ -33,6 +35,8 @@ open class ApiModule(private val app: TrackOnTraktApplication) {
     fun provideMoshi(): Moshi {
         return Moshi.Builder()
             .add(Date::class.java, Rfc3339DateJsonAdapter().nullSafe())
+            .add(LocalDateTime::class.java, LocalDateTimeJsonAdapter(Rfc3339DateJsonAdapter().nullSafe()).nullSafe())
+            .add(LocalDate::class.java, LocalDateJsonAdapter(Rfc3339DateJsonAdapter().nullSafe()).nullSafe())
             .build()
     }
 

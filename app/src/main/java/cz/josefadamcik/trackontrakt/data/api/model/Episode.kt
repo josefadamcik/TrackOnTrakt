@@ -1,7 +1,7 @@
 
 package cz.josefadamcik.trackontrakt.data.api.model
 
-import java.util.*
+import org.threeten.bp.LocalDate
 
 data class Episode(
     val season: Int,
@@ -11,6 +11,6 @@ data class Episode(
     val overview: String? = null,
     val rating: Float? = 0.0f,
     val votes: Int? = 0,
-    val first_aired: Date? = null,
+    val first_aired: LocalDate? = null,
     val runtime: Int? = 0
 )

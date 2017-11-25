@@ -184,8 +184,8 @@ dependencies {
     }
 
     //basic utils
-    implementation 'com.github.hotchemi:khronos:0.9.0'
     implementation 'com.jakewharton.timber:timber:4.5.1'
+    implementation 'com.github.yongjhih.kxdate:kxdate-threetenbp-android:-SNAPSHOT'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     implementation 'nz.bradcampbell:paperparcel:2.0.1'
     implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional

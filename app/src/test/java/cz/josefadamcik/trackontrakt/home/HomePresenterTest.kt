@@ -4,14 +4,12 @@ package cz.josefadamcik.trackontrakt.home
 import com.nhaarman.mockito_kotlin.*
 import cz.josefadamcik.trackontrakt.data.api.model.*
 import io.reactivex.Single
-import khronos.Dates
-import khronos.days
-import khronos.minus
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.equalTo
 import org.junit.After
 import org.junit.Assert.assertThat
 import org.junit.Test
+import org.threeten.bp.LocalDateTime
 
 
 class HomePresenterTest {
@@ -122,7 +120,7 @@ class HomePresenterTest {
             items = idRange.map {
                 HistoryItem(
                     it.toLong(),
-                    watched_at = Dates.today - it.days,
+                    watched_at = LocalDateTime.now().minusDays(it.toLong()),
                     action = Action.checkin,
                     type = MediaType.movie,
                     movie = movie

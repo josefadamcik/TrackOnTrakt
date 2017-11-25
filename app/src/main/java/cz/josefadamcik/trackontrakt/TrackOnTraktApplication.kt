@@ -16,8 +16,8 @@ class TrackOnTraktApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        Fabric.with(this, Crashlytics())
         AndroidThreeTen.init(this)
+        Fabric.with(this, Crashlytics())
 
         component = DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(this))

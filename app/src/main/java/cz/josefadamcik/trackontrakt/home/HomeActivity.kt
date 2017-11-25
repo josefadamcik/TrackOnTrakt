@@ -34,7 +34,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 
-class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchViewWrapper.SearchCallback, HistoryAdapter.OnItemInteractionListener {
+class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchViewWrapper.SearchCallback, HistoryAdapter.ItemInteractionListener {
 
     enum class Mode {
         History,

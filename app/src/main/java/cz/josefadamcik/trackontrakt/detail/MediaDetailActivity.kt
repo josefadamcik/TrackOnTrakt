@@ -24,7 +24,7 @@ import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
 import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
-import java.util.*
+import org.threeten.bp.LocalDateTime
 import javax.inject.Inject
 
 class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(), MediaDetailView, MediaDetailAdapter.InteractionListener {
@@ -179,7 +179,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         adapter.model = model
     }
 
-    override fun showAlreadyWatchedStats(number: Int, last_watched_at: Date?) {
+    override fun showAlreadyWatchedStats(number: Int, last_watched_at: LocalDateTime?) {
         Snackbar.make(progress, getString(R.string.media_detail_show_watched_stats, number, last_watched_at), Snackbar.LENGTH_LONG).show()
     }
 

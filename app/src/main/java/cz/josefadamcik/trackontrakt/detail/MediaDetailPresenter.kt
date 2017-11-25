@@ -3,7 +3,7 @@ package cz.josefadamcik.trackontrakt.detail
 
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.model.*
-import khronos.Dates
+import org.threeten.bp.LocalDateTime
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -120,7 +120,7 @@ class MediaDetailPresenter @Inject constructor(
                         e.copy(progress = ShowWatchedProgress.EpisodeWatchedProgress(
                             e.episode.number,
                             true,
-                            Dates.today
+                            LocalDateTime.now()
                         ))
                     } else {
                         e
@@ -136,7 +136,7 @@ class MediaDetailPresenter @Inject constructor(
             seasons = modifiedSeasons,
             showProgress = model.showProgress.copy(
                 completed = model.showProgress.completed + if (episodeFoundAndCompletedStatusChanged) 1 else 0,
-                last_watched_at = Dates.today
+                last_watched_at = LocalDateTime.now()
             )
         )
     }

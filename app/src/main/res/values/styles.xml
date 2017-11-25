@@ -44,5 +44,17 @@
         <item name="android:textColor">@color/material_color_white_70_percent</item>
     </style>
 
+    <style name="ListRowHeaderText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/material_baseline_grid_2x</item>
+        <item name="android:paddingRight">@dimen/material_baseline_grid_2x</item>
+        <item name="android:paddingTop">@dimen/material_baseline_grid_1x</item>
+        <item name="android:paddingBottom">@dimen/material_baseline_grid_1x</item>
+        <item name="android:textAppearance">@style/MaterialTypography.Regular.Subheading</item>
+        <item name="android:textColor">@color/material_typography_secondary_text_color_dark</item>
+        <item name="android:gravity">left|start|center_vertical</item>
+    </style>
+
 
 </resources>

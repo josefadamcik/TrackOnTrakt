@@ -17,16 +17,22 @@ import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.home.HistoryAdapter.ViewHolder
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
+import org.threeten.bp.Period
 import java.text.DateFormat
 
 
 class HistoryAdapter(
     private val layoutInflater: LayoutInflater,
     private val resources: Resources,
-    private val itemInteractionListener: OnItemInteractionListener,
+    private val itemInteractionListener: ItemInteractionListener,
     private val icoMovieTypeDrawable: Drawable,
     private val icoShowTypeDrawable: Drawable
 ) : RecyclerView.Adapter<ViewHolder>() {
+
+    interface ItemInteractionListener {
+        fun onHistoryItemClicked(item: HistoryItem, position: Int)
+        fun onPagerClicked()
+    }
 
     var model: HistoryModel = HistoryModel()
         set(value) {
@@ -44,51 +50,32 @@ class HistoryAdapter(
             diffResult.dispatchUpdatesTo(this)
 
         }
-    var items: List<RowItem> = emptyList()
 
-
-    interface OnItemInteractionListener {
-        fun onHistoryItemClicked(item: HistoryItem, position: Int)
-        fun onPagerClicked()
-    }
+    private var items: List<RowItem> = emptyList()
 
     override fun getItemViewType(position: Int): Int = items[position].viewType
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
-        if (viewType == RowItem.VIEW_TYPE_PAGER) {
-            return PagerViewHolder(layoutInflater.inflate(R.layout.item_history_pager, parent, false))
-        } else {
-            return HistoryViewHolder(layoutInflater.inflate(R.layout.item_history, parent, false))
+        return when (viewType) {
+            RowItem.VIEW_TYPE_PAGER -> PagerViewHolder(layoutInflater.inflate(R.layout.item_history_pager, parent, false))
+            RowItem.VIEW_TYPE_HEADER -> PagerViewHolder(layoutInflater.inflate(R.layout.item_history_header, parent, false))
+            else -> HistoryViewHolder(layoutInflater.inflate(R.layout.item_history, parent, false))
         }
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        val item = items[position]
-
-        holder?.let { item.bindViewHolder(it) }
-
-
-
+        holder?.let { items[position].bindViewHolder(it) }
     }
-
-    private fun bindPagerViewHolder(item: RowItem.PagerRowItem, viewHolder: PagerViewHolder) {
-        viewHolder.pagerProgress.visibility = if (item.isLoading) View.VISIBLE else View.GONE
-        viewHolder.text.text = resources.getString(if (item.isLoading) R.string.pager_loading else R.string.pager_load_more)
-    }
-
-
-
-
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-
     sealed class RowItem(val viewType: Int) {
         companion object {
             val VIEW_TYPE_HISTORY = 1
             val VIEW_TYPE_PAGER = 2
+            val VIEW_TYPE_HEADER = 3
         }
 
         abstract fun bindViewHolder(holder: ViewHolder)
@@ -108,8 +95,6 @@ class HistoryAdapter(
 
                     holder.date.text = dateFormat.format(historyItem.watched_at)
                     holder.chooseTypeInfoIconAndText(historyItem.type, historyItem.year)
-
-
                 }
             }
 
@@ -120,6 +105,14 @@ class HistoryAdapter(
                 if (holder is PagerViewHolder) {
                     holder.pagerProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
                     holder.chooseText(isLoading)
+                }
+            }
+        }
+
+        class HeaderRowItem(val time: Period) : RowItem(VIEW_TYPE_HEADER) {
+            override fun bindViewHolder(holder: ViewHolder) {
+                if (holder is HeaderViewHolder) {
+                    holder.formatRelativeDate(time)
                 }
             }
         }
@@ -174,6 +167,15 @@ class HistoryAdapter(
 
         fun chooseText(isLoading: Boolean) {
             text.text = resources.getString(if (isLoading) R.string.pager_loading else R.string.pager_load_more)
+        }
+    }
+
+    inner class HeaderViewHolder(view: View) : ViewHolder(view) {
+        @BindView(R.id.text) lateinit var text: TextView
+        private var unbinder: Unbinder = ButterKnife.bind(this, view)
+
+        fun formatRelativeDate(time: Period) {
+            text.text = time.toString()
         }
     }
 

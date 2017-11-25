@@ -1,7 +1,8 @@
 
 package cz.josefadamcik.trackontrakt.data.api.model
 
-import java.util.*
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime
 
 data class MovieDetail(
     val title: String,
@@ -9,9 +10,9 @@ data class MovieDetail(
     val year: Int?,
     val tagline: String?,
     val overview: String?,
-    val released: Date?,
+    val released: LocalDate?,
     val runtime: Int?,
-    val updated_at: Date?,
+    val updated_at: LocalDateTime?,
     val trailer: String?,
     val homepage: String?,
     val rating: Double?,
