@@ -17,7 +17,6 @@ import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.home.HistoryAdapter.ViewHolder
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
-import org.threeten.bp.Period
 import java.text.DateFormat
 
 
@@ -109,10 +108,10 @@ class HistoryAdapter(
             }
         }
 
-        class HeaderRowItem(val time: Period) : RowItem(VIEW_TYPE_HEADER) {
+        class HeaderRowItem(val time: RelativeWatchTime) : RowItem(VIEW_TYPE_HEADER) {
             override fun bindViewHolder(holder: ViewHolder) {
                 if (holder is HeaderViewHolder) {
-                    holder.formatRelativeDate(time)
+                    holder.formatRelativeWatchTime(time)
                 }
             }
         }
@@ -174,7 +173,7 @@ class HistoryAdapter(
         @BindView(R.id.text) lateinit var text: TextView
         private var unbinder: Unbinder = ButterKnife.bind(this, view)
 
-        fun formatRelativeDate(time: Period) {
+        fun formatRelativeWatchTime(time: RelativeWatchTime) {
             text.text = time.toString()
         }
     }
