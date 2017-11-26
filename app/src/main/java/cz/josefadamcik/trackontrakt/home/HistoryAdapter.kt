@@ -17,7 +17,9 @@ import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.home.HistoryAdapter.ViewHolder
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
-import java.text.DateFormat
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
 
 
 class HistoryAdapter(
@@ -27,6 +29,8 @@ class HistoryAdapter(
     private val icoMovieTypeDrawable: Drawable,
     private val icoShowTypeDrawable: Drawable
 ) : RecyclerView.Adapter<ViewHolder>() {
+    private val historyListTimeSeparatorAugmenter = HistoryListTimeSeparatorAugmenter()
+    private val monthNameFormatter = DateTimeFormatter.ofPattern("MMMMM")
 
     interface ItemInteractionListener {
         fun onHistoryItemClicked(item: HistoryItem, position: Int)
@@ -36,8 +40,9 @@ class HistoryAdapter(
     var model: HistoryModel = HistoryModel()
         set(value) {
             field = value
-            val newItems = mutableListOf<RowItem>()
-            value.items.mapTo(newItems) { RowItem.HistoryRowItem(it) }
+            val newItems = historyListTimeSeparatorAugmenter.augmentList(
+                value.items.map { RowItem.HistoryRowItem(it) }
+            )
             if (value.hasNextPage) {
                 newItems.add(RowItem.PagerRowItem(value.loadingNextPage))
             }
@@ -57,7 +62,7 @@ class HistoryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return when (viewType) {
             RowItem.VIEW_TYPE_PAGER -> PagerViewHolder(layoutInflater.inflate(R.layout.item_history_pager, parent, false))
-            RowItem.VIEW_TYPE_HEADER -> PagerViewHolder(layoutInflater.inflate(R.layout.item_history_header, parent, false))
+            RowItem.VIEW_TYPE_HEADER -> HeaderViewHolder(layoutInflater.inflate(R.layout.item_history_header, parent, false))
             else -> HistoryViewHolder(layoutInflater.inflate(R.layout.item_history, parent, false))
         }
     }
@@ -80,7 +85,7 @@ class HistoryAdapter(
         abstract fun bindViewHolder(holder: ViewHolder)
 
         class HistoryRowItem(val historyItem: HistoryItem) : RowItem(VIEW_TYPE_HISTORY) {
-            private val dateFormat: DateFormat = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT)
+            private val dateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
 
             override fun bindViewHolder(holder: ViewHolder) {
                 if (holder is HistoryViewHolder) {
@@ -173,8 +178,20 @@ class HistoryAdapter(
         @BindView(R.id.text) lateinit var text: TextView
         private var unbinder: Unbinder = ButterKnife.bind(this, view)
 
+
         fun formatRelativeWatchTime(time: RelativeWatchTime) {
-            text.text = time.toString()
+            text.text = when (time) {
+                RelativeWatchTime.Today -> resources.getString(R.string.today)
+                RelativeWatchTime.Yesterday -> resources.getString(R.string.yesterday)
+                is RelativeWatchTime.MonthsInPast -> if (time.monthCount == 0) {
+                    resources.getString(R.string.this_month)
+                } else if (time.monthCount == 1) {
+                    resources.getString(R.string.last_month)
+                } else {
+                    monthNameFormatter.format(time.toMonth(LocalDateTime.now()))
+                }
+
+            }
         }
     }
 

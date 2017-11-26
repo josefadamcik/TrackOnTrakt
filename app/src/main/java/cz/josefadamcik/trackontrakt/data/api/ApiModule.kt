@@ -12,13 +12,13 @@ import dagger.Provides
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.threeten.bp.LocalDate
+import org.threeten.bp.LocalDateTime
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import timber.log.Timber
 import java.io.File
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Named

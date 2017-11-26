@@ -1,6 +1,7 @@
 package cz.josefadamcik.trackontrakt.home
 
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.Month
 
 /**
  * Represents time in history in relative manner.
@@ -52,5 +53,11 @@ sealed class RelativeWatchTime {
 
         override fun hashCode(): Int = monthCount
 
+        fun toMonth(relativeToOrigin: LocalDateTime): Month {
+            return relativeToOrigin.minusMonths(monthCount.toLong()).month
+        }
+
     }
+
+
 }

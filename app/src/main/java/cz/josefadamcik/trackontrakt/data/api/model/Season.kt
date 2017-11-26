@@ -1,6 +1,7 @@
 package cz.josefadamcik.trackontrakt.data.api.model
 
-import java.time.LocalDate
+import org.threeten.bp.LocalDate
+
 
 data class Season(
     val number: Int,

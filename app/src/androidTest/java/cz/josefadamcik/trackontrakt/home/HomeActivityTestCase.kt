@@ -67,10 +67,10 @@ class HomeActivityTestCase {
 
         //should render results in list
         onView(withId(R.id.list))
-            .check(matches(atPosition(0, hasDescendant(withText("Black Books - S 2, Ep 1")))))
+            .check(matches(atPosition(1, hasDescendant(withText("Black Books - S 2, Ep 1")))))
 
         //should open detail when clicked
-        onView(childAtPosition(withId(R.id.list), 0))
+        onView(childAtPosition(withId(R.id.list), 1))
             .perform(ViewActions.click())
         //assert intent
         intended(allOf(

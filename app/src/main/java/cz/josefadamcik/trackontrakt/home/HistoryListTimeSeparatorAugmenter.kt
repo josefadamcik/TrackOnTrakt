@@ -9,7 +9,7 @@ import org.threeten.bp.LocalDateTime
  * It expects that the list is ordered by time from the newest to the oldest.
  */
 class HistoryListTimeSeparatorAugmenter {
-    fun augmentList(list: List<HistoryAdapter.RowItem>): List<HistoryAdapter.RowItem> {
+    fun augmentList(list: List<HistoryAdapter.RowItem>): MutableList<HistoryAdapter.RowItem> {
         val now = LocalDateTime.now()
         var currentRelativeTimeHeader: RelativeWatchTime = RelativeWatchTime.Today
         var currentHeaderAddToOutput = false
