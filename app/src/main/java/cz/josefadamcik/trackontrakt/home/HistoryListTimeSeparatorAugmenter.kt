@@ -34,9 +34,11 @@ class HistoryListTimeSeparatorAugmenter {
                 while (!tryToConsumeItemUnderCurrentHeader(item)) {
                     val lastTime = currentRelativeTimeHeader
                     currentRelativeTimeHeader = when (lastTime) {
+                        RelativeWatchTime.Now -> RelativeWatchTime.Today //not really used
                         RelativeWatchTime.Today -> RelativeWatchTime.Yesterday
                         RelativeWatchTime.Yesterday -> RelativeWatchTime.MonthsInPast(0)
                         is RelativeWatchTime.MonthsInPast -> RelativeWatchTime.MonthsInPast(lastTime.monthCount + 1)
+
                     }
                     currentHeaderAddToOutput = false
                 }

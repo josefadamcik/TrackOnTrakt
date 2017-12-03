@@ -39,6 +39,7 @@
     <string name="yesterday">Yesterday</string>
     <string name="this_month">This month</string>
     <string name="last_month">Last month</string>
+    <string name="now_watching">Now watching</string>
 
 
 </resources>

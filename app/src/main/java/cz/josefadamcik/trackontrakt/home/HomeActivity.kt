@@ -25,7 +25,9 @@ import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
+import cz.josefadamcik.trackontrakt.data.api.model.MediaItem
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
+import cz.josefadamcik.trackontrakt.data.api.model.Watching
 import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
 import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
@@ -157,12 +159,20 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
 
     override fun onHistoryItemClicked(item: HistoryItem, position: Int) {
+        showDetailForMediaItem(item)
+    }
+
+    private fun showDetailForMediaItem(item: MediaItem) {
         val title: String? = when (item.type) {
             MediaType.episode -> item.show?.title
             MediaType.movie -> item.movie?.title
             else -> null
         }
         startActivity(MediaDetailActivity.createIntent(this, MediaIdentifier.fromMediaItemButShowForEpisode(item), title ?: getString(R.string.media_title_placeholder)))
+    }
+
+    override fun onWatchingItemClicked(item: Watching.Something, position: Int) {
+        showDetailForMediaItem(item)
     }
 
     override fun onPagerClicked() {

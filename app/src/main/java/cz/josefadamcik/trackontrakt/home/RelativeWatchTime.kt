@@ -59,5 +59,12 @@ sealed class RelativeWatchTime {
 
     }
 
+    object Now : RelativeWatchTime() {
+        override fun isDateInRelativeRange(time: LocalDateTime, relativeToOrigin: LocalDateTime): Boolean {
+            return false
+        }
+
+    }
+
 
 }

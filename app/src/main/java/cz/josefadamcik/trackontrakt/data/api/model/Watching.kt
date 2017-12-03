@@ -12,8 +12,17 @@ sealed class Watching {
         override val movie: Movie? = null,
         override val show: Show? = null,
         override val episode: Episode? = null
-    ) : Watching(), MediaItem
+    ) : Watching(), MediaItem {
+
+        override fun isExpired(): Boolean {
+            return expires_at.isBefore(LocalDateTime.now())
+        }
+    }
 
     object Nothing : Watching()
+
+    open fun isExpired(): Boolean {
+        return false
+    }
 }
 

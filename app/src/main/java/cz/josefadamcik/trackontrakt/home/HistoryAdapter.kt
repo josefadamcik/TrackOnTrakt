@@ -15,11 +15,14 @@ import butterknife.Unbinder
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
+import cz.josefadamcik.trackontrakt.data.api.model.Watching
 import cz.josefadamcik.trackontrakt.home.HistoryAdapter.ViewHolder
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
+import timber.log.Timber
+
 class HistoryAdapter(
     private val layoutInflater: LayoutInflater,
     private val resources: Resources,
@@ -32,6 +35,7 @@ class HistoryAdapter(
 
     interface ItemInteractionListener {
         fun onHistoryItemClicked(item: HistoryItem, position: Int)
+        fun onWatchingItemClicked(item: Watching.Something, position: Int)
         fun onPagerClicked()
     }
 
@@ -41,6 +45,12 @@ class HistoryAdapter(
             val newItems = historyListTimeSeparatorAugmenter.augmentList(
                 value.items.map { RowItem.HistoryRowItem(it) }
             )
+
+            if (value.watching is Watching.Something) {
+                newItems.add(0, RowItem.HeaderRowItem(RelativeWatchTime.Now))
+                newItems.add(1, RowItem.WatchingRowItem(value.watching))
+            }
+
             if (value.hasNextPage) {
                 newItems.add(RowItem.PagerRowItem(value.loadingNextPage))
             }
@@ -78,13 +88,14 @@ class HistoryAdapter(
             val VIEW_TYPE_HISTORY = 1
             val VIEW_TYPE_PAGER = 2
             val VIEW_TYPE_HEADER = 3
+            val VIEW_TYPE_WATCHING = 4
+            val dateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+            val timeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
         }
 
         abstract fun bindViewHolder(holder: ViewHolder)
 
         class HistoryRowItem(val historyItem: HistoryItem) : RowItem(VIEW_TYPE_HISTORY) {
-            private val dateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-
             override fun bindViewHolder(holder: ViewHolder) {
                 if (holder is HistoryViewHolder) {
                     holder.title.text = historyItem.title
@@ -118,6 +129,29 @@ class HistoryAdapter(
                 }
             }
         }
+
+        class WatchingRowItem(val watching: Watching.Something) : HistoryAdapter.RowItem(VIEW_TYPE_WATCHING) {
+            override fun bindViewHolder(holder: ViewHolder) {
+                if (holder is HistoryViewHolder) {
+                    holder.title.text = watching.title
+                    if (TextUtils.isEmpty(watching.subtitle)) {
+                        holder.subtitle.visibility = View.GONE
+                    } else {
+                        holder.subtitle.visibility = View.VISIBLE
+                        holder.subtitle.text = watching.subtitle
+                    }
+
+
+                    holder.date.text = String.format("%s (%s - %s)",
+                        watching.action,
+                        timeFormat.format(watching.started_at),
+                        timeFormat.format(watching.expires_at)
+                    )
+                    holder.chooseTypeInfoIconAndText(watching.type, watching.year)
+                }
+            }
+
+        }
     }
 
 
@@ -138,7 +172,7 @@ class HistoryAdapter(
         }
 
         override fun onClick(v: View?) {
-            itemInteractionListener.onHistoryItemClicked(findHistoryItemForPosition(adapterPosition), adapterPosition)
+            onItemClicked(adapterPosition)
         }
 
         fun chooseTypeInfoIconAndText(type: MediaType, year: Int?) {
@@ -153,8 +187,17 @@ class HistoryAdapter(
         }
     }
 
-    private fun findHistoryItemForPosition(adapterPosition: Int): HistoryItem {
-        return (items[adapterPosition] as RowItem.HistoryRowItem).historyItem
+    private fun onItemClicked(position: Int) {
+        val item = items[position]
+        when (item) {
+            is HistoryAdapter.RowItem.HistoryRowItem ->
+                itemInteractionListener.onHistoryItemClicked(item.historyItem, position)
+            is HistoryAdapter.RowItem.PagerRowItem ->
+                itemInteractionListener.onPagerClicked()
+            is HistoryAdapter.RowItem.HeaderRowItem -> Timber.d("Clicked on header $position")
+            is HistoryAdapter.RowItem.WatchingRowItem ->
+                itemInteractionListener.onWatchingItemClicked(item.watching, position)
+        }
     }
 
 
@@ -168,7 +211,7 @@ class HistoryAdapter(
         }
 
         override fun onClick(v: View?) {
-            itemInteractionListener.onPagerClicked()
+            onItemClicked(adapterPosition)
         }
 
         fun chooseText(isLoading: Boolean) {
@@ -183,6 +226,7 @@ class HistoryAdapter(
 
         fun formatRelativeWatchTime(time: RelativeWatchTime) {
             text.text = when (time) {
+                RelativeWatchTime.Now -> resources.getString(R.string.now_watching)
                 RelativeWatchTime.Today -> resources.getString(R.string.today)
                 RelativeWatchTime.Yesterday -> resources.getString(R.string.yesterday)
                 is RelativeWatchTime.MonthsInPast -> if (time.monthCount == 0) {

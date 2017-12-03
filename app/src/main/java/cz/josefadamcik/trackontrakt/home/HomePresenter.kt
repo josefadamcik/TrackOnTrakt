@@ -4,7 +4,9 @@ package cz.josefadamcik.trackontrakt.home
 import android.support.annotation.VisibleForTesting
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.model.Watching
+import io.reactivex.Single
 import io.reactivex.functions.BiFunction
+import org.threeten.bp.LocalDateTime
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -40,13 +42,7 @@ class HomePresenter @Inject constructor(
             updateHistoryModel(loadedHistoryModel.copy(loadingNextPage = true))
         }
         disposables.add(
-            userHistoryManager.loadUserHistory(loadingPage)
-                .zipWith(
-                    userHistoryManager.loadWatching(),
-                    BiFunction<HistoryItems, Watching, Pair<HistoryItems, Watching>> { history, watching ->
-                        Pair(history, watching)
-                    }
-                )
+            (if (loadingPage == 1) loadFirstPage() else loadAnotherPage(loadingPage))
                 .subscribe(
                     { (history, watching) ->
                         Timber.d("loadHomeStreamData done {$loadingPage}")
@@ -54,13 +50,14 @@ class HomePresenter @Inject constructor(
                         loadingPage = -1
                         view?.hideLoading()
                         val allItems = loadedHistoryModel.items.toMutableList()
+                        val now = LocalDateTime.now()
                         allItems.addAll(history.items)
 
                         updateHistoryModel(loadedHistoryModel.copy(
-                            items = allItems.toList(),
+                            items = allItems.filter { it.watched_at.isBefore(now) },
                             hasNextPage = lastPage < history.pageCount,
                             loadingNextPage = false,
-                            watching = watching
+                            watching = if (watching.isExpired()) Watching.Nothing else watching
                         ))
                     },
                     { t ->
@@ -75,6 +72,32 @@ class HomePresenter @Inject constructor(
                 )
         )
     }
+
+
+    /** For the first page we will also load the "currently watching" item */
+    private fun loadFirstPage(): Single<Pair<HistoryItems, Watching>> {
+        return userHistoryManager.loadUserHistory(1)
+            .zipWith(
+                userHistoryManager.loadWatching(),
+                BiFunction<HistoryItems, Watching, Pair<HistoryItems, Watching>> { history, watching ->
+                    Pair(history, watching)
+                }
+            )
+    }
+
+    /**
+     * For another pages we will not fetch the "currently watching" item
+     */
+    private fun loadAnotherPage(page: Int): Single<Pair<HistoryItems, Watching>> {
+        return userHistoryManager.loadUserHistory(page)
+            .zipWith(
+                Single.just(loadedHistoryModel.watching),
+                BiFunction<HistoryItems, Watching, Pair<HistoryItems, Watching>> { history, watching ->
+                    Pair(history, watching)
+                }
+            )
+    }
+
 
     fun loadNextPage() {
         loadHomeStreamData(false)

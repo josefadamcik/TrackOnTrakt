@@ -56,6 +56,13 @@ class HomeActivityTestCase {
                     .withBody(asset(appContext, "history.json"))
                 )
         )
+        wireMockRule.stubFor(
+            get(urlMatching("/users/me/watching.*"))
+                .willReturn(aResponse()
+                    .withStatus(204)
+                    .withBody("")
+                )
+        )
     }
 
 
