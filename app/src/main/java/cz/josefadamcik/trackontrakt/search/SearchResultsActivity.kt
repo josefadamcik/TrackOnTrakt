@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ProgressBar
@@ -17,7 +16,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.evernote.android.state.State
 import com.evernote.android.state.StateSaver
-import com.lapism.searchview.SearchView
+import com.mancj.materialsearchbar.MaterialSearchBar
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
@@ -25,17 +24,19 @@ import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
 import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
 import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
 import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
+import timber.log.Timber
 import javax.inject.Inject
 
 
 class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresenter>(), SearchResultsView, SearchViewWrapper.SearchCallback, SearchResultAdapter.OnItemInteractionListener {
+
+
     @Inject lateinit var myPresenter: SearchResultPresenter
     private lateinit var searchViewWrapper: SearchViewWrapper
     protected lateinit var searchAdapter: SearchResultAdapter
 
     @BindView(R.id.progress) lateinit var progress: ProgressBar
-    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
-    @BindView(R.id.search_view) lateinit var searchView: SearchView
+    @BindView(R.id.search_bar) lateinit var searchBar: MaterialSearchBar
     @BindView(R.id.list) lateinit var list: RecyclerView
 
     @BindDrawable(R.drawable.ic_local_movies_gray_24dp) lateinit var icoTypeMovieDrawable: Drawable
@@ -60,11 +61,9 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
         setContentView(R.layout.activity_search_results)
         unbinder = ButterKnife.bind(this)
 
-        searchView.setArrowOnly(true)
-        searchView.setOnMenuClickListener(SearchView.OnMenuClickListener { finish() })
-        searchView.setVersionMargins(SearchView.VERSION_MARGINS_TOOLBAR_SMALL)
+        searchViewWrapper = SearchViewWrapper(searchBar, this)
 
-        searchViewWrapper = SearchViewWrapper(this, searchView, this)
+
 
         initList()
 
@@ -76,8 +75,10 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
             searchViewWrapper.query = query
             val filter = intent.getParcelableExtra<TraktFilter>(PAR_FILTER)
             this.filter = filter
-            searchViewWrapper.filters = filter
+//            searchViewWrapper.filters = filter
         }
+
+        searchBar.enableSearch()
 
         StateSaver.restoreInstanceState(this, savedInstanceState)
 
@@ -93,6 +94,11 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
         this.query = query
         this.filter = filter
         presenter.search(query, filter)
+    }
+
+    override fun onNavigationClicked() {
+        Timber.d("onNavigationClicked ")
+        finish()
     }
 
     override fun createPresenter(): SearchResultPresenter {

@@ -2,23 +2,21 @@ package cz.josefadamcik.trackontrakt.home
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.ProgressBar
 import butterknife.BindDrawable
 import butterknife.BindView
 import butterknife.ButterKnife
-import com.lapism.searchview.SearchView
+
+import com.mancj.materialsearchbar.MaterialSearchBar
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
@@ -37,21 +35,18 @@ import javax.inject.Inject
 
 class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchViewWrapper.SearchCallback, HistoryAdapter.ItemInteractionListener {
 
+
     enum class Mode {
         History,
         Search
     }
 
     @Inject lateinit var homePresenter: HomePresenter
-
-    @BindView(R.id.app_bar) lateinit var appbar: AppBarLayout
-    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
-    @BindView(R.id.toolbar_image) lateinit var toolbarImage: ImageView
     @BindView(R.id.list) lateinit var recyclerView: RecyclerView
     @BindView(R.id.progress) lateinit var progress: ProgressBar
     @BindView(R.id.swipe_refresh) lateinit var swipeRefreshLayout: SwipeRefreshLayout
-    @BindView(R.id.search_view) lateinit var searchView: SearchView
+    @BindView(R.id.search_bar) lateinit var searchBar: MaterialSearchBar
     @BindDrawable(R.drawable.ic_local_movies_gray_24dp) lateinit var icoTypeMovieDrawable: Drawable
     @BindDrawable(R.drawable.ic_tv_gray_24dp) lateinit var icoTypeShowDrawable: Drawable
 
@@ -68,14 +63,15 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
         setContentView(R.layout.activity_home)
         unbinder = ButterKnife.bind(this)
 
-        setSupportActionBar(toolbar)
-        toolbar.title = getString(R.string.title_history)
+        //setSupportActionBar(toolbar)
+        //toolbar.title = getString(R.string.title_history)
         toolbarLayout.title = getString(R.string.title_history)
+        toolbarLayout.isTitleEnabled = true
 
         swipeRefreshLayout.setOnRefreshListener(this)
 
         initList()
-        searchViewWrapper = SearchViewWrapper(this, searchView, this)
+        searchViewWrapper = SearchViewWrapper(searchBar, this)
 
         super.onCreate(savedInstanceState)
     }
@@ -97,9 +93,11 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
 
     override fun doSearchForQuery(query: String, filter: TraktFilter) {
-        searchView.close(true)
-
         startActivity(SearchResultsActivity.createIntent(this, query, filter))
+    }
+
+    override fun onNavigationClicked() {
+        //nop
     }
 
 
@@ -141,15 +139,15 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds model to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_home, menu)
-        return true
+        //menuInflater.inflate(R.menu.menu_home, menu)
+        return false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.action_search) {
-            appbar.setExpanded(true, true)
-            searchView.open(true, item)
+//            appbar.setExpanded(true, true)
+//            searchView.open(true, item)
 
             return true
         }
@@ -186,3 +184,4 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
 
 }
+

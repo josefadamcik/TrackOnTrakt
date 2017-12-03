@@ -14,14 +14,25 @@
         android:paddingBottom="8dp"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/search_bar"
+            style="@style/MaterialSearchBarLight"
+            app:mt_speechMode="false"
+            app:mt_hint="@string/search_hint"
+            app:mt_maxSuggestionsCount="4"
+            app:mt_placeholder="@string/start_with_search"
+            app:mt_upButtonEnabled="true"
+            app:mt_menuIconDrawable="@drawable/ic_back_vector"
+
             android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_height"
-            android:minHeight="@dimen/toolbar_height"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/material_baseline_grid_1x"
+            android:layout_marginTop="@dimen/material_baseline_grid_1x"
+            android:layout_marginRight="@dimen/material_baseline_grid_1x"
+            android:layout_marginLeft="@dimen/material_baseline_grid_1x"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:layout_collapseMode="pin"
-            app:popupTheme="@style/AppTheme.PopupOverlay"/>
+            />
 
 
     </android.support.design.widget.AppBarLayout>
@@ -30,10 +41,4 @@
     <include layout="@layout/content_search_results"/>
 
 
-    <com.lapism.searchview.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.lapism.searchview.SearchBehavior"
-        />
 </android.support.design.widget.CoordinatorLayout>
