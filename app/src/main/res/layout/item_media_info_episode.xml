@@ -5,6 +5,8 @@
               android:minHeight="@dimen/material_increment_1x"
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="horizontal"
+              android:background="?attr/selectableItemBackground"
+              android:clickable="true"
     >
 
     <TextView
@@ -68,6 +70,5 @@
         android:src="@drawable/ic_check_circle_black_24dp"
         android:paddingLeft="@dimen/material_baseline_grid_2x"
         android:paddingRight="@dimen/material_baseline_grid_2x"
-
         />
 </LinearLayout>

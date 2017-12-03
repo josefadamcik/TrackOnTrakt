@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
@@ -130,7 +129,7 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
     private fun initList() {
         searchAdapter = SearchResultAdapter(LayoutInflater.from(this), resources, icoTypeMovieDrawable, icoTypeShowDrawable, this)
         list.layoutManager = LinearLayoutManager(this)
-        list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
+//        list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         list.setHasFixedSize(true)
         list.adapter = searchAdapter
     }
