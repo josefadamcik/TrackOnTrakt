@@ -3,6 +3,8 @@ package cz.josefadamcik.trackontrakt.home
 
 import android.support.annotation.VisibleForTesting
 import cz.josefadamcik.trackontrakt.base.BasePresenter
+import cz.josefadamcik.trackontrakt.data.api.model.Watching
+import io.reactivex.functions.BiFunction
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -39,8 +41,14 @@ class HomePresenter @Inject constructor(
         }
         disposables.add(
             userHistoryManager.loadUserHistory(loadingPage)
+                .zipWith(
+                    userHistoryManager.loadWatching(),
+                    BiFunction<HistoryItems, Watching, Pair<HistoryItems, Watching>> { history, watching ->
+                        Pair(history, watching)
+                    }
+                )
                 .subscribe(
-                    { history ->
+                    { (history, watching) ->
                         Timber.d("loadHomeStreamData done {$loadingPage}")
                         lastPage = loadingPage
                         loadingPage = -1
@@ -51,7 +59,8 @@ class HomePresenter @Inject constructor(
                         updateHistoryModel(loadedHistoryModel.copy(
                             items = allItems.toList(),
                             hasNextPage = lastPage < history.pageCount,
-                            loadingNextPage = false
+                            loadingNextPage = false,
+                            watching = watching
                         ))
                     },
                     { t ->

@@ -37,11 +37,14 @@ class HomePresenterTest {
         verify(view).hideLoading()
         argumentCaptor<HistoryModel>().apply {
             verify(view, times(1)).showHistory(capture())
-            assertThat("Model has flag that there are more pages", firstValue.hasNextPage, equalTo(true))
-            assertThat("Model has flag that its not loading next page ATM.", firstValue.loadingNextPage, equalTo(false))
+            assertThat("Model has flag that there are more pages", lastValue.hasNextPage, equalTo(true))
+            assertThat("Model has flag that its not loading next page ATM.", lastValue.loadingNextPage, equalTo(false))
+
+            assertThat("there is a 'just watching' item in result", lastValue.watching, Matchers.allOf(
+                Matchers.notNullValue(),
+                Matchers.isA(Watching.Nothing::class.java as Class<Watching>)
+            ))
         }
-
-
     }
 
     @Test
@@ -49,6 +52,7 @@ class HomePresenterTest {
         //given
         val userHistoryManager = mock<UserHistoryManager> {
             on { loadUserHistory(any()) } doReturn Single.error(Exception("Test error"))
+            on { loadWatching() } doReturn Single.error(Exception("Test error"))
         }
         val view = givenMockView()
         val presenter = givenPresenter(userHistoryManager)
@@ -100,10 +104,51 @@ class HomePresenterTest {
 
     }
 
-    private fun givenHistoryManagerReturningList(): UserHistoryManager {
+    @Test
+    fun loadWatching() {
+        //given
+        val userHistoryManager = givenHistoryManagerReturningList(watchingSomething = true)
+        val view = givenMockView()
+        val presenter = givenPresenter(userHistoryManager)
+
+
+        //when
+
+        presenter.attachView(view)
+
+        //then
+
+        argumentCaptor<HistoryModel>().apply {
+            //first invocation is initial load
+            verify(view, times(1)).showHistory(capture())
+
+            //we will check if the model contains our "just watching" record
+
+            assertThat("there is a 'just watching' item in result", lastValue.watching, Matchers.allOf(
+                Matchers.notNullValue(),
+                Matchers.isA(Watching.Something::class.java as Class<Watching>)
+            ))
+
+        }
+
+    }
+
+
+    private fun givenHistoryManagerReturningList(watchingSomething: Boolean = false): UserHistoryManager {
         return mock<UserHistoryManager> {
             on { loadUserHistory(1) } doReturn Single.just(givenListOfHistoryItems(1..10))
             on { loadUserHistory(2) } doReturn Single.just(givenListOfHistoryItems(11..21))
+            on { loadWatching() } doReturn Single.just(
+                if (watchingSomething)
+                    Watching.Something(
+                        expires_at = LocalDateTime.now().plusMinutes(30),
+                        started_at = LocalDateTime.now().minusMinutes(30),
+                        type = MediaType.movie,
+                        action = "checkin",
+                        movie = testMovie()
+                    ) as Watching
+                else Watching.Nothing as Watching
+            )
         }
     }
 
@@ -115,7 +160,7 @@ class HomePresenterTest {
     }
 
     private fun givenListOfHistoryItems(idRange: IntRange): HistoryItems {
-        val movie = Movie("test movie", 2012, MediaIds(1))
+        val movie = testMovie()
         return HistoryItems(
             items = idRange.map {
                 HistoryItem(
@@ -131,5 +176,7 @@ class HomePresenterTest {
             page = if (idRange.first == 1) 1 else 2
         )
     }
+
+    private fun testMovie() = Movie("test movie", 2012, MediaIds(1))
 
 }

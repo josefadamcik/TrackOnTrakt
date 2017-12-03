@@ -35,7 +35,7 @@ interface TraktApi {
     fun watching(@Header("Authorization") authorization: String,
                  @Query("extended") extended: ExtendedInfo = ExtendedInfo.metadata
     )
-        : Single<Watching>
+        : Single<Response<Watching.Something>>
 
     @GET("/search/{type}")
     fun search(@Header("Authorization") authorization: String,
