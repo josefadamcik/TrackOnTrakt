@@ -20,8 +20,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
-
-
 class HistoryAdapter(
     private val layoutInflater: LayoutInflater,
     private val resources: Resources,
@@ -140,7 +138,7 @@ class HistoryAdapter(
         }
 
         override fun onClick(v: View?) {
-            itemInteractionListener.onHistoryItemClicked(model.items[adapterPosition], adapterPosition)
+            itemInteractionListener.onHistoryItemClicked(findHistoryItemForPosition(adapterPosition), adapterPosition)
         }
 
         fun chooseTypeInfoIconAndText(type: MediaType, year: Int?) {
@@ -153,6 +151,10 @@ class HistoryAdapter(
             typeInfo.setCompoundDrawablesWithIntrinsicBounds(typeIcoDrawable, null, null, null)
             typeInfo.text = resources.getString(R.string.media_item_type_info, type.toString(), year?.toString() ?: "")
         }
+    }
+
+    private fun findHistoryItemForPosition(adapterPosition: Int): HistoryItem {
+        return (items[adapterPosition] as RowItem.HistoryRowItem).historyItem
     }
 
 
@@ -221,3 +223,5 @@ class HistoryAdapter(
 
     }
 }
+
+
