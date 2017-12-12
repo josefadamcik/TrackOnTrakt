@@ -63,8 +63,6 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
 
         searchViewWrapper = SearchViewWrapper(searchBar, this)
 
-
-
         initList()
 
         super.onCreate(savedInstanceState)
@@ -101,6 +99,11 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
         finish()
     }
 
+    override fun onBackClicked() {
+        Timber.d("onBackClicked")
+        finish()
+    }
+
     override fun createPresenter(): SearchResultPresenter {
         return myPresenter
     }
@@ -108,7 +111,6 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
     override fun showSearchResults(items: List<SearchResultItem>) {
         hideLoading()
         searchAdapter.items = items
-
     }
 
     override fun showLoading() {

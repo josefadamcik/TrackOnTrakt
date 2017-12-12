@@ -6,6 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/defaultBackground</item>
+
+    </style>
+
+    <style name="AppTheme.Search">
+        <!-- used to restyle placeholder in searchview, because it uses textAppearanceLarge -->
+        <item name="android:textAppearanceLarge">@style/TextAppearance.SearchHint</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,8 +25,10 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 
-    <style name="TextAppearance.MediaDetailTitle" parent="TextAppearance.AppCompat.Large">
+    <style name="TextAppearance.MediaDetailTitle" parent="MaterialTypography.Locale.Headline">
         <item name="android:textSize">@dimen/textsize_mediadetail_title</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+
     </style>
 
     <style name="TextAppearance.CollapsingToolbarExpandedInvisibleTitle" parent="TextAppearance.MediaDetailTitle">
@@ -44,6 +53,11 @@
         <item name="android:textColor">@color/material_color_white_70_percent</item>
     </style>
 
+    <style name="TextAppearance.SearchHint" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
     <style name="ListRowHeaderText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -52,7 +66,7 @@
         <item name="android:paddingTop">@dimen/material_baseline_grid_1x</item>
         <item name="android:paddingBottom">@dimen/material_baseline_grid_1x</item>
         <item name="android:textAppearance">@style/MaterialTypography.Regular.Subheading</item>
-        <item name="android:textColor">@color/secondaryColor</item>
+        <item name="android:textColor">@color/secondaryDarkColor</item>
         <item name="android:gravity">left|start|center_vertical</item>
     </style>
 

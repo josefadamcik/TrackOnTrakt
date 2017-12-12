@@ -159,7 +159,7 @@ class MediaDetailAdapter(
                     } else {
                         holder.btnCheckin.setImageDrawable(holder.drawableIcCheck)
                     }
-                    holder.btnCheckin.setColorFilter(resources.getColor(R.color.secondaryColor), android.graphics.PorterDuff.Mode.SRC_IN)
+                    holder.btnCheckin.setColorFilter(resources.getColor(R.color.secondaryDarkColor), android.graphics.PorterDuff.Mode.SRC_IN)
                 }
             }
             is SeasonHeaderViewHolder -> {

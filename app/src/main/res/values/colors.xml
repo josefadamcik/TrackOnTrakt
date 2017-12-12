@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#2962ff</color>
-    <color name="primaryLightColor">#768fff</color>
-    <color name="primaryDarkColor">#0039cb</color>
-    <color name="secondaryColor">#0d47a1</color>
-    <color name="secondaryLightColor">#5472d3</color>
-    <color name="secondaryDarkColor">#002171</color>
+    <!--<color name="primaryColor">#1976d2</color>-->
+    <!--<color name="primaryLightColor">#63a4ff</color>-->
+    <!--<color name="primaryDarkColor">#004ba0</color>-->
+    <!--<color name="secondaryColor">#01579b</color>-->
+    <!--<color name="secondaryLightColor">#4f83cc</color>-->
+    <!--<color name="secondaryDarkColor">#002f6c</color>-->
+    <!--<color name="primaryTextColor">#ffffff</color>-->
+    <!--<color name="secondaryTextColor">#ffffff</color>-->
+    <color name="primaryColor">#1976d2</color>
+    <color name="primaryLightColor">#63a4ff</color>
+    <color name="primaryDarkColor">#004ba0</color>
+    <color name="secondaryColor">#00bcd4</color>
+    <color name="secondaryLightColor">#62efff</color>
+    <color name="secondaryDarkColor">#008ba3</color>
     <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#000000</color>
     <color name="colorPrimary">@color/primaryColor</color>
     <color name="colorPrimaryDark">@color/primaryDarkColor</color>
-    <color name="colorAccent">@color/secondaryColor</color>
+    <color name="colorAccent">@color/secondaryDarkColor</color>
+
+    <color name="defaultBackground">@color/material_color_blue_grey_50</color>
 
     <color name="textColorPrimary">@color/material_typography_primary_text_color_dark</color>
     <color name="textColorSecondary">@color/material_typography_secondary_text_color_dark</color>

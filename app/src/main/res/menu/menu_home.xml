@@ -10,17 +10,4 @@
         app:showAsAction="ifRoom"
 
         />
-
-
-    <!--<item-->
-    <!--android:id="@+id/action_settings"-->
-    <!--android:orderInCategory="100"-->
-    <!--andrtextitle="@string/action_settings"-->
-    <!--app:showAsAction="never"/>-->
-
-    <!--<item-->
-    <!--android:id="@+id/action_logout"-->
-    <!--android:orderInCategory="100"-->
-    <!--andrtextitle="@string/action_logout"-->
-    <!--app:showAsAction="never"/>-->
 </menu>

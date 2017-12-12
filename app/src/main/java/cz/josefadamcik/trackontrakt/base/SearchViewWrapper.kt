@@ -14,6 +14,7 @@ public class SearchViewWrapper (
         Timber.d("onButtonClicked btn: %s", buttonCode)
         when (buttonCode) {
 //            MaterialSearchBar.BUTTON_SPEECH ->
+            MaterialSearchBar.BUTTON_BACK -> searchCallback.onBackClicked()
             MaterialSearchBar.BUTTON_NAVIGATION -> searchCallback.onNavigationClicked()
         }
     }
@@ -38,6 +39,7 @@ public class SearchViewWrapper (
     interface SearchCallback {
         fun doSearchForQuery(query: String,  filter: TraktFilter)
         fun onNavigationClicked()
+        fun onBackClicked()
     }
 
 

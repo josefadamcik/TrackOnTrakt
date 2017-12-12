@@ -23,6 +23,7 @@
             app:mt_placeholder="@string/start_with_search"
             app:mt_upButtonEnabled="true"
             app:mt_menuIconDrawable="@drawable/ic_back_vector"
+            app:mt_searchBarColor="@color/defaultBackground"
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

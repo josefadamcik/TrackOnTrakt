@@ -25,6 +25,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             >
 
+
             <com.mancj.materialsearchbar.MaterialSearchBar
                 android:id="@+id/search_bar"
                 style="@style/MaterialSearchBarLight"
@@ -32,6 +33,7 @@
                 app:mt_hint="@string/search_hint"
                 app:mt_maxSuggestionsCount="10"
                 app:mt_placeholder="@string/start_with_search"
+                app:mt_searchBarColor="@color/defaultBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/material_baseline_grid_1x"
@@ -40,18 +42,13 @@
                 android:layout_marginLeft="@dimen/material_baseline_grid_1x"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:layout_collapseMode="pin"
+                android:elevation="4dp"
+                android:theme="@style/AppTheme.Search"
                 />
         </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
 
 
     <include layout="@layout/content_home"/>
-
-
-    <!--<com.lapism.searchview.SearchView-->
-    <!--android:id="@+id/search_view"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--app:layout_behavior="com.lapism.searchview.SearchBehavior"-->
-    <!--/>-->
 </android.support.design.widget.CoordinatorLayout>

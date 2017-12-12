@@ -100,6 +100,9 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
         //nop
     }
 
+    override fun onBackClicked() {
+        //nop
+    }
 
     override fun createPresenter(): HomePresenter {
         return homePresenter

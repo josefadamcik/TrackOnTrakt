@@ -8,7 +8,6 @@ import com.hannesdorfmann.mosby3.mvp.MvpPresenter
 import com.hannesdorfmann.mosby3.mvp.MvpView
 import com.hannesdorfmann.mosby3.mvp.delegate.ActivityMvpDelegateImpl
 import com.hannesdorfmann.mosby3.mvp.delegate.MvpDelegateCallback
-import com.lapism.searchview.SearchAdapter
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -16,8 +15,6 @@ public abstract class BaseActivity<V : MvpView, P : MvpPresenter<V>> : AppCompat
     private val mvpDelegate: ActivityMvpDelegateImpl<V, P> = ActivityMvpDelegateImpl<V, P>(this, this, true)
     private lateinit var presenterField: P
     protected var retainInstance: Boolean = false
-
-    private lateinit var suggestionAdapter: SearchAdapter
 
     protected val disposable: CompositeDisposable = CompositeDisposable()
 
