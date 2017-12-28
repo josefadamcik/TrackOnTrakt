@@ -25,7 +25,6 @@ import cz.josefadamcik.trackontrakt.testutil.WiremockTimberNotifier
 import cz.josefadamcik.trackontrakt.testutil.activityTestRule
 import cz.josefadamcik.trackontrakt.testutil.asset
 import cz.josefadamcik.trackontrakt.testutil.childAtPosition
-import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
 import org.junit.Rule
@@ -96,15 +95,7 @@ class HomeActivityTestCase {
         //launch activity
         val activity = activityTestRule.launchActivity(Intent(appContext, HomeActivity::class.java))
 
-        val searchEditText = onView(
-            allOf(withId(R.id.searchEditText_input),
-                childAtPosition(
-                    allOf(withId(R.id.linearLayout),
-                        childAtPosition(
-                            withClassName(`is`("android.widget.LinearLayout")),
-                            0)),
-                    1)
-            ))
+        val searchEditText = onView(allOf(withId(R.id.mt_editText)))
 
         searchEditText.perform(
             ViewActions.replaceText(searchQuery),

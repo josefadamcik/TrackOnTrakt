@@ -12,7 +12,7 @@ import java.util.*
 class LocalDateTimeJsonAdapter(private val dateAdapter: JsonAdapter<Date>) : JsonAdapter<LocalDateTime>() {
     override fun fromJson(reader: JsonReader?): LocalDateTime {
         val date = dateAdapter.fromJson(reader)
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(date.time), ZoneOffset.systemDefault())
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(date?.time ?: 0), ZoneOffset.systemDefault())
     }
 
     override fun toJson(writer: JsonWriter?, value: LocalDateTime?) {
@@ -28,7 +28,7 @@ class LocalDateTimeJsonAdapter(private val dateAdapter: JsonAdapter<Date>) : Jso
 class LocalDateJsonAdapter(private val dateAdapter: JsonAdapter<Date>) : JsonAdapter<LocalDate>() {
     override fun fromJson(reader: JsonReader?): LocalDate {
         val date = dateAdapter.fromJson(reader)
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(date.time), ZoneOffset.systemDefault()).toLocalDate()
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(date?.time ?: 0), ZoneOffset.systemDefault()).toLocalDate()
     }
 
     override fun toJson(writer: JsonWriter?, value: LocalDate?) {

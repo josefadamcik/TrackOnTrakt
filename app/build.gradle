@@ -120,11 +120,12 @@ dependencies {
     /* Testing */
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.hamcrest:hamcrest-library:1.3'
-    testImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0' //includes mockito
+
     testImplementation 'org.mockito:mockito-core:2.8.9'
     testImplementation "org.mockito:mockito-inline:2.8.9"
-    testImplementation'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
+    testImplementation 'com.nhaarman:mockito-kotlin-kt1.1:1.5.0'
 
+    androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0' //includes mockito
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation'com.android.support.test:rules:1.0.1'
     //androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
@@ -187,7 +188,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.5.1'
     implementation 'com.github.yongjhih.kxdate:kxdate-threetenbp-android:-SNAPSHOT'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
-    testImplementation 'org.threeten:threetenbp:1.3.1'
+    testImplementation 'org.threeten:threetenbp:1.3.3'
     implementation 'nz.bradcampbell:paperparcel:2.0.1'
     implementation 'nz.bradcampbell:paperparcel-kotlin:2.0.1' // Optional
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.1'
@@ -195,10 +196,10 @@ dependencies {
     kapt 'com.evernote:android-state-processor:1.0.6'
 
     //dagger 2
-    implementation 'com.google.dagger:dagger:2.9'
-    kapt 'com.google.dagger:dagger-compiler:2.9'
-    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.9'
-    kaptTest 'com.google.dagger:dagger-compiler:2.9'
+    implementation 'com.google.dagger:dagger:2.11'
+    kapt 'com.google.dagger:dagger-compiler:2.11'
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.11'
+    kaptTest 'com.google.dagger:dagger-compiler:2.11'
     compileOnly 'org.glassfish:javax.annotation:10.0-b28'
 
     //rx
@@ -206,15 +207,15 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxkotlin:2.0.0-RC3'
 
     //api, networking
-    implementation 'com.squareup.okhttp3:okhttp:3.7.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     implementation "com.squareup.retrofit2:retrofit:2.2.0"
     implementation 'com.squareup.moshi:moshi:1.4.0'
     implementation 'com.squareup.moshi:moshi-adapters:1.4.0'
     implementation "com.squareup.retrofit2:converter-moshi:2.2.0"
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
-    implementation 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    implementation 'com.github.bumptech.glide:okhttp3-integration:1.5.0@aar'
 
     //ui & view
     // MVP + ViewState + LCE Views http://hannesdorfmann.com/mosby/
@@ -223,11 +224,11 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     kapt 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    implementation 'me.zhanghai.android.materialprogressbar:library:1.3.0'
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
     implementation 'com.github.josefadamcik:MaterialSearchBar:devel-SNAPSHOT'
 
 
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta4'
 
 }
 repositories {

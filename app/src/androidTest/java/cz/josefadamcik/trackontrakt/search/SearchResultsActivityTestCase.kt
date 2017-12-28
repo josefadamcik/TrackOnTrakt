@@ -9,8 +9,6 @@ import android.support.test.espresso.intent.Intents
 import android.support.test.espresso.intent.matcher.IntentMatchers
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.runner.AndroidJUnit4
-import android.view.View
-import android.widget.LinearLayout
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
@@ -25,7 +23,6 @@ import cz.josefadamcik.trackontrakt.testutil.asset
 import cz.josefadamcik.trackontrakt.testutil.childAtPosition
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.containsString
-import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -60,13 +57,7 @@ class SearchResultsActivityTestCase {
 
         //assert query present in search input
         val editText = onView(
-            allOf(withId(R.id.searchEditText_input), withText("rick and morty"),
-                childAtPosition(
-                    allOf(withId(R.id.linearLayout),
-                        childAtPosition(
-                            IsInstanceOf.instanceOf<View>(LinearLayout::class.java),
-                            0)),
-                    1),
+            allOf(withId(R.id.mt_editText), withText("rick and morty"),
                 isDisplayed()))
         editText.check(matches(withText("rick and morty")))
 

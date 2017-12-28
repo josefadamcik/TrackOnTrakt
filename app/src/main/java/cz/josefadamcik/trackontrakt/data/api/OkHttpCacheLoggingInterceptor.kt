@@ -46,15 +46,15 @@ class OkHttpCacheLoggingInterceptor : Interceptor {
         } else if (cacheResponse == null && networkResponse != null) {
             Timber.d("CACHE-MISS: : %s %s", request.method(), request.url())
             cacheInfo = CACHE_MISS
-        } else if (cacheResponse.code() == 200 && networkResponse.code() == 304) {
+        } else if (cacheResponse?.code() == 200 && networkResponse?.code() == 304) {
             cacheInfo = CACHE_VALIDATED_HIT
             Timber.d("CACHE-VALIDATED-HIT: : %s %s", request.method(), request.url())
-        } else if (cacheResponse.code() == 200 && networkResponse.code() == 200) {
+        } else if (cacheResponse?.code() == 200 && networkResponse?.code() == 200) {
             cacheInfo = CACHE_VALIDATED_MISS
             Timber.d("CACHE-VALIDATED-MISS: : %s %s", request.method(), request.url())
         } else {
-            cacheInfo = String.format("cache: %s network: %s", cacheResponse.code(), networkResponse.code())
-            Timber.d("CACHE: %s %s, cache: %s, network: %s", request.method(), request.url(), cacheResponse.code(), networkResponse.code())
+            cacheInfo = String.format("cache: %s network: %s", cacheResponse?.code(), networkResponse?.code())
+            Timber.d("CACHE: %s %s, cache: %s, network: %s", request.method(), request.url(), cacheResponse?.code(), networkResponse?.code())
         }
 
         return response.newBuilder()
