@@ -95,6 +95,10 @@ class HomeActivityTestCase {
         //launch activity
         val activity = activityTestRule.launchActivity(Intent(appContext, HomeActivity::class.java))
 
+        //click on placeholder - that will activate edit text for search
+        val searchPlaceholder = onView(withId(R.id.mt_placeholder))
+        searchPlaceholder.perform(ViewActions.click())
+
         val searchEditText = onView(allOf(withId(R.id.mt_editText)))
 
         searchEditText.perform(
