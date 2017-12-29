@@ -48,10 +48,14 @@ env:
 
 before_install:
   - export EMULATOR="system-images;android-${API};${TAG};${ABI}" # Used to install/create emulator
+  - echo $EMULATOR
   - echo 'count=0' > /home/travis/.android/repositories.cfg # Avoid warning
   - openssl aes-256-cbc -K $encrypted_923bf72da533_key -iv $encrypted_923bf72da533_iv -in ci/secrets.tar.enc -out ci/secrets.tar -d
   - tar xvf ci/secrets.tar
   - chmod +x gradlew
+  - ls $ANDROID_HOME
+  - ls /usr/local/android-sdk-25.0.2
+  - ls /usr/local/android-sdk-26.0.2
 
 install:
   # List and delete unnecessary components to free space
@@ -76,7 +80,7 @@ install:
   # Update sdk tools to latest version and install/update components
 #  - echo yes | sdkmanager "tools"
 #  - echo yes | sdkmanager "platforms;android-25" # Latest platform required by SDK tools
-  #- echo yes | sdkmanager "platforms;android-${API}" # Android platform required by emulator
+  - echo yes | sdkmanager "platforms;android-${API}" # Android platform required by emulator
   #- echo yes | sdkmanager "extras;android;m2repository"
   #- echo yes | sdkmanager "extras;google;m2repository"
   #- echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
