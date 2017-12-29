@@ -62,7 +62,7 @@ cache:
     - $HOME/.android/build-cache
 
 script:
-  - ./gradlew connectedCheck -PdisablePreDex
+  - travis_wait 20 ./gradlew connectedCheck -PdisablePreDex --info --stacktrace
 
 after_script:
   # Show tests and lint results
