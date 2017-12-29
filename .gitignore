@@ -10,3 +10,4 @@
 .externalNativeBuild
 keys.properties
 fabric.properties
+ci/secrets.tar
