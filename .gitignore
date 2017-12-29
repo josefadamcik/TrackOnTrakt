@@ -11,3 +11,4 @@
 keys.properties
 fabric.properties
 ci/secrets.tar
+!ci/secrets.tar.enc
