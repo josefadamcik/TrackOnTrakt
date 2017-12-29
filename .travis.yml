@@ -61,7 +61,7 @@ cache:
     - $HOME/.android/build-cache
 
 script:
-  - cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew connectedCheck
+  - cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew test
 
 after_script:
   # Show tests and lint results
