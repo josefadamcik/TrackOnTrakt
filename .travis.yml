@@ -54,6 +54,9 @@ before_install:
   - tar xvf ci/secrets.tar
   - chmod +x gradlew
   - ls $ANDROID_HOME || true
+  - ls $TOOLS || true
+  - ls $TOOLS/bin || true
+  - echo $PATH
 
 install:
   # List and delete unnecessary components to free space
