@@ -1,6 +1,9 @@
 # TrackOnTrakt
 
-Android application for tracking of watched movies and shows on [trakt.tv](https://trakt.tv)  
+Android application for tracking watched movies and shows on [trakt.tv](https://trakt.tv)
+ 
+![Built status](https://travis-ci.org/josefadamcik/TrackOnTrakt.svg?branch=master)
+
 
 ## Motivation
 
@@ -20,8 +23,13 @@ client id and client secret into the file mentioned above.
 
 ## Running the tests
 
-TODO
+Junit tests:
 
+    ./gradlew test
+
+Espresso tests:
+
+    ./gradlew connectedAndroidTest
 
 ## Built With
 
@@ -52,14 +60,14 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 ## Versioning
 
 We use [SemVer](http://semver.org/) for versioning. For the versions available, see the 
-[tags on this repository](https://github.com/your/project/tags). 
+[tags on this repository](https://github.com/josefadamcik/TrackOnTrakt/tags). 
 
 ## Authors
 
 * **Josef Adamcik** - *Initial work* - [josefadamcik](https://josef-adamcik.cz/)
 
 <!--
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/josefadamcik/TrackOnTrakt/contributors) who participated in this project.
 -->
 
 ## License

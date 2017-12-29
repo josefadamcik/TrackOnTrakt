@@ -22,14 +22,25 @@ android:
     # if you need to run emulator(s) during your tests
     - sys-img-armeabi-v7a-android-22
 
+install:
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - emulator -avd test -engine classic -no-window -camera-back none -camera-front none -verbose -qemu -m 512 &
+  #- emulator -avd test -no-skin -no-audio -no-window &
+  - adb wait-for-device get-serialno
+  # Show version and download Gradle Wrapper if it's not already cached
+  - cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew --version
+  # Clean project and download missing dependencies and components
+  - cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew clean build
+  - sdkmanager --list || true
+
 before_script:
   # Create and start emulator
-  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
+  - adb wait-for-device get-serialno
   - adb shell settings put global window_animation_scale 0 &
   - adb shell settings put global transition_animation_scale 0 &
   - adb shell settings put global animator_duration_scale 0 &
+  - sleep 30
   - adb shell input keyevent 82 &
 
 before_install:
@@ -49,4 +60,10 @@ cache:
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
 
-#script: ./gradlew check
+script:
+  - cd ${TRAVIS_BUILD_DIR}/${DIR} && ./gradlew connectedCheck
+
+after_script:
+  # Show tests and lint results
+  - cat ${TRAVIS_BUILD_DIR}/${DIR}/*/build/outputs/androidTest-results/connected/*
+  - cat ${TRAVIS_BUILD_DIR}/${DIR}/*/build/reports/lint-results.xml
