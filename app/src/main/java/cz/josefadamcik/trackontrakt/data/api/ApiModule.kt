@@ -72,11 +72,16 @@ open class ApiModule(private val app: TrackOnTraktApplication) {
             })
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BASIC
             builder.addInterceptor(loggingInterceptor)
-
             builder.addInterceptor(OkHttpCacheLoggingInterceptor())
         }
 
-        return builder.build();
+        val client = builder.build()
+        afterOkHttpClientCreated(client)
+        return client
+    }
+
+    protected open fun afterOkHttpClientCreated(client: OkHttpClient) {
+        //nop
     }
 
     @Provides

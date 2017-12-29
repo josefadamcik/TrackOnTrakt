@@ -59,6 +59,9 @@ class MediaDetailActivityTest {
         assertActionBarTitle("Rick and Morty")
         assertDescriptionViewValue("A sociopathic scientist drags his unintelligent grandson on insanely dangerous adventures across the universe.")
 
+        //todo: remove sleep
+        Thread.sleep(1000)
+
         val textView2 = onView(
             allOf(withText("Next to watch"),
                 childAtPosition(

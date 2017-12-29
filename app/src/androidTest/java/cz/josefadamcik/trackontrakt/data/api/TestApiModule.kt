@@ -2,6 +2,8 @@
 package cz.josefadamcik.trackontrakt.data.api
 
 import android.content.SharedPreferences
+import android.support.test.espresso.IdlingRegistry
+import com.jakewharton.espresso.OkHttp3IdlingResource
 import com.squareup.moshi.Moshi
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
@@ -23,5 +25,10 @@ class TestApiModule(private val app: TrackOnTraktApplication) : ApiModule(app) {
 
     override fun createTraktAuthTokenHolderImpl(preferences: SharedPreferences, moshi: Moshi): TraktAuthTokenHolder {
         return TestTraktAuthTokenHolder()
+    }
+
+    override fun afterOkHttpClientCreated(client: OkHttpClient) {
+        super.afterOkHttpClientCreated(client)
+        IdlingRegistry.getInstance().register(OkHttp3IdlingResource.create("okhttp", client))
     }
 }
