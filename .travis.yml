@@ -24,7 +24,7 @@ android:
 
 install:
   - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
-  - emulator -avd test  -no-skin -no-audio -no-window -camera-back none -camera-front none -verbose -m 512 &
+  - emulator -avd test  -no-skin -no-audio -no-window -camera-back none -camera-front none -verbose &
   #- emulator -avd test -engine classic -no-window -camera-back none -camera-front none -verbose -qemu -m 512 &
   #- emulator -avd test -no-skin -no-audio -no-window &
   - adb wait-for-device get-serialno
