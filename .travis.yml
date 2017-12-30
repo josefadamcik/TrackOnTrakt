@@ -1,71 +1,70 @@
 language: android
 jdk: oraclejdk8
-sudo: false
-android:
-  components:
-    - tools
-    - platform-tools
-    - tools
-    - build-tools-26.0.2
-
-    # The SDK version used to compile your project
-    - android-26
-    - android-22
-
-    # Additional components
-#    - extra-google-google_play_services
-#    - extra-google-m2repository
-#    - extra-android-m2repository
-#    - addon-google_apis-google-26
-
-    # Specify at least one system image,
-    # if you need to run emulator(s) during your tests
-    - sys-img-armeabi-v7a-android-22
-
-install:
-#  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
-#  - emulator -avd test  -no-skin -no-audio -no-window -camera-back none -camera-front none -verbose &
-  #- emulator -avd test -engine classic -no-window -camera-back none -camera-front none -verbose -qemu -m 512 &
-  #- emulator -avd test -no-skin -no-audio -no-window &
-#  - adb wait-for-device get-serialno
-  # Show version and download Gradle Wrapper if it's not already cached
-  - ./gradlew --version
-  # Clean project and download missing dependencies and components
-#  - ./gradlew clean build -PdisablePreDex
-  - sdkmanager --list || true
-
-before_script:
-  # Create and start emulator
-#  - android-wait-for-emulator
-#  - adb shell settings put global window_animation_scale 0 &
-#  - adb shell settings put global transition_animation_scale 0 &
-#  - adb shell settings put global animator_duration_scale 0 &
-#  - sleep 30
-#  - adb shell input keyevent 82 &
-#  - sleep 15
-
-before_install:
-  - openssl aes-256-cbc -K $encrypted_923bf72da533_key -iv $encrypted_923bf72da533_iv -in ci/secrets.tar.enc -out ci/secrets.tar -d
-  - tar xvf ci/secrets.tar
-  - chmod +x gradlew
+sudo: required # false for Container-Based Infrastructure, required for Sudo-Enabled Infrastructure
+#group: deprecated-2017Q4
 
 before_cache:
   - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
   - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/classAnalysis/classAnalysis.lock
   - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/jarSnapshots/jarSnapshots.lock
-  - rm -fr ${TRAVIS_BUILD_DIR}/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
+    - ${TRAVIS_BUILD_DIR}/gradle/caches/
+    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
+
+env:
+  global:
+    - TARGET_SDK=27
+    - BUILD_TOOLS_VERSION=27.0.2
+  matrix:
+    - EMULATOR_SDK=android-22 ABI=armeabi-v7a
+
+android:
+  components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/tree/9c6cd11
+    - tools
+    - platform-tools
+    - tools
+    - android-${TARGET_SDK}
+    - android-26
+    - android-22
+    - build-tools-${BUILD_TOOLS_VERSION}
+    - extra-android-m2repository
+
+
+before_install:
+#  - export EMULATOR="system-images;android-${API};${TAG};${ABI}" # Used to install/create emulator
+#  - echo 'count=0' > /home/travis/.android/repositories.cfg # Avoid warning
+  - openssl aes-256-cbc -K $encrypted_923bf72da533_key -iv $encrypted_923bf72da533_iv -in ci/secrets.tar.enc -out ci/secrets.tar -d
+  - tar xvf ci/secrets.tar
+  - chmod +x gradlew
+
+
+before_script:
+  - android-update-sdk --components=sys-img-$ABI-$EMULATOR_SDK --accept-licenses='android-sdk-license-[0-9a-f]{8}'
+  - mkdir -p $ANDROID_HOME/licenses
+  - ls $ANDROID_HOME || true
+  - ls $ANDROID_HOME/licences || true
+  - touch $ANDROID_HOME/licenses/android-sdk-license
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_HOME/licenses/android-sdk-license"
+  #- yes | sdkmanager --licenses
+  - echo no | android create avd --force -n test -t $EMULATOR_SDK --abi $ABI
+  - emulator -avd test -no-audio -no-window &
+  - ./gradlew clean build
+  - adb shell settings put global window_animation_scale 0 &
+  - adb shell settings put global transition_animation_scale 0 &
+  - adb shell settings put global animator_duration_scale 0 &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 script:
-  #- travis_wait 20 ./gradlew connectedCheck -PdisablePreDex --info --stacktrace
-  - ./gradlew test -PdisablePreDex
+  - travis_wait 60 ./gradlew connectedCheck
 
 after_script:
   # Show tests and lint results
-  - cat ${TRAVIS_BUILD_DIR}/${DIR}/*/build/outputs/androidTest-results/connected/*
-  - cat ${TRAVIS_BUILD_DIR}/${DIR}/*/build/reports/lint-results.xml
+  #- cat ${TRAVIS_BUILD_DIR}/*/build/outputs/androidTest-results/connected/*
+  #- cat ${TRAVIS_BUILD_DIR}/*/build/reports/lint-results.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

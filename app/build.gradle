@@ -60,6 +60,7 @@ android {
             versionNameSuffix '-dev'
             debuggable true
             //signingConfig signingConfigs.debug
+            testCoverageEnabled true
         }
         release {
             minifyEnabled false
