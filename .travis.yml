@@ -46,8 +46,9 @@ before_install:
 
 before_script:
   - android-update-sdk --components=sys-img-$ABI-$EMULATOR_SDK --accept-licenses='android-sdk-license-[0-9a-f]{8}'
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >> "$ANDROID_SDK/licenses/android-sdk-license"
-  - echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_SDK/licenses/android-sdk-license"
+  #- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" >> "$ANDROID_SDK/licenses/android-sdk-license"
+  #- echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_SDK/licenses/android-sdk-license"
+  - yes | sdkmanager --licenses
   - echo no | android create avd --force -n test -t $EMULATOR_SDK --abi $ABI
   - emulator -avd test -no-audio -no-window &
   - ./gradlew clean build
