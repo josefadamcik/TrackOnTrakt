@@ -47,9 +47,10 @@ before_install:
 
 before_script:
   - android-update-sdk --components=sys-img-$ABI-$EMULATOR_SDK --accept-licenses='android-sdk-license-[0-9a-f]{8}'
+  - mkdir -p $ANDROID_HOME/licences
+  - touch $ANDROID_HOME/licenses/android-sdk-license
   - ls $ANDROID_SDK || true
   - ls $ANDROID_SDK/licences || true
-  - mkdir -p $ANDROID_HOME/licences
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_HOME/licenses/android-sdk-license"
   #- yes | sdkmanager --licenses
@@ -69,3 +70,6 @@ after_script:
   # Show tests and lint results
   - cat ${TRAVIS_BUILD_DIR}/*/build/outputs/androidTest-results/connected/*
   - cat ${TRAVIS_BUILD_DIR}/*/build/reports/lint-results.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
