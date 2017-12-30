@@ -30,7 +30,6 @@ android:
     - tools
     - android-${TARGET_SDK}
     - android-26
-    - android-19
     - android-22
     - build-tools-${BUILD_TOOLS_VERSION}
     - extra-android-m2repository
