@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
+apply plugin: 'jacoco-android'
 
 
 // Manifest version information!
@@ -25,6 +26,8 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('keys.properties').newDataInputStream())
 def traktclientid = properties.getProperty('trakt.clientid')
 def traktclientsecret = properties.getProperty('trakt.clientsecret')
+
+
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion

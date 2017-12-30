@@ -59,6 +59,7 @@ before_script:
   - adb shell input keyevent 82 &
 
 script:
+  - ./gradlew jacocoTestReport
   - travis_wait 60 ./gradlew connectedCheck
 
 after_script:
