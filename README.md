@@ -3,7 +3,7 @@
 Android application for tracking watched movies and shows on [trakt.tv](https://trakt.tv)
  
 [![Build Status](https://travis-ci.org/josefadamcik/TrackOnTrakt.svg?branch=master)](https://travis-ci.org/josefadamcik/TrackOnTrakt)
-
+[![codecov](https://codecov.io/gh/josefadamcik/TrackOnTrakt/branch/master/graph/badge.svg)](https://codecov.io/gh/josefadamcik/TrackOnTrakt)
 
 ## Motivation
 
