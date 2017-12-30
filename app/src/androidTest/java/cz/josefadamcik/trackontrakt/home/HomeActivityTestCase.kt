@@ -92,6 +92,14 @@ class HomeActivityTestCase {
         val searchQuery = "rick and morty"
         val appContext = InstrumentationRegistry.getTargetContext()
 
+        wireMockRule.stubFor(
+            get(urlMatching("/search/.*"))
+                .willReturn(aResponse()
+                    .withStatus(200)
+                    .withBody(asset(appContext, "search_ricknmorty.json"))
+                )
+        )
+
         //launch activity
         val activity = activityTestRule.launchActivity(Intent(appContext, HomeActivity::class.java))
 

@@ -2,118 +2,60 @@ language: android
 jdk: oraclejdk8
 sudo: required # false for Container-Based Infrastructure, required for Sudo-Enabled Infrastructure
 
-before_cache:
-  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
-  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/classAnalysis/classAnalysis.lock
-  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/jarSnapshots/jarSnapshots.lock
+#before_cache:
+#  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
+#  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/classAnalysis/classAnalysis.lock
+#  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/jarSnapshots/jarSnapshots.lock
+#
+#cache:
+#  directories:
+#    - ${TRAVIS_BUILD_DIR}/gradle/caches/
+#    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
 
-cache:
-  directories:
-    - ${TRAVIS_BUILD_DIR}/gradle/caches/
-    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
+#notifications:
+#  email: false
 
-notifications:
-  email: false
-
-android:
-  components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/tree/9c6cd11
-    - tools # Update preinstalled tools from revision 24.0.2 to 24.4.1
-    #- build-tools-25.0.2 # Match build-tools version used in build.gradle
-    - build-tools-26.0.2
-    - platform-tools # Update platform-tools to revision 25.0.3+
-    - tools # Update tools from revision 24.4.1 to 25.2.5
 
 env:
   global:
-    - API=25 # Android API level 25 by default
-    - TAG=google_apis # Google APIs by default, alternatively use default but not always available
-    - ABI=armeabi-v7a # ARM ABI v7a by default
-    - QEMU_AUDIO_DRV=none # Disable emulator audio to avoid warning
-    - GRADLE_USER_HOME="${TRAVIS_BUILD_DIR}/gradle" # Change location for Gradle Wrapper and cache
-    - ANDROID_HOME=/usr/local/android-sdk-25.2.3 # Depends on the cookbooks version used in the VM
-    - TOOLS=${ANDROID_HOME}/tools # PATH order matters, exists more than one emulator script
-    - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
-    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
+    - TARGET_SDK=27
+    - BUILD_TOOLS_VERSION=27.0.2
+  matrix:
+    - EMULATOR_SDK=android-22 ABI=armeabi-v7a
 
-#matrix:
-#  include: # More Emulator API levels to build in parallel
-#    - env: API=24
-#    - env: API=23
-#    - env: API=22
-#    - env: API=19
-#  allow_failures:
-#    - env: API=23
-#    - env: API=22
-#  fast_finish: false
+android:
+  components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/tree/9c6cd11
+    - tools
+    - platform-tools
+    - tools
+    - android-${TARGET_SDK}
+    - android-19
+    - android-22
+    - build-tools-${BUILD_TOOLS_VERSION}
+    - extra-android-m2repository
+
 
 before_install:
-  - export EMULATOR="system-images;android-${API};${TAG};${ABI}" # Used to install/create emulator
-  - echo $EMULATOR
-  - echo 'count=0' > /home/travis/.android/repositories.cfg # Avoid warning
+#  - export EMULATOR="system-images;android-${API};${TAG};${ABI}" # Used to install/create emulator
+#  - echo 'count=0' > /home/travis/.android/repositories.cfg # Avoid warning
   - openssl aes-256-cbc -K $encrypted_923bf72da533_key -iv $encrypted_923bf72da533_iv -in ci/secrets.tar.enc -out ci/secrets.tar -d
   - tar xvf ci/secrets.tar
   - chmod +x gradlew
-  - ls $ANDROID_HOME || true
-  - ls $TOOLS || true
-  - ls $TOOLS/bin || true
-  - echo $PATH
 
-install:
-  # List and delete unnecessary components to free space
-  - sdkmanager --list || true
-#  - sdkmanager --uninstall "system-images;android-15;default;armeabi-v7a"
-#  - sdkmanager --uninstall "system-images;android-16;default;armeabi-v7a"
-#  - sdkmanager --uninstall "system-images;android-17;default;armeabi-v7a"
-#  - sdkmanager --uninstall "system-images;android-18;default;armeabi-v7a"
-#  - sdkmanager --uninstall "system-images;android-19;default;armeabi-v7a"
-#  - sdkmanager --uninstall "system-images;android-21;default;armeabi-v7a"
-#  - sdkmanager --uninstall "extras;google;google_play_services"
-#  - sdkmanager --uninstall "extras;android;support"
-#  - sdkmanager --uninstall "platforms;android-10"
-#  - sdkmanager --uninstall "platforms;android-15"
-#  - sdkmanager --uninstall "platforms;android-16"
-#  - sdkmanager --uninstall "platforms;android-17"
-#  - sdkmanager --uninstall "platforms;android-18"
-#  - sdkmanager --uninstall "platforms;android-19"
-#  - sdkmanager --uninstall "platforms;android-20"
-#  - sdkmanager --uninstall "platforms;android-21"
-#  - sdkmanager --uninstall "build-tools;21.1.2"
-  # Update sdk tools to latest version and install/update components
-#  - echo yes | sdkmanager "tools"
-  - echo yes | sdkmanager "platforms;android-26" # Latest platform required by SDK tools
-  - echo yes | sdkmanager "platforms;android-${API}" # Android platform required by emulator
-  #- echo yes | sdkmanager "extras;android;m2repository"
-  #- echo yes | sdkmanager "extras;google;m2repository"
-  #- echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
-  #- echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-  - echo yes | sdkmanager "$EMULATOR" # Install emulator system image
-  # Create and start emulator
-  - echo no | avdmanager create avd -n acib -k "$EMULATOR" -f --abi "$ABI" --tag "$TAG"
-  - emulator -avd acib -engine classic -no-window -verbose &
-  # Start adbd, wait for device connected and show android serial to avoid heavy parallel tasks
-  - adb wait-for-device get-serialno
-  # Show version and download Gradle Wrapper if it's not already cached
-  - ./gradlew --version
-  # Clean project and download missing dependencies and components
-  - ./gradlew clean
-  # Check components status
-  - sdkmanager --list || true
-  # Check style
-#  - ./gradlew checkstyle
 
 before_script:
-  # Wait for emulator fully-booted and disable animations
-  - android-wait-for-emulator
+  - android-update-sdk --components=sys-img-$ABI-$EMULATOR_SDK --accept-licenses='android-sdk-license-[0-9a-f]{8}'
+  - echo no | android create avd --force -n test -t $EMULATOR_SDK --abi $ABI
+  - emulator -avd test -no-audio -no-window &
+  - ./gradlew clean build
   - adb shell settings put global window_animation_scale 0 &
   - adb shell settings put global transition_animation_scale 0 &
   - adb shell settings put global animator_duration_scale 0 &
-  - sleep 30
+  - android-wait-for-emulator
   - adb shell input keyevent 82 &
-  - sleep 15
 
 script:
-  # Build and run all device checks
-  - ./gradlew connectedCheck -PdisablePreDex
+  - travis_wait 60 ./gradlew connectedCheck
 
 after_script:
   # Show tests and lint results
