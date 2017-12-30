@@ -23,26 +23,26 @@ android:
     - sys-img-armeabi-v7a-android-22
 
 install:
-  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
-  - emulator -avd test  -no-skin -no-audio -no-window -camera-back none -camera-front none -verbose &
+#  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+#  - emulator -avd test  -no-skin -no-audio -no-window -camera-back none -camera-front none -verbose &
   #- emulator -avd test -engine classic -no-window -camera-back none -camera-front none -verbose -qemu -m 512 &
   #- emulator -avd test -no-skin -no-audio -no-window &
-  - adb wait-for-device get-serialno
+#  - adb wait-for-device get-serialno
   # Show version and download Gradle Wrapper if it's not already cached
   - ./gradlew --version
   # Clean project and download missing dependencies and components
-  - ./gradlew clean build -PdisablePreDex
+#  - ./gradlew clean build -PdisablePreDex
   - sdkmanager --list || true
 
 before_script:
   # Create and start emulator
-  - android-wait-for-emulator
-  - adb shell settings put global window_animation_scale 0 &
-  - adb shell settings put global transition_animation_scale 0 &
-  - adb shell settings put global animator_duration_scale 0 &
-  - sleep 30
-  - adb shell input keyevent 82 &
-  - sleep 15
+#  - android-wait-for-emulator
+#  - adb shell settings put global window_animation_scale 0 &
+#  - adb shell settings put global transition_animation_scale 0 &
+#  - adb shell settings put global animator_duration_scale 0 &
+#  - sleep 30
+#  - adb shell input keyevent 82 &
+#  - sleep 15
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_923bf72da533_key -iv $encrypted_923bf72da533_iv -in ci/secrets.tar.enc -out ci/secrets.tar -d
@@ -62,7 +62,8 @@ cache:
     - $HOME/.android/build-cache
 
 script:
-  - travis_wait 20 ./gradlew connectedCheck -PdisablePreDex --info --stacktrace
+  #- travis_wait 20 ./gradlew connectedCheck -PdisablePreDex --info --stacktrace
+  - ./gradlew test -PdisablePreDex
 
 after_script:
   # Show tests and lint results
