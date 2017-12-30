@@ -5,10 +5,15 @@ sudo: required # false for Container-Based Infrastructure, required for Sudo-Ena
 
 notifications:
   pushover:
+    on_success: always
+    on_failure: always
     api_key:
       - secure: "pCSW1JRl9WcclzVeQaSJnSqcBDHdqOymlLWXeRJdekJfxolth54lEmEju5I7LYk4eXNGWE29S1kgW0pCIGTYzoJxQ031Vr3FijZVE7zFlYdZLOhErYZc5GZMBQqphv4jHojRQAvsBCL31a3ob29lHlMnbVgGpGiQsC/bIEBZm5vqsKv5wI1ZrUCHOf7Lh9KF+S9A/Ow2nOkuSt2Z3V2DhNSF1TAObBa2i40W7LELDkELJe0wMaxEaU+KJ1KFG0KQLCblyjYBnAWSSyLikD0uIXdNoGkzkVsAxPj3dIxvdQKF5RkGD9UTQglOaLTO8Thy9qtwQK/9zbMo/ZFCXjSuYT5wZe5apfSfKauW8M2/fN05V0OAzd6isUvU2qcoI37M2LTaB2MDdDntPgInNupiBZC90i+iYQrq9G60GkhCQcnb43nWIj58bCIMHpr/plmcOtCL6NW4qpCkDLeNe6QezuI46psxT4zF6NBX/C0k7gV1pUf3N0F88Ylh3A74HWwWMJhApbzKhAZsOl1G4N7IFm8Sov9suwk+Me+hQN6bxMBG5F+lCjK1Z4dexZGiT54x97l8+2Z0fKrohzOdgTXUkNTxl6ZWcFu6QrymP4sfaSx3IWRh3ohYAIVv4CeXciJocwZ8lDKiJUQ9Rjcdn0uB0nbzMdrGC3LMQPMxguXVqIc="
     users:
       - secure: "mJK+K/KCAlXV1G7XVsttpXuoVmpgIAUjzDCJ6xzKKuZql0GG6R3+ZQ/s+Qx4XPmG4EBdIkDvo9RrCA3AUwOyfEhRgKx4lCvmvUgzTgISKkR7bQ/BAuOohgT6NoOwHQKFqlJxwqdcLoDar8oezhG0+eXOSlet3XmAOWhi8HjLcXRHHlj82/NXIuyQtdqyZRmNzAbAvSsSmkfibf7US0IfTCUe00aU6MbSOKswqwJb7h5rfrBn6ssONRxboNuF2SUxsTo0LJ6Fpu9irHxPc22aQ5SFl+CHRwCHVfnIte8/n7o0uRO+9lggajre32/kauLmGK0JCq5ZGjfHgvmK34bX6jMpve9KeDX4cFJzfXG65NqMzA8Ph4xKrS/sZjqwmf4NIt6lX+9Pq5O4p1MZG8OXZxW3YocQtqHjT/anskn3JGpZBcUChyw9CbgljgIN0F5iNUwnzg5ODuhCvdus+AxvtxtOEVCsACTJiDshtQEMsMt0uOdZQtw6pS7+djZ1avQiC+D4KJ208ed4F1lX/36ud/EVFx6jVDQWId/A80m7nUdacBjzzarC6mjj42HXF1pbLcjd1FK+bxxtrEYAT2vZSwz/d/el4dIeMAOCtqjAeM8ouwPM2/FaXGV/AOyptzPneZbQmuDZVO/MVQ2yx6R8JfUYaFRbmWgO8lRwJXFqW/0="
+  email:
+      on_success: always # default: change
+      on_failure: always # default: always
 
 before_cache:
   - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
