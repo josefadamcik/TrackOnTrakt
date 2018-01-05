@@ -97,7 +97,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
             verticalOuterPad = halfGridStep
 
         )
-        adapter = MediaDetailAdapter(LayoutInflater.from(this), resources, this, roundedBackgroundSpanConfig)
+        adapter = MediaDetailAdapter(LayoutInflater.from(this), resources, this, this, roundedBackgroundSpanConfig)
         list.layoutManager = LinearLayoutManager(this)
 
         //list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))

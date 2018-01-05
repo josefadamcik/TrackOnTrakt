@@ -1,10 +1,14 @@
 
 package cz.josefadamcik.trackontrakt.detail
 
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
+import android.support.v4.content.ContextCompat
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
@@ -27,8 +31,9 @@ import java.text.DateFormat
 
 class MediaDetailAdapter(
     private val inflater: LayoutInflater,
-    val resources: Resources,
-    val listener: InteractionListener,
+    private val resources: Resources,
+    private val context: Context,
+    private val listener: InteractionListener,
     private val roundedSpanConfig: RoundedBackgroundSpan.Config
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     companion object {
@@ -72,14 +77,14 @@ class MediaDetailAdapter(
 
             with(model.basic) {
                 if (genres.isNotEmpty()) {
-                    list.add(itemFormInfoRow(R.string.label_genres, genres.joinToString(", ")))
+                    list.add(itemFormInfoRow(R.string.label_genres, R.drawable.ic_label_outline_black_24dp, genres.joinToString(", ")))
                 }
-                network?.let { list.add(itemFormInfoRow(R.string.label_network, it)) }
-                language?.let { list.add(itemFormInfoRow(R.string.label_language, it)) }
-                status?.let { list.add(itemFormInfoRow(R.string.label_status, it)) }
-                trailer?.let { list.add(itemFormInfoRow(R.string.label_trailer, it, it)) }
-                homepage?.let { list.add(itemFormInfoRow(R.string.label_homepage, it, it)) }
-                list.add(itemFormInfoRow(R.string.label_traktpage, traktPage ?: "", traktPage))
+                network?.let { list.add(itemFormInfoRow(R.string.label_network, R.drawable.ic_television_classic, it)) }
+                language?.let { list.add(itemFormInfoRow(R.string.label_language, R.drawable.ic_language_black_24dp, it)) }
+                //status?.let { list.add(itemFormInfoRow(R.string.label_status, it)) }
+                trailer?.let { list.add(itemFormInfoRow(R.string.label_trailer, R.drawable.ic_ondemand_video_black_24dp, it, it)) }
+                homepage?.let { list.add(itemFormInfoRow(R.string.label_homepage, R.drawable.ic_web_black_24dp, it, it)) }
+                list.add(itemFormInfoRow(R.string.label_traktpage, R.drawable.ic_web_black_24dp, traktPage ?: "", traktPage))
             }
 
             model.nextShowEpisodeToWatch?.let { (season, episode) ->
@@ -97,10 +102,10 @@ class MediaDetailAdapter(
         return list
     }
 
-    private fun itemFormInfoRow(@StringRes labelResource: Int, value: String, link: String? = null): Item {
+    private fun itemFormInfoRow(@StringRes labelResource: Int, @DrawableRes iconResource: Int, value: String, link: String? = null): Item {
         return Item(
             VIEWTYPE_MEDIA_INFO_ROW,
-            infoItem = InfoItem(resources.getString(labelResource), value, link)
+            infoItem = InfoItem(resources.getString(labelResource), value, iconResource, link)
         )
     }
 
@@ -125,18 +130,23 @@ class MediaDetailAdapter(
                     holder.txtLabel.text = it.label
                     holder.txtValue.movementMethod = LinkMovementMethod.getInstance()
                     holder.txtValue.text = it.value
+                    holder.iconInfo.setImageResource(it.iconResource)
+                    holder.iconInfo.contentDescription = it.label
                     if (it.link != null) {
-                        holder.txtValue.tag = it.link
+                        holder.link = it.link
                         holder.txtValue.setSingleLine(true)
-                        holder.txtValue.setOnClickListener(holder)
+                        holder.itemView.setOnClickListener(holder)
+
                     } else {
+                        holder.link = null
+                        holder.itemView.setOnClickListener(null)
                         holder.txtValue.setSingleLine(false)
-                        holder.txtValue.setOnClickListener(null)
                     }
                 }
             }
             is EpisodeInfoViewHolder -> {
                 items[position].episode?.let {
+
                     holder.txtEpisodeInfo.text = resources.getString(R.string.episode_item_number_and_season_info, it.episode.season, it.episode.number)
                     holder.txtTitle.text = it.episode.title
                     if (it.episode.overview.isNullOrEmpty()) {
@@ -200,15 +210,19 @@ class MediaDetailAdapter(
             VIEWTYPE_EPISODE -> EpisodeInfoViewHolder(inflater.inflate(R.layout.item_media_info_episode, parent, false))
             VIEWTYPE_SEASON_HEADER -> SeasonHeaderViewHolder(inflater.inflate(R.layout.item_media_info_season_header, parent, false))
             VIEWTYPE_NEXT_EPISODE_HEADER -> ViewHolder(inflater.inflate(R.layout.item_media_info_next_episode_separator, parent, false))
-            else -> ViewHolder(null)
+            else ->  /*dummy*/ ViewHolder(inflater.inflate(R.layout.item_media_info_next_episode_separator, parent, false))
         }
 
-        ButterKnife.bind(holder, holder.itemView)
+
 
         return holder
     }
 
-    open inner class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+    open inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        init {
+            ButterKnife.bind(this, itemView)
+        }
+
         protected fun toggleEllipsize(txtOverview: TextView) {
             if (txtOverview.isEllipsized()) {
                 txtOverview.maxLines = Integer.MAX_VALUE
@@ -220,7 +234,7 @@ class MediaDetailAdapter(
         }
     }
 
-    inner class MainInfoViewHolder(itemView: View?, private val listener: InteractionListener) : ViewHolder(itemView), View.OnClickListener {
+    inner class MainInfoViewHolder(itemView: View, private val listener: InteractionListener) : ViewHolder(itemView), View.OnClickListener {
         @BindView(R.id.txt_description) lateinit var txtDescription: TextView
         @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
 
@@ -233,18 +247,20 @@ class MediaDetailAdapter(
         }
     }
 
-    inner class InfoRowViewHolder(itemView: View?, listener: InteractionListener) : ViewHolder(itemView), View.OnClickListener {
+    inner class InfoRowViewHolder(itemView: View, listener: InteractionListener) : ViewHolder(itemView), View.OnClickListener {
+        public var link: String? = null
         @BindView(R.id.txt_label) lateinit var txtLabel: TextView
         @BindView(R.id.txt_value) lateinit var txtValue: TextView
+        @BindView(R.id.icon_info) lateinit var iconInfo: ImageView
 
         override fun onClick(view: View?) {
-            if (view?.tag != null) {
-                listener.onOpenWebPageClick(Uri.parse(view.tag as String))
+            if (link != null) {
+                listener.onOpenWebPageClick(Uri.parse(link))
             }
         }
     }
 
-    inner class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView), View.OnClickListener {
+    inner class EpisodeInfoViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
         @BindView(R.id.title) lateinit var txtTitle: TextView
         @BindView(R.id.overview) lateinit var txtOverview: TextView
         @BindView(R.id.episode_info) lateinit var txtEpisodeInfo: TextView
@@ -252,13 +268,17 @@ class MediaDetailAdapter(
         @BindView(R.id.btn_checkin) lateinit var btnCheckin: ImageView
         @BindDrawable(R.drawable.ic_check_circle_black_24dp) lateinit var drawableIcCheck: Drawable
         @BindDrawable(R.drawable.ic_remove_red_eye_black_24dp) lateinit var drawableIcEye: Drawable
+        @BindDrawable(R.drawable.ic_thumbs_up_down_black_20dp) lateinit var drawableIcThumbsUpDown: Drawable
 
         @OnClick(R.id.btn_checkin) fun onCheckinClick() {
             items[adapterPosition].episode?.let { listener.onEpisodeCheckInClick(it) }
         }
 
         init {
-            itemView?.setOnClickListener(this)
+            itemView.setOnClickListener(this)
+            val drawable = DrawableCompat.wrap(drawableIcThumbsUpDown).mutate()
+            DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.textColorSecondary))
+            txtRating.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }
 
         override fun onClick(v: View?) {
@@ -266,7 +286,7 @@ class MediaDetailAdapter(
         }
     }
 
-    inner class SeasonHeaderViewHolder(itemView: View?) : ViewHolder(itemView), View.OnClickListener {
+    inner class SeasonHeaderViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
         @BindView(R.id.title) lateinit var txtTitle: TextView
         @BindView(R.id.overview) lateinit var txtOverview: TextView
 
@@ -280,5 +300,5 @@ class MediaDetailAdapter(
     }
 
     data class Item(val viewType: Int, val season: SeasonWithProgress? = null, val episode: EpisodeWithProgress? = null, val infoItem: InfoItem? = null)
-    data class InfoItem(val label: String, val value: String, val link: String? = null)
+    data class InfoItem(val label: String, val value: String, val iconResource: Int, val link: String? = null)
 }

@@ -24,6 +24,7 @@
 
     <color name="textColorPrimary">@color/material_typography_primary_text_color_dark</color>
     <color name="textColorSecondary">@color/material_typography_secondary_text_color_dark</color>
+    <color name="textColorTerciary">@color/material_typography_disabled_text_color_dark</color>
 
     <!--<color name="colorPrimary">@color/material_color_red_primary</color>-->
     <!--<color name="colorPrimaryDark">@color/material_color_red_primary_dark</color>-->
