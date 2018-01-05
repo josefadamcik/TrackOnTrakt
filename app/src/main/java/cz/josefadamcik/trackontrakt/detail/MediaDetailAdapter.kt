@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.annotation.StringRes
 import android.support.v7.widget.RecyclerView
+import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
 import cz.josefadamcik.trackontrakt.data.api.model.SeasonWithProgress
 import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
+import cz.josefadamcik.trackontrakt.util.isEllipsized
 import java.text.DateFormat
 
 
@@ -206,13 +208,29 @@ class MediaDetailAdapter(
         return holder
     }
 
-    open class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-
+    open inner class ViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+        protected fun toggleEllipsize(txtOverview: TextView) {
+            if (txtOverview.isEllipsized()) {
+                txtOverview.maxLines = Integer.MAX_VALUE
+                txtOverview.ellipsize = null
+            } else {
+                txtOverview.maxLines = resources.getInteger(R.integer.media_detail_overview_maxlines)
+                txtOverview.ellipsize = TextUtils.TruncateAt.END
+            }
+        }
     }
 
-    class MainInfoViewHolder(itemView: View?, private val listener: InteractionListener) : ViewHolder(itemView) {
+    inner class MainInfoViewHolder(itemView: View?, private val listener: InteractionListener) : ViewHolder(itemView), View.OnClickListener {
         @BindView(R.id.txt_description) lateinit var txtDescription: TextView
         @BindView(R.id.txt_tagline) lateinit var txtTagline: TextView
+
+        init {
+            itemView?.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            toggleEllipsize(txtDescription)
+        }
     }
 
     inner class InfoRowViewHolder(itemView: View?, listener: InteractionListener) : ViewHolder(itemView), View.OnClickListener {
@@ -226,8 +244,7 @@ class MediaDetailAdapter(
         }
     }
 
-    inner class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView) {
-
+    inner class EpisodeInfoViewHolder(itemView: View?) : ViewHolder(itemView), View.OnClickListener {
         @BindView(R.id.title) lateinit var txtTitle: TextView
         @BindView(R.id.overview) lateinit var txtOverview: TextView
         @BindView(R.id.episode_info) lateinit var txtEpisodeInfo: TextView
@@ -235,15 +252,31 @@ class MediaDetailAdapter(
         @BindView(R.id.btn_checkin) lateinit var btnCheckin: ImageView
         @BindDrawable(R.drawable.ic_check_circle_black_24dp) lateinit var drawableIcCheck: Drawable
         @BindDrawable(R.drawable.ic_remove_red_eye_black_24dp) lateinit var drawableIcEye: Drawable
+
         @OnClick(R.id.btn_checkin) fun onCheckinClick() {
             items[adapterPosition].episode?.let { listener.onEpisodeCheckInClick(it) }
         }
 
+        init {
+            itemView?.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            toggleEllipsize(txtOverview)
+        }
     }
 
-    class SeasonHeaderViewHolder(itemView: View?) : ViewHolder(itemView) {
+    inner class SeasonHeaderViewHolder(itemView: View?) : ViewHolder(itemView), View.OnClickListener {
         @BindView(R.id.title) lateinit var txtTitle: TextView
         @BindView(R.id.overview) lateinit var txtOverview: TextView
+
+        init {
+            itemView?.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            toggleEllipsize(txtOverview)
+        }
     }
 
     data class Item(val viewType: Int, val season: SeasonWithProgress? = null, val episode: EpisodeWithProgress? = null, val infoItem: InfoItem? = null)

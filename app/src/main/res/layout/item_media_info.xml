@@ -33,6 +33,8 @@
         android:layout_marginTop="16dp"
         android:lineSpacingExtra="@dimen/material_baseline_grid_0.5x"
         android:textAppearance="@style/MaterialTypography.Regular.Body1"
+        android:maxLines="@integer/media_detail_overview_maxlines"
+        android:ellipsize="end"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

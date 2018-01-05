@@ -34,9 +34,21 @@
             android:ellipsize="end"
             android:textAppearance="@style/MediaDetailEpisodeTitle"
             android:paddingRight="@dimen/material_baseline_grid_1x"
-            android:gravity="left|center_vertical"
             android:paddingTop="8dp"
+            android:gravity="left|center_vertical"
             tools:text="episode item title long enough to split into two lines and more more more"/>
+
+        <TextView
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/material_baseline_grid_0.5x"
+            android:drawableLeft="@drawable/ic_thumbs_up_down_black_20dp"
+            android:drawablePadding="@dimen/material_baseline_grid_1x"
+            android:textAppearance="@style/TextAppearance.MediaDetailCertification"
+            android:textColor="@color/material_typography_secondary_text_color_dark"
+            tools:text="75% (12 votes)"
+            />
 
         <TextView
             android:layout_marginTop="@dimen/material_baseline_grid_0.5x"
@@ -44,22 +56,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Longer text with multiple lines but only in case when api returned something."
+            android:maxLines="@integer/media_detail_overview_maxlines"
+            android:ellipsize="end"
             android:textColor="@color/material_typography_secondary_text_color_dark"
-            />
-
-        <TextView
-            android:id="@+id/rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/material_baseline_grid_0.5x"
-
-            android:drawablePadding="@dimen/material_baseline_grid_0.5x"
-            android:textAppearance="@style/TextAppearance.MediaDetailCertification"
-            android:textColor="@color/material_typography_secondary_text_color_dark"
-            tools:text="75% (12 votes)"
-            android:drawableLeft="@drawable/ic_thumbs_up_down_black_20dp"
             android:layout_marginBottom="@dimen/material_baseline_grid_0.5x"
             />
+
     </LinearLayout>
 
     <ImageView

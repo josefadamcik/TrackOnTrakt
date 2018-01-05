@@ -11,13 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="@dimen/material_baseline_grid_6x"
-        android:paddingLeft="@dimen/material_baseline_grid_2x"
-        android:paddingRight="@dimen/material_baseline_grid_2x"
-        android:paddingTop="@dimen/material_baseline_grid_1x"
-        android:paddingBottom="@dimen/material_baseline_grid_1x"
-        android:gravity="center_vertical"
-        android:textAppearance="@style/MaterialTypography.Regular.Subheading"
-        android:textColor="@color/material_typography_secondary_text_color_dark"
+        style="@style/ListRowHeaderText"
         android:text="@string/media_detail_next_episode_separator"/>
 
 

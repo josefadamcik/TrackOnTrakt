@@ -24,6 +24,8 @@
         android:paddingTop="@dimen/material_baseline_grid_1x"
         android:paddingBottom="@dimen/material_baseline_grid_1x"
         tools:text="Longer text with multiple lines but only in case when api returned something."
+        android:maxLines="@integer/media_detail_overview_maxlines"
+        android:ellipsize="end"
         />
 
 
