@@ -34,10 +34,14 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId "${packagename}"
+        testApplicationId "${packagename}.test"
+
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
 //        vectorDrawables.useSupportLibrary = true
@@ -267,3 +271,8 @@ gradle.buildFinished { buildResult ->
 //    shard = true
 //}
 
+
+task copyTestClasses(type: Copy) {
+    from "build/tmp/kotlin-classes/internalDebug"
+    into "build/intermediates/classes/internalDebug"
+}

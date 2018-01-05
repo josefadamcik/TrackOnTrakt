@@ -5,8 +5,10 @@ import android.content.Context
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.action.ViewActions
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.BoundedMatcher
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.runner.AndroidJUnit4
@@ -19,7 +21,6 @@ import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.testutil.WiremockTimberNotifier
 import cz.josefadamcik.trackontrakt.testutil.activityTestRule
 import cz.josefadamcik.trackontrakt.testutil.asset
-import cz.josefadamcik.trackontrakt.testutil.childAtPosition
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
@@ -59,17 +60,22 @@ class MediaDetailActivityTest {
         assertActionBarTitle("Rick and Morty")
         assertDescriptionViewValue("A sociopathic scientist drags his unintelligent grandson on insanely dangerous adventures across the universe.")
 
-        //todo: remove sleep
-        Thread.sleep(1000)
 
-        val textView2 = onView(
-            allOf(withText("Next to watch"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.list),
-                        8),
-                    1),
-                isDisplayed()))
+        //Scrool action below probably doesnt work due the CoordinatorLayout setup we have here. So we do simple swipe up
+        //to work around the issue.
+        onView(withId(android.R.id.content)).perform(ViewActions.swipeUp())
+
+        //Doesnt' work
+        onView(withId(R.id.list))
+            .check(matches(isDisplayed()))
+            .perform(RecyclerViewActions.scrollTo<MediaDetailAdapter.ViewHolder>(hasDescendant(withText(R.string.media_detail_next_episode_separator))))
+
+        val textView2 = onView(allOf(
+            isDescendantOfA(withId(R.id.list)),
+            isDisplayed(),
+            withText(R.string.media_detail_next_episode_separator)
+        ))
+
         textView2.check(matches(withText("Next to watch")))
     }
 
