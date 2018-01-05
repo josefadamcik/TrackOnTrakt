@@ -40,4 +40,8 @@ interface MediaItem {
                 MediaType.movie -> movie?.ids?.trakt
             }
         }
+
+    fun isSameMediaItem(other: MediaItem): Boolean {
+        return traktId == other.traktId && type == other.type
+    }
 }

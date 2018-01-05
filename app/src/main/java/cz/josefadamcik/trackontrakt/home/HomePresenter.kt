@@ -3,6 +3,7 @@ package cz.josefadamcik.trackontrakt.home
 
 import android.support.annotation.VisibleForTesting
 import cz.josefadamcik.trackontrakt.base.BasePresenter
+import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.Watching
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
@@ -54,7 +55,7 @@ class HomePresenter @Inject constructor(
                         allItems.addAll(history.items)
 
                         updateHistoryModel(loadedHistoryModel.copy(
-                            items = allItems.filter { it.watched_at.isBefore(now) },
+                            items = removeFirstItemIfDuplicatedInWatching(allItems, watching),
                             hasNextPage = lastPage < history.pageCount,
                             loadingNextPage = false,
                             watching = if (watching.isExpired()) Watching.Nothing else watching
@@ -71,6 +72,18 @@ class HomePresenter @Inject constructor(
                     }
                 )
         )
+    }
+
+    private fun removeFirstItemIfDuplicatedInWatching(items: MutableList<HistoryItem>, watching: Watching): List<HistoryItem> {
+        return when (watching) {
+            is Watching.Nothing -> items
+            is Watching.Something -> {
+                if (!items.isEmpty() and items.first().isSameMediaItem(watching)) {
+                    items.removeAt(0)
+                }
+                items
+            }
+        }
     }
 
 

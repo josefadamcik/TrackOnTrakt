@@ -107,21 +107,21 @@ class HomePresenterTest {
     @Test
     fun loadWatching() {
         //given
-        val userHistoryManager = givenHistoryManagerReturningList(watchingSomething = true)
+        val userHistoryManager = givenHistoryManagerReturningList(
+            watchingSomething = true,
+            firstItemWatchedAt = LocalDateTime.now().plusMinutes(15)
+        )
         val view = givenMockView()
         val presenter = givenPresenter(userHistoryManager)
-
 
         //when
 
         presenter.attachView(view)
 
         //then
-
         argumentCaptor<HistoryModel>().apply {
             //first invocation is initial load
             verify(view, times(1)).showHistory(capture())
-
             //we will check if the model contains our "just watching" record
 
             assertThat("there is a 'just watching' item in result", lastValue.watching, Matchers.allOf(
@@ -129,15 +129,53 @@ class HomePresenterTest {
                 Matchers.isA(Watching.Something::class.java as Class<Watching>)
             ))
 
-        }
+            assertThat("First (duplicated) item from history records was removed", lastValue.items.first().id, Matchers.not(1L))
 
+        }
+    }
+
+    @Test
+    fun loadWatchingWithOverlappingFirstItem() {
+        //If a user does a checkin there is a duplicity until the checkin expires ("watching" item is the same as the first item of history list).
+        //But another checkin is permitted before the "watched_at" time of the corresponding history item is reached.
+        //If user performs another checkin in this period the value of "watching" will change and new item will be added to the history list
+        // and there will be two history list items with "watched_at" value in future.
+        //We don't want the duplicity (see test #loadWatching) bud we want to cover this edge case.
+
+        //given
+        val userHistoryManager = givenHistoryManagerReturningList(
+            watchingSomething = true,
+            firstItemWatchedAt = LocalDateTime.now().plusMinutes(45) // so the first two items will be in future
+        )
+        val view = givenMockView()
+        val presenter = givenPresenter(userHistoryManager)
+
+        //when
+
+        presenter.attachView(view)
+
+        //then
+        argumentCaptor<HistoryModel>().apply {
+            //first invocation is initial load
+            verify(view, times(1)).showHistory(capture())
+            //we will check if the model contains our "just watching" record
+
+            assertThat("there is a 'just watching' item in result", lastValue.watching, Matchers.allOf(
+                Matchers.notNullValue(),
+                Matchers.isA(Watching.Something::class.java as Class<Watching>)
+            ))
+
+            assertThat("First (duplicated) item from history records was removed", lastValue.items.first().id, Matchers.not(1L))
+            assertThat("Second (not duplicated) item was not removed and is now the first one", lastValue.items.first().id, Matchers.equalTo(2L))
+
+        }
     }
 
 
-    private fun givenHistoryManagerReturningList(watchingSomething: Boolean = false): UserHistoryManager {
+    private fun givenHistoryManagerReturningList(watchingSomething: Boolean = false, firstItemWatchedAt: LocalDateTime = LocalDateTime.now().minusMinutes(1)): UserHistoryManager {
         return mock<UserHistoryManager> {
-            on { loadUserHistory(1) } doReturn Single.just(givenListOfHistoryItems(1..10))
-            on { loadUserHistory(2) } doReturn Single.just(givenListOfHistoryItems(11..21))
+            on { loadUserHistory(1) } doReturn Single.just(givenListOfHistoryItems(1..10, firstItemWatchedAt))
+            on { loadUserHistory(2) } doReturn Single.just(givenListOfHistoryItems(11..21, firstItemWatchedAt.minusDays(1)))
             on { loadWatching() } doReturn Single.just(
                 if (watchingSomething)
                     Watching.Something(
@@ -159,13 +197,13 @@ class HomePresenterTest {
         return mock<HomeView> {}
     }
 
-    private fun givenListOfHistoryItems(idRange: IntRange): HistoryItems {
+    private fun givenListOfHistoryItems(idRange: IntRange, firstItemWatchedAt: LocalDateTime): HistoryItems {
         val movie = testMovie()
         return HistoryItems(
             items = idRange.map {
                 HistoryItem(
                     it.toLong(),
-                    watched_at = LocalDateTime.now().minusDays(it.toLong()),
+                    watched_at = firstItemWatchedAt.minusMinutes((it - 1).toLong() * 30),
                     action = Action.checkin,
                     type = MediaType.movie,
                     movie = movie
