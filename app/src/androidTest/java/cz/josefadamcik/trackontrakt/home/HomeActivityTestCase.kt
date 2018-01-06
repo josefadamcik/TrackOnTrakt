@@ -93,7 +93,7 @@ class HomeActivityTestCase {
         onView(childAtPosition(withId(R.id.list), 1))
             .check(matches(allOf(
                 isDisplayed(),
-                hasDescendant(withText("Breaking Bread - S 0, Ep 2"))
+                hasDescendant(withText("Breaking Bread"))
             )))
 
         //than there's today header
@@ -107,7 +107,7 @@ class HomeActivityTestCase {
         onView(childAtPosition(withId(R.id.list), 3))
             .check(matches(allOf(
                 isDisplayed(),
-                hasDescendant(withText("Black Books - S 2, Ep 1"))
+                hasDescendant(withText("Black Books"))
             )))
 
         //than there's a pager row

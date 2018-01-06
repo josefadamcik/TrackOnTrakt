@@ -1,6 +1,6 @@
 package cz.josefadamcik.trackontrakt.home
 
-import android.content.res.Resources
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
@@ -18,6 +18,7 @@ import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.data.api.model.Watching
 import cz.josefadamcik.trackontrakt.home.HistoryAdapter.ViewHolder
 import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
+import cz.josefadamcik.trackontrakt.util.tint
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
@@ -25,7 +26,7 @@ import timber.log.Timber
 
 class HistoryAdapter(
     private val layoutInflater: LayoutInflater,
-    private val resources: Resources,
+    private val context: Context,
     private val itemInteractionListener: ItemInteractionListener,
     private val icoMovieTypeDrawable: Drawable,
     private val icoShowTypeDrawable: Drawable,
@@ -33,6 +34,7 @@ class HistoryAdapter(
 ) : RecyclerView.Adapter<ViewHolder>() {
     private val historyListTimeSeparatorAugmenter = HistoryListTimeSeparatorAugmenter(currentTimeProvider)
     private val monthNameFormatter = DateTimeFormatter.ofPattern("MMMMM")
+    private val resources = context.resources
 
     interface ItemInteractionListener {
         fun onHistoryItemClicked(item: HistoryItem, position: Int)
@@ -156,9 +158,7 @@ class HistoryAdapter(
     }
 
 
-    open class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-    }
+    open class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
 
     inner class HistoryViewHolder(view: View) : ViewHolder(view), View.OnClickListener {
         @BindView(R.id.title) lateinit var title: TextView
@@ -183,7 +183,7 @@ class HistoryAdapter(
                 MediaType.show -> icoShowTypeDrawable
             }
 
-            typeInfo.setCompoundDrawablesWithIntrinsicBounds(typeIcoDrawable, null, null, null)
+            title.setCompoundDrawablesWithIntrinsicBounds(typeIcoDrawable.tint(context, R.color.colorAccent), null, null, null)
             typeInfo.text = resources.getString(R.string.media_item_type_info, type.toString(), year?.toString() ?: "")
         }
     }

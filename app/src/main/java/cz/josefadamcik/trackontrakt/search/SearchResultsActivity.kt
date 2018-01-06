@@ -24,13 +24,12 @@ import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
 import cz.josefadamcik.trackontrakt.data.api.model.SearchResultItem
 import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
 import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
+import cz.josefadamcik.trackontrakt.util.tint
 import timber.log.Timber
 import javax.inject.Inject
 
 
 class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresenter>(), SearchResultsView, SearchViewWrapper.SearchCallback, SearchResultAdapter.OnItemInteractionListener {
-
-
     @Inject lateinit var myPresenter: SearchResultPresenter
     private lateinit var searchViewWrapper: SearchViewWrapper
     protected lateinit var searchAdapter: SearchResultAdapter
@@ -39,8 +38,8 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
     @BindView(R.id.search_bar) lateinit var searchBar: MaterialSearchBar
     @BindView(R.id.list) lateinit var list: RecyclerView
 
-    @BindDrawable(R.drawable.ic_local_movies_gray_24dp) lateinit var icoTypeMovieDrawable: Drawable
-    @BindDrawable(R.drawable.ic_tv_gray_24dp) lateinit var icoTypeShowDrawable: Drawable
+    @BindDrawable(R.drawable.ic_local_movies_black_24dp) lateinit var icoTypeMovieDrawable: Drawable
+    @BindDrawable(R.drawable.ic_television_classic) lateinit var icoTypeShowDrawable: Drawable
 
     @State var query: String? = null
     @State var filter: TraktFilter = TraktFilter(true, true)
@@ -60,6 +59,9 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
         (application as TrackOnTraktApplication).component.inject(this)
         setContentView(R.layout.activity_search_results)
         unbinder = ButterKnife.bind(this)
+
+        icoTypeMovieDrawable = icoTypeShowDrawable.tint(this, R.color.colorAccent)
+        icoTypeShowDrawable = icoTypeShowDrawable.tint(this, R.color.colorAccent)
 
         searchViewWrapper = SearchViewWrapper(searchBar, this)
 

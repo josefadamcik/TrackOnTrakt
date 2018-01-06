@@ -50,8 +50,8 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     @BindView(R.id.progress) lateinit var progress: ProgressBar
     @BindView(R.id.swipe_refresh) lateinit var swipeRefreshLayout: SwipeRefreshLayout
     @BindView(R.id.search_bar) lateinit var searchBar: MaterialSearchBar
-    @BindDrawable(R.drawable.ic_local_movies_gray_24dp) lateinit var icoTypeMovieDrawable: Drawable
-    @BindDrawable(R.drawable.ic_tv_gray_24dp) lateinit var icoTypeShowDrawable: Drawable
+    @BindDrawable(R.drawable.ic_local_movies_black_24dp) lateinit var icoTypeMovieDrawable: Drawable
+    @BindDrawable(R.drawable.ic_television_classic) lateinit var icoTypeShowDrawable: Drawable
 
 
 
@@ -80,7 +80,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
     private fun initList() {
-        historyAdapter = HistoryAdapter(LayoutInflater.from(this), resources, this, icoTypeMovieDrawable, icoTypeShowDrawable, currentTimeProvider)
+        historyAdapter = HistoryAdapter(LayoutInflater.from(this), this, this, icoTypeMovieDrawable, icoTypeShowDrawable, currentTimeProvider)
         recyclerView.layoutManager = LinearLayoutManager(this)
 //        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.setHasFixedSize(true)

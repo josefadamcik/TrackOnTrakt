@@ -7,8 +7,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
@@ -26,6 +24,7 @@ import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
 import cz.josefadamcik.trackontrakt.data.api.model.SeasonWithProgress
 import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
 import cz.josefadamcik.trackontrakt.util.isEllipsized
+import cz.josefadamcik.trackontrakt.util.tint
 import java.text.DateFormat
 
 
@@ -171,7 +170,7 @@ class MediaDetailAdapter(
                     } else {
                         holder.btnCheckin.setImageDrawable(holder.drawableIcCheck)
                     }
-                    holder.btnCheckin.setColorFilter(resources.getColor(R.color.secondaryDarkColor), android.graphics.PorterDuff.Mode.SRC_IN)
+//                    holder.btnCheckin.setColorFilter(resources.getColor(R.color.secondaryDarkColor), android.graphics.PorterDuff.Mode.SRC_IN)
                 }
             }
             is SeasonHeaderViewHolder -> {
@@ -276,9 +275,7 @@ class MediaDetailAdapter(
 
         init {
             itemView.setOnClickListener(this)
-            val drawable = DrawableCompat.wrap(drawableIcThumbsUpDown).mutate()
-            DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.textColorSecondary))
-            txtRating.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+            txtRating.setCompoundDrawablesWithIntrinsicBounds(drawableIcThumbsUpDown.tint(context, R.color.textColorSecondary), null, null, null)
         }
 
         override fun onClick(v: View?) {

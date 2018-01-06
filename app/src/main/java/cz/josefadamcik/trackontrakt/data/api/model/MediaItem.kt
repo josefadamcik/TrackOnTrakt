@@ -10,7 +10,7 @@ interface MediaItem {
     val title: String
         get() {
             return when (type) {
-                MediaType.episode -> String.format("%s - S %s, Ep %s", show?.title, episode?.season, episode?.number)
+                MediaType.episode -> show?.title ?: "" //String.format("%s - S %s, Ep %s", show?.title, episode?.season, episode?.number)
                 MediaType.show -> show?.title ?: ""
                 MediaType.movie -> movie?.title ?: ""
             }
@@ -19,7 +19,7 @@ interface MediaItem {
     val subtitle: String
         get() {
             return when (type) {
-                MediaType.episode -> episode?.title ?: ""
+                MediaType.episode -> String.format("S %s, Ep %s - %s", episode?.season, episode?.number, episode?.title)
                 else -> ""
             }
         }

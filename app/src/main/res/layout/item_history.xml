@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/MaterialTypography.Regular.Title"
+        tools:drawableLeft="@drawable/ic_television_classic"
+        android:drawablePadding="@dimen/material_baseline_grid_1x"
         tools:text="history item title" />
 
     <TextView
@@ -20,6 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textAppearance="@style/MaterialTypography.Regular.Subheading"
+        android:textColor="@color/textColorSecondary"
+        android:ellipsize="end"
+        android:maxLines="1"
         tools:text="history item subtitle" />
 
     <LinearLayout
@@ -36,7 +41,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="@style/MaterialTypography.Regular.Caption"
             tools:text="Movie"
-            android:drawableLeft="@drawable/ic_tv_gray_24dp"
             android:drawablePadding="@dimen/material_baseline_grid_0.5x"
             android:gravity="left|center_vertical"/>
 
