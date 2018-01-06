@@ -20,9 +20,9 @@ import javax.inject.Inject
 class AuthorizationProvider
 @Inject
 constructor(
-    val traktApi: TraktApi,
-    val traktApiConfig: TraktApiConfig,
-    val traktAuthTokenHolder: TraktAuthTokenHolder
+    private val traktApi: TraktApi,
+    private val traktApiConfig: TraktApiConfig,
+    private val traktAuthTokenHolder: TraktAuthTokenHolder
 ) {
 
 

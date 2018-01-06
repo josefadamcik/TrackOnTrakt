@@ -25,19 +25,25 @@ class TraktAuthPresenter @Inject constructor(
                 authorizationProvider.onTraktAuthRedirect(url)
                     .subscribe(
                         { res ->
-                            view?.hideProgress()
-                            view?.continueNavigation()
+                            if (res.success && res.token != null) {
+                                view?.hideProgress()
+                                view?.continueNavigation()
+                            } else {
+                                onError()
+                            }
                         },
-                        { t ->
-                            view?.hideProgress()
-                            view?.showErrorView()
-                            view?.showErrorMessageWithRetry(R.string.err_trakt_auth_failed)
-                        }
+                        { t -> onError() }
                     )
             )
-            return true;
+            return true
         }
         return false
+    }
+
+    private fun onError() {
+        view?.hideProgress()
+        view?.showErrorView()
+        view?.showErrorMessageWithRetry(R.string.err_trakt_auth_failed)
     }
 
     fun retry() {
@@ -50,7 +56,6 @@ class TraktAuthPresenter @Inject constructor(
             Timber.d("has token: %s", traktAuthTokenHolder.token)
             view?.continueNavigation()
         } else {
-
             initiateOauth()
         }
     }
