@@ -96,4 +96,10 @@ interface TraktApi {
     fun checkin(@Header("Authorization") authorization: String,
                 @Body data: CheckinRequest
     ): Single<Response<CheckinResponse>>
+
+    companion object {
+        public const val HEADER_PAGINATION_PAGE = "X-Pagination-Page"
+        public const val HEADER_PAGINATION_PAGE_COUNT = "X-Pagination-Page-Count"
+        public const val HEADER_PAGINATION_ITEM_COUNT = "X-Pagination-Item-Count"
+    }
 }

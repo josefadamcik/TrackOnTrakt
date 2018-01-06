@@ -7,6 +7,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions
 import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.intent.Intents.intended
 import android.support.test.espresso.intent.matcher.IntentMatchers.*
 import android.support.test.espresso.matcher.ViewMatchers.*
@@ -16,6 +17,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.R
+import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
 import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
@@ -51,6 +53,9 @@ class HomeActivityTestCase {
             get(urlMatching("/users/me/history.*"))
                 .willReturn(aResponse()
                     .withStatus(200)
+                    .withHeader(TraktApi.HEADER_PAGINATION_PAGE, "0")
+                    .withHeader(TraktApi.HEADER_PAGINATION_PAGE_COUNT, "10")
+                    .withHeader(TraktApi.HEADER_PAGINATION_ITEM_COUNT, "100")
                     .withBody(asset(appContext, "history.json"))
                 )
         )
@@ -104,6 +109,15 @@ class HomeActivityTestCase {
                 isDisplayed(),
                 hasDescendant(withText("Black Books - S 2, Ep 1"))
             )))
+
+        //than there's a pager row
+        //But start with scroll
+        onView(withId(android.R.id.content)).perform(ViewActions.swipeUp())
+        onView(withId(R.id.list))
+            .perform(RecyclerViewActions.scrollTo<HistoryAdapter.PagerViewHolder>(hasDescendant(withText(R.string.pager_load_more))))
+
+        onView(allOf(isDescendantOfA(withId(R.id.list)), hasDescendant(withText(R.string.pager_load_more))))
+            .check(matches(isDisplayed()))
 
     }
 

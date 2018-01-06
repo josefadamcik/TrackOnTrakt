@@ -49,9 +49,9 @@ class UserHistoryManager
                 .map { r ->
                     if (r.isSuccessful) {
                         val headers = r.headers()
-                        val page = headers["X-Pagination-Page"]?.toInt() ?: 0
-                        val pageCount = headers["X-Pagination-Page-Count"]?.toInt() ?: 0
-                        val itemCount = headers["X-Pagination-Item-Count"]?.toInt() ?: 0
+                        val page = headers[TraktApi.HEADER_PAGINATION_PAGE]?.toInt() ?: 0
+                        val pageCount = headers[TraktApi.HEADER_PAGINATION_PAGE_COUNT]?.toInt() ?: 0
+                        val itemCount = headers[TraktApi.HEADER_PAGINATION_ITEM_COUNT]?.toInt() ?: 0
                         HistoryItems(items = r.body(), page = page, pageCount = pageCount, itemCount = itemCount)
                     } else {
                         throw ApiException("Unable to load more, response not successful {${r.code()}", r.code(), r.message())

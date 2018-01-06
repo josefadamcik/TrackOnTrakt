@@ -17,7 +17,6 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.github.tomakehurst.wiremock.matching.StringValuePattern
-import com.schibsted.spain.barista.interaction.BaristaSleepInteractions
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
@@ -115,8 +114,6 @@ class MediaDetailActivityTest {
         onView(allOf(withId(R.id.btn_checkin), isDescendantOfA(isEpisodeRow(unwatchedEpisodeName))))
             .check(matches(isDisplayed()))
             .perform(click())
-
-        BaristaSleepInteractions.sleep(1000)
 
         //than
         //assert: checkin request received
