@@ -1,9 +1,9 @@
 {
-  "title": "Mad Max: Fury Road",
+  "title": "Mad Jack: Fury Road",
   "year": 2015,
   "ids": {
     "trakt": 56360,
-    "slug": "mad-max-fury-road-2015",
+    "slug": "mad-jack-fury-road-2015",
     "imdb": "tt1392190",
     "tmdb": 76341
   },
@@ -12,7 +12,7 @@
   "released": "2015-05-15",
   "runtime": 120,
   "trailer": "http://youtube.com/watch?v=hEJnMQG9ev8",
-  "homepage": "http://www.madmaxmovie.com/",
+  "homepage": "http://www.example.com/",
   "rating": 7.86368,
   "votes": 21428,
   "updated_at": "2017-06-16T09:03:56.000Z",

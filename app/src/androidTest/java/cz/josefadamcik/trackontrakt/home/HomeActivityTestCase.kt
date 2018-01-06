@@ -89,14 +89,14 @@ class HomeActivityTestCase {
 
     @Test
     fun searchTest() {
-        val searchQuery = "rick and morty"
+        val searchQuery = "Test Show Name"
         val appContext = InstrumentationRegistry.getTargetContext()
 
         wireMockRule.stubFor(
             get(urlMatching("/search/.*"))
                 .willReturn(aResponse()
                     .withStatus(200)
-                    .withBody(asset(appContext, "search_ricknmorty.json"))
+                    .withBody(asset(appContext, "search_showname.json"))
                 )
         )
 

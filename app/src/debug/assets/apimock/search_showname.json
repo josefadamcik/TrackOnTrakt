@@ -3,11 +3,11 @@
     "type": "show",
     "score": 983.2373,
     "show": {
-      "title": "Rick and Morty",
+      "title": "Test Show Name",
       "year": 2013,
       "ids": {
         "trakt": 69829,
-        "slug": "rick-and-morty",
+        "slug": "MainCharacter-and-SecondCharacter",
         "tvdb": 275274,
         "imdb": "tt2861424",
         "tmdb": 60625,
@@ -19,11 +19,11 @@
     "type": "movie",
     "score": 4.1269145,
     "movie": {
-      "title": "Rick and Morty: State of Georgia Vs. Denver Fenton Allen",
+      "title": "MainCharacter and SecondCharacter: State of Georgia Vs. Denver Fenton Allen",
       "year": 2016,
       "ids": {
         "trakt": 257599,
-        "slug": "rick-and-morty-state-of-georgia-vs-denver-fenton-allen-2016",
+        "slug": "MainCharacter-and-SecondCharacter-state-of-georgia-vs-denver-fenton-allen-2016",
         "imdb": "tt5950978",
         "tmdb": 412103
       }

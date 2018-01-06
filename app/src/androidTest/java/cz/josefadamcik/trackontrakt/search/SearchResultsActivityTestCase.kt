@@ -43,34 +43,36 @@ class SearchResultsActivityTestCase {
     @Test
     fun showSearchTest() {
         val appContext = InstrumentationRegistry.getTargetContext()
+        val showName = "Test Show Name"
 
         wireMockRule.stubFor(
             get(urlMatching("/search/.*"))
                 .willReturn(aResponse()
                     .withStatus(200)
-                    .withBody(asset(appContext, "search_ricknmorty.json"))
+                    .withBody(asset(appContext, "search_showname.json"))
                 )
         )
 
         //launch activity
-        val activity = activityTestRule.launchActivity(SearchResultsActivity.createIntent(appContext, "rick and morty", TraktFilter(movies = true, shows = true)))
+
+        val activity = activityTestRule.launchActivity(SearchResultsActivity.createIntent(appContext, showName, TraktFilter(movies = true, shows = true)))
 
         //assert query present in search input
         val editText = onView(
-            allOf(withId(R.id.mt_editText), withText("rick and morty"),
+            allOf(withId(R.id.mt_editText), withText(showName),
                 isDisplayed()))
-        editText.check(matches(withText("rick and morty")))
+        editText.check(matches(withText(showName)))
 
-        //assert first row -> rick and morty show
+        //assert first row -> our show
         val textView = onView(
-            allOf(withId(R.id.title), withText("Rick and Morty"),
+            allOf(withId(R.id.title), withText(showName),
                 childAtPosition(
                     childAtPosition(
                         withId(R.id.list),
                         0),
                     0),
                 isDisplayed()))
-        textView.check(matches(withText("Rick and Morty")))
+        textView.check(matches(withText(showName)))
 
         val textView3 = onView(
             allOf(
@@ -90,7 +92,7 @@ class SearchResultsActivityTestCase {
         Intents.intended(allOf(
             IntentMatchers.hasComponent(MediaDetailActivity::class.java.name),
             IntentMatchers.hasExtra(MediaDetailActivity.PAR_ID, MediaIdentifier(MediaType.show, 69829)),
-            IntentMatchers.hasExtra(MediaDetailActivity.PAR_NAME, "Rick and Morty")
+            IntentMatchers.hasExtra(MediaDetailActivity.PAR_NAME, showName)
         ))
     }
 

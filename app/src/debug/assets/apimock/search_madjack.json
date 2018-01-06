@@ -3,11 +3,11 @@
     "type": "movie",
     "score": 2639.489,
     "movie": {
-      "title": "Mad Max: Fury Road",
+      "title": "Mad Jack: Fury Road",
       "year": 2015,
       "ids": {
         "trakt": 56360,
-        "slug": "mad-max-fury-road-2015",
+        "slug": "mad-jack-fury-road-2015",
         "imdb": "tt1392190",
         "tmdb": 76341
       }
@@ -17,11 +17,11 @@
     "type": "movie",
     "score": 643.25134,
     "movie": {
-      "title": "Mad Max",
+      "title": "Mad Jack",
       "year": 1979,
       "ids": {
         "trakt": 4934,
-        "slug": "mad-max-1979",
+        "slug": "mad-jack-1979",
         "imdb": "tt0079501",
         "tmdb": 9659
       }
@@ -31,11 +31,11 @@
     "type": "movie",
     "score": 296.65027,
     "movie": {
-      "title": "Mad Max 2: The Road Warrior",
+      "title": "Mad Jack 2: The Road Warrior",
       "year": 1981,
       "ids": {
         "trakt": 4314,
-        "slug": "mad-max-2-the-road-warrior-1981",
+        "slug": "mad-jack-2-the-road-warrior-1981",
         "imdb": "tt0082694",
         "tmdb": 8810
       }
@@ -45,11 +45,11 @@
     "type": "movie",
     "score": 255.5454,
     "movie": {
-      "title": "Mad Max Beyond Thunderdome",
+      "title": "Mad Jack Beyond Thunderdome",
       "year": 1985,
       "ids": {
         "trakt": 4647,
-        "slug": "mad-max-beyond-thunderdome-1985",
+        "slug": "mad-jack-beyond-thunderdome-1985",
         "imdb": "tt0089530",
         "tmdb": 9355
       }
@@ -59,11 +59,11 @@
     "type": "movie",
     "score": 6.1780205,
     "movie": {
-      "title": "Mad Max Renegade",
+      "title": "Mad Jack Renegade",
       "year": 2011,
       "ids": {
         "trakt": 195132,
-        "slug": "mad-max-renegade-2011",
+        "slug": "mad-jack-renegade-2011",
         "imdb": "tt2011110",
         "tmdb": 307732
       }
@@ -73,11 +73,11 @@
     "type": "movie",
     "score": 2.4571676,
     "movie": {
-      "title": "Mad Max: Fury Road (Black & Chrome Edition)",
+      "title": "Mad Jack: Fury Road (Black & Chrome Edition)",
       "year": 2016,
       "ids": {
         "trakt": 281091,
-        "slug": "mad-max-fury-road-black-chrome-edition-2016",
+        "slug": "mad-jack-fury-road-black-chrome-edition-2016",
         "imdb": null,
         "tmdb": 434021
       }
@@ -101,11 +101,11 @@
     "type": "movie",
     "score": 0.7371502,
     "movie": {
-      "title": "Mad Max: The Wasteland",
+      "title": "Mad Jack: The Wasteland",
       "year": null,
       "ids": {
         "trakt": 220485,
-        "slug": "mad-max-the-wasteland",
+        "slug": "mad-jack-the-wasteland",
         "imdb": "tt4575512",
         "tmdb": 340023
       }
@@ -115,11 +115,11 @@
     "type": "movie",
     "score": 0.63184303,
     "movie": {
-      "title": "Mad Max a Wasteland Story",
+      "title": "Mad Jack a Wasteland Story",
       "year": 2012,
       "ids": {
         "trakt": 220720,
-        "slug": "mad-max-a-wasteland-story-2012",
+        "slug": "mad-jack-a-wasteland-story-2012",
         "imdb": null,
         "tmdb": 340266
       }
@@ -145,11 +145,11 @@
     "type": "movie",
     "score": 0.35102394,
     "movie": {
-      "title": "Mad Max: Fury Road - Black & Chrome Edition",
+      "title": "Mad Jack: Fury Road - Black & Chrome Edition",
       "year": 2016,
       "ids": {
         "trakt": 300024,
-        "slug": "mad-max-fury-road-black-chrome-edition-2016-11-04",
+        "slug": "mad-jack-fury-road-black-chrome-edition-2016-11-04",
         "imdb": null,
         "tmdb": 453503
       }
@@ -159,11 +159,11 @@
     "type": "movie",
     "score": 0.28081915,
     "movie": {
-      "title": "Turkish Mad Max",
+      "title": "Turkish Mad Jack",
       "year": 1983,
       "ids": {
         "trakt": 157402,
-        "slug": "turkish-mad-max-1983",
+        "slug": "turkish-mad-jack-1983",
         "imdb": "tt0183599",
         "tmdb": 257723
       }
@@ -187,11 +187,11 @@
     "type": "movie",
     "score": 0.26326793,
     "movie": {
-      "title": "Mad Max: Fury Road (Black & Chrome Edition)",
+      "title": "Mad Jack: Fury Road (Black & Chrome Edition)",
       "year": 2016,
       "ids": {
         "trakt": 291842,
-        "slug": "mad-max-fury-road-black-chrome-edition-2016-10-19",
+        "slug": "mad-jack-fury-road-black-chrome-edition-2016-10-19",
         "imdb": null,
         "tmdb": 445019
       }

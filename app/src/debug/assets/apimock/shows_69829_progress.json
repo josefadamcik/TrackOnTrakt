@@ -281,7 +281,7 @@
   "next_episode": {
     "season": 1,
     "number": 10,
-    "title": "Close Rick-Counters of the Rick Kind",
+    "title": "Close MainCharacter-Counters of the MainCharacter Kind",
     "ids": {
       "trakt": 1168778,
       "tvdb": 4743891,
@@ -293,7 +293,7 @@
   "last_episode": {
     "season": 3,
     "number": 10,
-    "title": "The Rickchurian Mortydate",
+    "title": "The MainCharacterchurian SecondCharacterdate",
     "ids": {
       "trakt": 2711968,
       "tvdb": 6288278,

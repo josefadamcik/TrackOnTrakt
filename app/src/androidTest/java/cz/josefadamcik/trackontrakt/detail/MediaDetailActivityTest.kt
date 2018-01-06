@@ -12,15 +12,19 @@ import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.BoundedMatcher
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.runner.AndroidJUnit4
+import android.view.View
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import com.github.tomakehurst.wiremock.matching.StringValuePattern
+import com.schibsted.spain.barista.interaction.BaristaSleepInteractions
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.testutil.WiremockTimberNotifier
 import cz.josefadamcik.trackontrakt.testutil.activityTestRule
 import cz.josefadamcik.trackontrakt.testutil.asset
+import cz.josefadamcik.trackontrakt.testutil.first
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.`is`
@@ -44,31 +48,29 @@ class MediaDetailActivityTest {
 
     @Test
     fun showDetailTest() {
-        //arrange
+        //given
         val appContext = InstrumentationRegistry.getTargetContext()
-        arrangeApiStubForShowDetail(appContext)
-        arrangeApiStubForLatestEpisode(appContext)
-        arrangeApiStubForShowSeasons(appContext)
+        val showName = "Test Show Name"
+        givenApiStubForShowDetail(appContext)
+        givenApiStubForLatestEpisode(appContext)
+        givenApiStubForShowSeasons(appContext)
 
-        //act: launch activity
-
-        val intent = MediaDetailActivity.createIntent(appContext, MediaIdentifier(MediaType.show, 69829), "Rick and Morty")
+        //when: launch activity
+        val intent = MediaDetailActivity.createIntent(appContext, MediaIdentifier(MediaType.show, 69829), showName)
         activityTestRule.launchActivity(intent)
 
+        //than
         //assert: info rendered
-
-        assertActionBarTitle("Rick and Morty")
+        assertActionBarTitle(showName)
         assertDescriptionViewValue("A sociopathic scientist drags his unintelligent grandson on insanely dangerous adventures across the universe.")
-
 
         //Scrool action below probably doesnt work due the CoordinatorLayout setup we have here. So we do simple swipe up
         //to work around the issue.
         onView(withId(android.R.id.content)).perform(ViewActions.swipeUp())
-
-        //Doesnt' work
         onView(withId(R.id.list))
             .check(matches(isDisplayed()))
             .perform(RecyclerViewActions.scrollTo<MediaDetailAdapter.ViewHolder>(hasDescendant(withText(R.string.media_detail_next_episode_separator))))
+
 
         val textView2 = onView(allOf(
             isDescendantOfA(withId(R.id.list)),
@@ -80,17 +82,67 @@ class MediaDetailActivityTest {
     }
 
     @Test
-    fun movieDetailTest() {
-        val detailName = "Mad Max: Fury Road"
-
-        //arrange
+    fun showEpisodeCheckinTest() {
+        //given
         val appContext = InstrumentationRegistry.getTargetContext()
-        arrangeApiStubForMovieDetail(appContext)
+        val showName = "Test Show Name"
+        givenApiStubForShowDetail(appContext)
+        givenApiStubForLatestEpisode(appContext)
+        givenApiStubForShowSeasons(appContext)
+        givenApiStubForEpisodeCheckin(appContext)
 
-        //act: launch activity
+        //when: launch activity
+
+        val intent = MediaDetailActivity.createIntent(appContext, MediaIdentifier(MediaType.show, 69829), showName)
+        activityTestRule.launchActivity(intent)
+
+        //Scrool action below probably doesnt work due the CoordinatorLayout setup we have here. So we do simple swipe up
+        //to work around the issue.
+        onView(withId(android.R.id.content)).perform(ViewActions.swipeUp())
+
+        val unwatchedEpisodeName = "Close MainCharacter-Counters of the MainCharacter Kind"
+        //when we scroll to the episode item in the list
+        onView(withId(R.id.list))
+            .check(matches(isDisplayed()))
+            .perform(
+                RecyclerViewActions.scrollTo<MediaDetailAdapter.EpisodeInfoViewHolder>(
+                    first(hasDescendant(allOf(withId(R.id.title), withText(unwatchedEpisodeName))))
+                )
+            )
+
+
+        //and click on it
+        onView(allOf(withId(R.id.btn_checkin), isDescendantOfA(isEpisodeRow(unwatchedEpisodeName))))
+            .check(matches(isDisplayed()))
+            .perform(click())
+
+        BaristaSleepInteractions.sleep(1000)
+
+        //than
+        //assert: checkin request received
+        verify(postRequestedFor(urlPathEqualTo("/checkin")))
+    }
+
+    private fun isEpisodeRow(episodeName: String): Matcher<View>? {
+        return allOf(
+            isDisplayed(),
+            isDescendantOfA(withId(R.id.list)),
+            hasDescendant(allOf(withId(R.id.title), withText(episodeName)))
+        )
+    }
+
+    @Test
+    fun movieDetailTest() {
+        //given
+        val detailName = "Mad Jack: Fury Road"
+        val appContext = InstrumentationRegistry.getTargetContext()
+        givenApiStubForMovieDetail(appContext)
+
+        //when: launch activity
         val intent = MediaDetailActivity.createIntent(appContext, MediaIdentifier(MediaType.movie, 56360), detailName)
         activityTestRule.launchActivity(intent)
 
+        //than
         //assert info rendered
         assertActionBarTitle(detailName)
         assertDescriptionViewValue("An apocalyptic story set in the furthest reaches of our planet, in a stark desert landscape where humanity is broken, and most everyone is crazed fighting for the necessities of life. Within this world exist two rebels on the run who just might be able to restore order. There's Max, a man of action and a man of few words, who seeks peace of mind following the loss of his wife and child in the aftermath of the chaos. And Furiosa, a woman of action and a woman who believes her path to survival may be achieved if she can make it across the desert back to her childhood homeland.")
@@ -102,10 +154,10 @@ class MediaDetailActivityTest {
     fun movieCheckinTest() {
         //arrange
         val appContext = InstrumentationRegistry.getTargetContext()
-        arrangeApiStubForMovieDetail(appContext)
-        arrangeApiStubForCheckin(appContext)
+        givenApiStubForMovieDetail(appContext)
+        givenApiStubForMovieCheckin(appContext)
 
-        //act: launch activity
+        //when: launch activity
         val intent = MediaDetailActivity.createIntent(appContext, MediaIdentifier(MediaType.movie, 56360), "name")
         activityTestRule.launchActivity(intent)
 
@@ -115,14 +167,23 @@ class MediaDetailActivityTest {
         )).perform(click())
 
 
+        //than
         //assert: checkin request received
         verify(postRequestedFor(urlPathEqualTo("/checkin")))
     }
 
-    private fun arrangeApiStubForCheckin(appContext: Context) {
+    private fun givenApiStubForMovieCheckin(appContext: Context) {
+        arranegApiStubForCheckin(appContext, matchingJsonPath("$.movie.ids.trakt"))
+    }
+
+    private fun givenApiStubForEpisodeCheckin(appContext: Context) {
+        arranegApiStubForCheckin(appContext, matchingJsonPath("$.episode.ids.trakt"))
+    }
+
+    private fun arranegApiStubForCheckin(appContext: Context, bodyPattern: StringValuePattern) {
         wireMockRule.stubFor(
             post(urlPathEqualTo("/checkin"))
-                .withRequestBody(matchingJsonPath("$.movie.ids.trakt"))
+                .withRequestBody(bodyPattern)
                 .willReturn(aResponse()
                     .withStatus(200)
                     .withBody(asset(appContext, "checkin.json"))
@@ -130,7 +191,8 @@ class MediaDetailActivityTest {
         )
     }
 
-    private fun arrangeApiStubForMovieDetail(appContext: Context) {
+
+    private fun givenApiStubForMovieDetail(appContext: Context) {
         wireMockRule.stubFor(
             get(urlPathEqualTo("/movies/56360"))
                 .withQueryParam("extended", equalTo("full"))
@@ -142,7 +204,7 @@ class MediaDetailActivityTest {
         )
     }
 
-    private fun arrangeApiStubForShowSeasons(appContext: Context) {
+    private fun givenApiStubForShowSeasons(appContext: Context) {
         wireMockRule.stubFor(
             get(urlPathEqualTo("/shows/69829/seasons"))
                 .withQueryParam("extended", equalTo("full"))
@@ -175,7 +237,7 @@ class MediaDetailActivityTest {
         )
     }
 
-    private fun arrangeApiStubForLatestEpisode(appContext: Context) {
+    private fun givenApiStubForLatestEpisode(appContext: Context) {
         wireMockRule.stubFor(
             get(urlPathEqualTo("/shows/69829/last_episode"))
                 .withQueryParam("extended", equalTo("full"))
@@ -186,7 +248,7 @@ class MediaDetailActivityTest {
         )
     }
 
-    private fun arrangeApiStubForShowDetail(appContext: Context) {
+    private fun givenApiStubForShowDetail(appContext: Context) {
         wireMockRule.stubFor(
             get(urlPathEqualTo("/shows/69829"))
                 .withQueryParam("extended", equalTo("full"))

@@ -2,7 +2,7 @@
   {
     "season": 2,
     "number": 1,
-    "title": "A Rickle in Time",
+    "title": "A MainCharacterle in Time",
     "ids": {
       "trakt": 1732564,
       "tvdb": 5225680,
@@ -11,7 +11,7 @@
       "tvrage": 1065808803
     },
     "number_abs": 12,
-    "overview": "Rick, Morty, and Summer get into trouble when time is fractured by a feedback loop of uncertainty that split reality into more than one equally possible impossibilities. Meanwhile, Beth and Jerry go to extreme lengths to save a deer struck by their vehicle.",
+    "overview": "MainCharacter, SecondCharacter, and Summer get into trouble when time is fractured by a feedback loop of uncertainty that split reality into more than one equally possible impossibilities. Meanwhile, Beth and Jerry go to extreme lengths to save a deer struck by their vehicle.",
     "rating": 8.15658,
     "votes": 5154,
     "first_aired": "2015-07-27T03:30:00.000Z",
@@ -43,7 +43,7 @@
   {
     "season": 2,
     "number": 2,
-    "title": "Mortynight Run",
+    "title": "SecondCharacternight Run",
     "ids": {
       "trakt": 1917687,
       "tvdb": 5265205,
@@ -52,7 +52,7 @@
       "tvrage": 1065835214
     },
     "number_abs": 13,
-    "overview": "Rick teaches Morty to drive while leaving Jerry at a popular day care made just for him. Morty's conscience has him hunt down an assassin rather than spending the day at an alien arcade.",
+    "overview": "MainCharacter teaches SecondCharacter to drive while leaving Jerry at a popular day care made just for him. SecondCharacter's conscience has him hunt down an assassin rather than spending the day at an alien arcade.",
     "rating": 8.11857,
     "votes": 5094,
     "first_aired": "2015-08-03T03:30:00.000Z",
@@ -93,7 +93,7 @@
       "tvrage": 1065849489
     },
     "number_abs": 14,
-    "overview": "Rick gets emotionally invested when meeting an old friend, while Beth and Jerry have a falling out after making a discovery under the garage.",
+    "overview": "MainCharacter gets emotionally invested when meeting an old friend, while Beth and Jerry have a falling out after making a discovery under the garage.",
     "rating": 8.08615,
     "votes": 4887,
     "first_aired": "2015-08-10T03:30:00.000Z",
@@ -125,7 +125,7 @@
   {
     "season": 2,
     "number": 4,
-    "title": "Total Rickall",
+    "title": "Total MainCharacterall",
     "ids": {
       "trakt": 1944042,
       "tvdb": 5292288,
@@ -134,7 +134,7 @@
       "tvrage": 1065849490
     },
     "number_abs": 15,
-    "overview": "Trapped inside the house with an ever-increasing number of parasitic alien shape-shifters capable of altering memories, an uncertain Rick and the Smiths search for a way to determine which of them are real.",
+    "overview": "Trapped inside the house with an ever-increasing number of parasitic alien shape-shifters capable of altering memories, an uncertain MainCharacter and the Smiths search for a way to determine which of them are real.",
     "rating": 8.28343,
     "votes": 5190,
     "first_aired": "2015-08-17T03:30:00.000Z",
@@ -175,7 +175,7 @@
       "tvrage": 1065849491
     },
     "number_abs": 16,
-    "overview": "When a massive head descends into Earth's atmosphere, Rick and Morty must save the planet by coming up with a new hit song. Meanwhile, Jerry, Beth, and Summer become part of a new religion.",
+    "overview": "When a massive head descends into Earth's atmosphere, MainCharacter and SecondCharacter must save the planet by coming up with a new hit song. Meanwhile, Jerry, Beth, and Summer become part of a new religion.",
     "rating": 8.03317,
     "votes": 4824,
     "first_aired": "2015-08-24T03:30:00.000Z",
@@ -207,7 +207,7 @@
   {
     "season": 2,
     "number": 6,
-    "title": "The Ricks Must Be Crazy",
+    "title": "The MainCharacters Must Be Crazy",
     "ids": {
       "trakt": 1944044,
       "tvdb": 5292290,
@@ -216,7 +216,7 @@
       "tvrage": 1065849492
     },
     "number_abs": 17,
-    "overview": "Rick and Morty travel inside the car's battery, where Morty discovers Rick has created a universe containing sentient life solely to produce power for him. Meanwhile, Summer must deal with being locked in the car with Rick's overzealous security system.",
+    "overview": "MainCharacter and SecondCharacter travel inside the car's battery, where SecondCharacter discovers MainCharacter has created a universe containing sentient life solely to produce power for him. Meanwhile, Summer must deal with being locked in the car with MainCharacter's overzealous security system.",
     "rating": 8.27877,
     "votes": 4875,
     "first_aired": "2015-08-31T03:30:00.000Z",
@@ -257,7 +257,7 @@
       "tvrage": 0
     },
     "number_abs": 18,
-    "overview": "Rick undergoes a transformation to combat a local vampire situation. Meanwhile, Beth and Jerry attempt to sort out their relationship through marriage counseling.",
+    "overview": "MainCharacter undergoes a transformation to combat a local vampire situation. Meanwhile, Beth and Jerry attempt to sort out their relationship through marriage counseling.",
     "rating": 8.12338,
     "votes": 4798,
     "first_aired": "2015-09-14T03:30:00.000Z",
@@ -339,7 +339,7 @@
       "tvrage": 0
     },
     "number_abs": 20,
-    "overview": "Rick and Morty find themselves on a planet where the sentient inhabitants practice a \"purge for peace\" way of life. Jerry and Summer work on their father-daughter relationship.",
+    "overview": "MainCharacter and SecondCharacter find themselves on a planet where the sentient inhabitants practice a \"purge for peace\" way of life. Jerry and Summer work on their father-daughter relationship.",
     "rating": 8.10842,
     "votes": 4584,
     "first_aired": "2015-09-28T03:30:00.000Z",
@@ -380,7 +380,7 @@
       "tvrage": 0
     },
     "number_abs": 21,
-    "overview": "The whole family goes to the planet Squanch to attend the wedding of Rick's close friend, Bird Person.",
+    "overview": "The whole family goes to the planet Squanch to attend the wedding of MainCharacter's close friend, Bird Person.",
     "rating": 8.48035,
     "votes": 4759,
     "first_aired": "2015-10-05T03:30:00.000Z",
