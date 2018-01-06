@@ -20,16 +20,15 @@ import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
 import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
-import cz.josefadamcik.trackontrakt.testutil.RecyclerViewRowMatcher.atPosition
-import cz.josefadamcik.trackontrakt.testutil.WiremockTimberNotifier
-import cz.josefadamcik.trackontrakt.testutil.activityTestRule
-import cz.josefadamcik.trackontrakt.testutil.asset
-import cz.josefadamcik.trackontrakt.testutil.childAtPosition
+import cz.josefadamcik.trackontrakt.testutil.*
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.threeten.bp.Clock
+import org.threeten.bp.Instant
+import org.threeten.bp.ZoneOffset
 
 @RunWith(AndroidJUnit4::class)
 class HomeActivityTestCase {
@@ -58,8 +57,8 @@ class HomeActivityTestCase {
         wireMockRule.stubFor(
             get(urlMatching("/users/me/watching.*"))
                 .willReturn(aResponse()
-                    .withStatus(204)
-                    .withBody("")
+                    .withStatus(200)
+                    .withBody(asset(appContext, "watching.json"))
                 )
         )
     }
@@ -67,16 +66,60 @@ class HomeActivityTestCase {
 
     @Test
     fun showHistoryTest() {
+        //given
+        givenSystemTimeDuringWatchingPeriodInData()
         val appContext = InstrumentationRegistry.getTargetContext()
-        //launch activity
+
+        //when activity is launched
         val activity = activityTestRule.launchActivity(Intent(appContext, HomeActivity::class.java))
 
-        //should render results in list
+        //than
         onView(withId(R.id.list))
-            .check(matches(atPosition(1, hasDescendant(withText("Black Books - S 2, Ep 1")))))
+            .check(matches(isDisplayed()))
+
+        //than there's watching header.
+        onView(childAtPosition(withId(R.id.list), 0))
+            .check(matches(allOf(
+                isDisplayed(),
+                hasDescendant(withText(R.string.now_watching))
+            )))
+
+        //thatn there's undergoing show
+        onView(childAtPosition(withId(R.id.list), 1))
+            .check(matches(allOf(
+                isDisplayed(),
+                hasDescendant(withText("Breaking Bread - S 0, Ep 2"))
+            )))
+
+        //than there's today header
+        onView(childAtPosition(withId(R.id.list), 2))
+            .check(matches(allOf(
+                isDisplayed(),
+                hasDescendant(withText(R.string.today))
+            )))
+
+        //than there's another show
+        onView(childAtPosition(withId(R.id.list), 3))
+            .check(matches(allOf(
+                isDisplayed(),
+                hasDescendant(withText("Black Books - S 2, Ep 1"))
+            )))
+
+    }
+
+
+    @Test
+    fun clickOhHistoryTest() {
+        //given
+        givenSystemTimeDuringWatchingPeriodInData()
+        val appContext = InstrumentationRegistry.getTargetContext()
+        //whan activity is launched
+        val activity = activityTestRule.launchActivity(Intent(appContext, HomeActivity::class.java))
+        //than
 
         //should open detail when clicked
-        onView(childAtPosition(withId(R.id.list), 1))
+        onView(childAtPosition(withId(R.id.list), 3))
+            .check(matches(isDisplayed()))
             .perform(ViewActions.click())
         //assert intent
         intended(allOf(
@@ -84,7 +127,6 @@ class HomeActivityTestCase {
             hasExtra(MediaDetailActivity.PAR_ID, MediaIdentifier(MediaType.show, 898)),
             hasExtra(MediaDetailActivity.PAR_NAME, "Black Books")
         ))
-
     }
 
     @Test
@@ -122,6 +164,11 @@ class HomeActivityTestCase {
                 hasExtra(SearchManager.QUERY, searchQuery)
             )
         )
+    }
+
+
+    private fun givenSystemTimeDuringWatchingPeriodInData() {
+        TestTimeProvider.clock = Clock.fixed(Instant.parse("2017-05-07T22:00:31Z"), ZoneOffset.UTC)
     }
 
 }

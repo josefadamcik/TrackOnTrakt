@@ -7,6 +7,6 @@ import dagger.Component
 
 
 @ApplicationScope
-@Component(modules = arrayOf(ApplicationModule::class, TestApiModule::class))
+@Component(modules = [(TestApplicationModule::class), (TestApiModule::class)])
 interface TestApplicationComponent : ApplicationComponent {
 }

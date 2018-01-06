@@ -1,6 +1,7 @@
 package cz.josefadamcik.trackontrakt.home
 
 import cz.josefadamcik.trackontrakt.data.api.model.*
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProviderImpl
 import org.hamcrest.BaseMatcher
 import org.hamcrest.Description
 import org.hamcrest.Matcher
@@ -23,7 +24,7 @@ class HistoryListTimeSeparatorAugmenterTest {
                 movie = Movie("movie $it", 2000, MediaIds(it.toLong())))
         }.map { HistoryAdapter.RowItem.HistoryRowItem(it) }
 
-        val augmenter = HistoryListTimeSeparatorAugmenter()
+        val augmenter = HistoryListTimeSeparatorAugmenter(CurrentTimeProviderImpl())
 
         //act -> augment list
         val resultList = augmenter.augmentList(list)

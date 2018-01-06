@@ -17,8 +17,8 @@ import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.data.api.model.Watching
 import cz.josefadamcik.trackontrakt.home.HistoryAdapter.ViewHolder
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
-import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
 import timber.log.Timber
@@ -28,9 +28,10 @@ class HistoryAdapter(
     private val resources: Resources,
     private val itemInteractionListener: ItemInteractionListener,
     private val icoMovieTypeDrawable: Drawable,
-    private val icoShowTypeDrawable: Drawable
+    private val icoShowTypeDrawable: Drawable,
+    private val currentTimeProvider: CurrentTimeProvider
 ) : RecyclerView.Adapter<ViewHolder>() {
-    private val historyListTimeSeparatorAugmenter = HistoryListTimeSeparatorAugmenter()
+    private val historyListTimeSeparatorAugmenter = HistoryListTimeSeparatorAugmenter(currentTimeProvider)
     private val monthNameFormatter = DateTimeFormatter.ofPattern("MMMMM")
 
     interface ItemInteractionListener {
@@ -234,7 +235,7 @@ class HistoryAdapter(
                 } else if (time.monthCount == 1) {
                     resources.getString(R.string.last_month)
                 } else {
-                    monthNameFormatter.format(time.toMonth(LocalDateTime.now()))
+                    monthNameFormatter.format(time.toMonth(currentTimeProvider.dateTime))
                 }
 
             }

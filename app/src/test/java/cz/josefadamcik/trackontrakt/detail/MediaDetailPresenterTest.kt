@@ -3,6 +3,7 @@ package cz.josefadamcik.trackontrakt.detail
 
 import com.nhaarman.mockito_kotlin.*
 import cz.josefadamcik.trackontrakt.data.api.model.*
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProviderImpl
 import io.reactivex.Single
 import kxdate.threeten.bp.ago
 import kxdate.threeten.bp.days
@@ -160,7 +161,7 @@ class MediaDetailPresenterTest {
 
     private fun arrangePresenterInstanceWithMockedDataService(dataServiceStubbing: KStubbing<MediaDetailManager>.(MediaDetailManager) -> Unit): MediaDetailPresenter {
         mediaManager = mock<MediaDetailManager>(stubbing = dataServiceStubbing)
-        presenter = MediaDetailPresenter(mediaManager)
+        presenter = MediaDetailPresenter(mediaManager, CurrentTimeProviderImpl())
 
         return presenter
     }

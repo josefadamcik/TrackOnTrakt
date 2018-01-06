@@ -5,15 +5,16 @@ import android.support.annotation.VisibleForTesting
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
 import cz.josefadamcik.trackontrakt.data.api.model.Watching
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import org.threeten.bp.LocalDateTime
 import timber.log.Timber
 import javax.inject.Inject
 
 
 class HomePresenter @Inject constructor(
-    private val userHistoryManager: UserHistoryManager
+    private val userHistoryManager: UserHistoryManager,
+    private val currentTimeProvider: CurrentTimeProvider
 ) : BasePresenter<HomeView>() {
 
     @VisibleForTesting
@@ -51,14 +52,14 @@ class HomePresenter @Inject constructor(
                         loadingPage = -1
                         view?.hideLoading()
                         val allItems = loadedHistoryModel.items.toMutableList()
-                        val now = LocalDateTime.now()
+                        val now = currentTimeProvider.dateTime
                         allItems.addAll(history.items)
 
                         updateHistoryModel(loadedHistoryModel.copy(
                             items = removeFirstItemIfDuplicatedInWatching(allItems, watching),
                             hasNextPage = lastPage < history.pageCount,
                             loadingNextPage = false,
-                            watching = if (watching.isExpired()) Watching.Nothing else watching
+                            watching = if (watching.isExpired(currentTimeProvider)) Watching.Nothing else watching
                         ))
                     },
                     { t ->

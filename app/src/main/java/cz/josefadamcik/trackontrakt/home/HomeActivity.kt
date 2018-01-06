@@ -29,6 +29,7 @@ import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
 import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
 import cz.josefadamcik.trackontrakt.search.TraktFilter
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -42,6 +43,8 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
     @Inject lateinit var homePresenter: HomePresenter
+    @Inject lateinit var currentTimeProvider: CurrentTimeProvider
+
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
     @BindView(R.id.list) lateinit var recyclerView: RecyclerView
     @BindView(R.id.progress) lateinit var progress: ProgressBar
@@ -77,7 +80,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
     private fun initList() {
-        historyAdapter = HistoryAdapter(LayoutInflater.from(this), resources, this, icoTypeMovieDrawable, icoTypeShowDrawable)
+        historyAdapter = HistoryAdapter(LayoutInflater.from(this), resources, this, icoTypeMovieDrawable, icoTypeShowDrawable, currentTimeProvider)
         recyclerView.layoutManager = LinearLayoutManager(this)
 //        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.setHasFixedSize(true)

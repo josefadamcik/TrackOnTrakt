@@ -4,11 +4,13 @@ package cz.josefadamcik.trackontrakt
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProviderImpl
 import dagger.Module
 import dagger.Provides
 
 @Module
-class ApplicationModule(private val app: TrackOnTraktApplication) {
+open class ApplicationModule(private val app: TrackOnTraktApplication) {
 
     @Provides
     @ApplicationScope
@@ -22,5 +24,9 @@ class ApplicationModule(private val app: TrackOnTraktApplication) {
         return app.getSharedPreferences("trackontrackt", Context.MODE_PRIVATE);
     }
 
+    @Provides
+    @ApplicationScope
+    fun provideCurrentTimeProvider(): CurrentTimeProvider = createCurrentTimeProvider()
 
+    open protected fun createCurrentTimeProvider(): CurrentTimeProvider = CurrentTimeProviderImpl()
 }

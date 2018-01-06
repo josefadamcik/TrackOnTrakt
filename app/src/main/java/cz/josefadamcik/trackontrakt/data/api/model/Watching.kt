@@ -1,6 +1,7 @@
 
 package cz.josefadamcik.trackontrakt.data.api.model
 
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
 import org.threeten.bp.LocalDateTime
 
 sealed class Watching {
@@ -14,14 +15,14 @@ sealed class Watching {
         override val episode: Episode? = null
     ) : Watching(), MediaItem {
 
-        override fun isExpired(): Boolean {
-            return expires_at.isBefore(LocalDateTime.now())
+        override fun isExpired(currentTimeProvider: CurrentTimeProvider): Boolean {
+            return expires_at.isBefore(currentTimeProvider.dateTime)
         }
     }
 
     object Nothing : Watching()
 
-    open fun isExpired(): Boolean {
+    open fun isExpired(currentTimeProvider: CurrentTimeProvider): Boolean {
         return false
     }
 }

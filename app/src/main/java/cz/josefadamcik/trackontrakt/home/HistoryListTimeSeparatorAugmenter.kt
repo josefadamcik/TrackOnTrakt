@@ -1,6 +1,6 @@
 package cz.josefadamcik.trackontrakt.home
 
-import org.threeten.bp.LocalDateTime
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
 
 
 /**
@@ -8,9 +8,9 @@ import org.threeten.bp.LocalDateTime
  * the user can easily orientate in his watch history.
  * It expects that the list is ordered by time from the newest to the oldest.
  */
-class HistoryListTimeSeparatorAugmenter {
+class HistoryListTimeSeparatorAugmenter(private val currentTimeProvider: CurrentTimeProvider) {
     fun augmentList(list: List<HistoryAdapter.RowItem>): MutableList<HistoryAdapter.RowItem> {
-        val now = LocalDateTime.now()
+        val now = currentTimeProvider.dateTime
         var currentRelativeTimeHeader: RelativeWatchTime = RelativeWatchTime.Today
         var currentHeaderAddToOutput = false
         val augmentedList = mutableListOf<HistoryAdapter.RowItem>()

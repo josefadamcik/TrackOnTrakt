@@ -3,12 +3,13 @@ package cz.josefadamcik.trackontrakt.detail
 
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.model.*
-import org.threeten.bp.LocalDateTime
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
 import timber.log.Timber
 import javax.inject.Inject
 
 class MediaDetailPresenter @Inject constructor(
-    private val manager: MediaDetailManager
+    private val manager: MediaDetailManager,
+    private val currentTimeProvider: CurrentTimeProvider
 ) : BasePresenter<MediaDetailView>() {
 
     private var identifier: MediaIdentifier? = null
@@ -120,7 +121,7 @@ class MediaDetailPresenter @Inject constructor(
                         e.copy(progress = ShowWatchedProgress.EpisodeWatchedProgress(
                             e.episode.number,
                             true,
-                            LocalDateTime.now()
+                            currentTimeProvider.dateTime
                         ))
                     } else {
                         e
@@ -136,7 +137,7 @@ class MediaDetailPresenter @Inject constructor(
             seasons = modifiedSeasons,
             showProgress = model.showProgress.copy(
                 completed = model.showProgress.completed + if (episodeFoundAndCompletedStatusChanged) 1 else 0,
-                last_watched_at = LocalDateTime.now()
+                last_watched_at = currentTimeProvider.dateTime
             )
         )
     }

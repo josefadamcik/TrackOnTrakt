@@ -3,6 +3,7 @@ package cz.josefadamcik.trackontrakt.home
 
 import com.nhaarman.mockito_kotlin.*
 import cz.josefadamcik.trackontrakt.data.api.model.*
+import cz.josefadamcik.trackontrakt.util.CurrentTimeProviderImpl
 import io.reactivex.Single
 import org.hamcrest.Matchers
 import org.hamcrest.Matchers.equalTo
@@ -13,7 +14,6 @@ import org.threeten.bp.LocalDateTime
 
 
 class HomePresenterTest {
-
 
     @After
     fun tearDown() {
@@ -191,7 +191,7 @@ class HomePresenterTest {
     }
 
     private fun givenPresenter(userHistoryManager: UserHistoryManager) =
-        HomePresenter(userHistoryManager)
+        HomePresenter(userHistoryManager, CurrentTimeProviderImpl())
 
     private fun givenMockView(): HomeView {
         return mock<HomeView> {}
