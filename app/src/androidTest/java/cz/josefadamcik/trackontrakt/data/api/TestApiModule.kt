@@ -19,7 +19,7 @@ class TestApiModule(private val app: TrackOnTraktApplication) : ApiModule(app) {
     }
 
     override fun createTraktApiConfig(): TraktApiConfig {
-        return TraktApiConfig("test", "test", "test", "http://127.0.0.1:" + BuildConfig.MOCKSERVER_PORT)
+        return TraktApiConfig("test", "test", "test", "http://127.0.0.1:" + BuildConfig.MOCKSERVER_PORT, BuildConfig.TRAKT_LOGIN_URL)
     }
 
 

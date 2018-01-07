@@ -4,13 +4,15 @@ package cz.josefadamcik.trackontrakt.traktauth
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.base.BasePresenter
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.util.UriQueryParamParser
 import timber.log.Timber
 import javax.inject.Inject
 
 
 class TraktAuthPresenter @Inject constructor(
     private val authorizationProvider: AuthorizationProvider,
-    private val traktAuthTokenHolder: TraktAuthTokenHolder
+    private val traktAuthTokenHolder: TraktAuthTokenHolder,
+    private val uriQueryParamParser: UriQueryParamParser
 ) : BasePresenter<TraktAuthView>() {
 
     override fun attachView(view: TraktAuthView) {
@@ -21,8 +23,13 @@ class TraktAuthPresenter @Inject constructor(
 
     fun onBrowserRedirected(url: String) : Boolean {
         if (authorizationProvider.shouldHandleRedirectUrl(url)) {
+            val code = uriQueryParamParser.getUriParam(url, "code")
+            if (code != null) {
+                Timber.d("auth code: %s", code)
+            }
+
             disposables.add(
-                authorizationProvider.onTraktAuthRedirect(url)
+                authorizationProvider.requestAuthToken(url)
                     .subscribe(
                         { res ->
                             if (res.success && res.token != null) {

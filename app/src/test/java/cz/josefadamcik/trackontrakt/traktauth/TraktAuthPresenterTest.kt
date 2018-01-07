@@ -2,6 +2,7 @@ package cz.josefadamcik.trackontrakt.traktauth
 
 import com.nhaarman.mockito_kotlin.*
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.util.UriQueryParamParser
 import io.reactivex.Single
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -30,7 +31,7 @@ class TraktAuthPresenterTest {
         //given
         val tokenHolder = givenTokenHolderWithValidToken()
         val authProvider = givenAuthProvider()
-        val presenter = TraktAuthPresenter(authProvider, tokenHolder)
+        val presenter = TraktAuthPresenter(authProvider, tokenHolder, givenQueryParamParser("code"))
 
         //when
         presenter.attachView(view)
@@ -55,7 +56,7 @@ class TraktAuthPresenterTest {
         assertTrue("browser loading overriden", overriden)
         verify(view).showProgress()
         verify(view).requestLoginToTraktInBrowser(any())
-        verify(authProvider).onTraktAuthRedirect(url)
+        verify(authProvider).requestAuthToken(url)
         verify(view).continueNavigation()
     }
 
@@ -75,7 +76,7 @@ class TraktAuthPresenterTest {
         assertTrue("browser loading overriden", overriden)
         verify(view).showProgress()
         verify(view).requestLoginToTraktInBrowser(any())
-        verify(authProvider).onTraktAuthRedirect(url)
+        verify(authProvider).requestAuthToken(url)
         verify(view).showErrorView()
         verify(view).showErrorMessageWithRetry(any())
     }
@@ -86,7 +87,7 @@ class TraktAuthPresenterTest {
         //given
         val tokenHolder = givenTokenHolderWithValidToken()
         val authProvider = givenAuthProvider()
-        val presenter = TraktAuthPresenter(authProvider, tokenHolder)
+        val presenter = TraktAuthPresenter(authProvider, tokenHolder, givenQueryParamParser("code"))
 
         //when
         presenter.attachView(view)
@@ -103,18 +104,21 @@ class TraktAuthPresenterTest {
         }
     }
 
-    private fun givenAuthProvider(redirectResult: Single<TraktAuthorisationResult> = Single.just(TraktAuthorisationResult(true, "dummytoken"))) = mock<AuthorizationProvider> {
+    private fun givenAuthProvider(redirectResult: Single<TraktAuthorizationResult> = Single.just(TraktAuthorizationResult(true, "dummytoken"))) = mock<AuthorizationProvider> {
         on { getOauthAuthorizationUrl() } doReturn "http://example.com"
         on { shouldHandleRedirectUrl(any()) } doReturn true
-        on { onTraktAuthRedirect(any()) } doReturn redirectResult
+        on { requestAuthToken(any()) } doReturn redirectResult
     }
 
-    private fun givenFailingAuthProvider() = givenAuthProvider(Single.just(TraktAuthorisationResult(false, null)))
+    private fun givenFailingAuthProvider() = givenAuthProvider(Single.just(TraktAuthorizationResult(false, null)))
 
 
     private fun givenPresenter(authProvider: AuthorizationProvider, tokenHolder: TraktAuthTokenHolder) =
-        TraktAuthPresenter(authProvider, tokenHolder)
+        TraktAuthPresenter(authProvider, tokenHolder, givenQueryParamParser("code"))
 
+    private fun givenQueryParamParser(codeParamValue: String) = mock<UriQueryParamParser> {
+        on { getUriParam(any(), any()) } doReturn codeParamValue
+    }
 
     private fun givenTokenHolderWithoutToken(): TraktAuthTokenHolder = mock<TraktAuthTokenHolder> {
         on { hasToken() } doReturn false
