@@ -13,9 +13,10 @@ class MediaDetailPresenter @Inject constructor(
 ) : BasePresenter<MediaDetailView>() {
 
     private var identifier: MediaIdentifier? = null
-    private var movieDetail: MovieDetail? = null
     private var showDetail: ShowDetail? = null
-    internal var model: MediaDetailModel? = null
+    var movieDetail: MovieDetail? = null
+    var model: MediaDetailModel? = null
+
 
     fun load(mediaId: MediaIdentifier?, name: String?) {
         Timber.i("load: %s", mediaId)

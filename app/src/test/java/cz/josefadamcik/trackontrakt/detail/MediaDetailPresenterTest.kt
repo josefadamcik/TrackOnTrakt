@@ -81,6 +81,44 @@ class MediaDetailPresenterTest {
     }
 
     @Test
+    fun checkinMovieTest() {
+        //arrange / given
+
+        val movieToCheckin = MovieDetail("movie", MediaIds(1), 1997)
+
+        val presenter = arrangePresenterInstanceWithMockedDataService({
+            on { doCheckin(any()) } doReturn Single.just(
+                    Response.success(
+                            CheckinResponse(1, LocalDateTime.now(), null),
+                            arrangeOkhttpResponse201()
+                    )
+            )
+        })
+
+        val view = mock<MediaDetailView>()
+        presenter.view = view
+
+        // inject model into presenter -> we will observe if the model changed
+        presenter.model = MediaDetailModel(MediaDetailModel.MediaDetailInfo())
+        presenter.movieDetail = movieToCheckin
+
+        // act / when
+        presenter.checkinActionClicked()
+
+        // assert / then
+        verify(mediaManager).doCheckin(any())
+
+        verify(view).showLoading()
+        verify(view).hideLoading()
+        verify(view).showCheckinSuccess()
+        argumentCaptor<MediaDetailModel>().apply {
+            verify(view).showMedia(capture())
+        }
+
+    }
+
+
+    @Test
     fun checkinEpisodeAlreadyWatchedTest() {
         //arrange / given
 
