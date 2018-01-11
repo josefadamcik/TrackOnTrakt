@@ -16,4 +16,5 @@ interface MediaDetailView : MvpView {
     fun showCheckinSuccess()
     fun showCheckinAlreadyInProgress()
     fun showAlreadyWatchedStats(number: Int, last_watched_at: LocalDateTime?)
+    fun showCheckinDialog()
 }

@@ -35,11 +35,47 @@ class MediaDetailManager @Inject constructor(
             .doOnError(Consumer { Timber.e(it, "loadShowInfo error") })
     }
 
-    fun doCheckin(request: CheckinRequest): Single<Response<CheckinResponse>> {
+    fun doCheckin(checkin: CheckinWithTime): Single<CheckinResult> {
+        return when (checkin.time) {
+            is CheckinTime.Now -> callCheckin(when(checkin.subject) {
+                is CheckinSubject.EpisodeCheckin -> CheckinRequest(episode = checkin.subject.episode)
+                is CheckinSubject.MovieCheckin -> CheckinRequest(movie = checkin.subject.movie)
+            }).map { res ->
+                if (res.isSuccessful && res.code() == 409) {
+                    CheckinResult.InProgress
+                } else if (res.isSuccessful) {
+                    CheckinResult.Success
+                } else {
+                    CheckinResult.Failed
+                }
+            }
+            is CheckinTime.At -> {
+                val records = when(checkin.subject) {
+                    is CheckinSubject.EpisodeCheckin -> HistoryRecords(
+                            episodes = listOf(HistoryRecord(checkin.time.dateTime, checkin.subject.episode.ids))
+                    )
+                    is CheckinSubject.MovieCheckin -> HistoryRecords(
+                            episodes = listOf(HistoryRecord(checkin.time.dateTime, checkin.subject.movie.ids))
+                    )
+                }
+                addToHistory(records)
+                        .map { res -> if (res.isSuccessful) CheckinResult.Success else CheckinResult.Failed}
+            }
+        }
+    }
+
+    private fun callCheckin(request: CheckinRequest): Single<Response<CheckinResponse>> {
         return traktApi.checkin(tokenHolder.httpAuth(), request)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError({ Timber.e(it, "doCheckin error") })
+    }
+
+    private fun addToHistory(request: HistoryRecords): Single<Response<AddHistoryResponse>> {
+        return traktApi.addToHistory(tokenHolder.httpAuth(), request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError({ Timber.e(it, "addToHistory error") })
     }
 
     fun loadShowWatchedProgress(showId: Long): Single<ShowWatchedProgress> {

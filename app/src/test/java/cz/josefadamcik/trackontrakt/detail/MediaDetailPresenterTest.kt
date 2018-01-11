@@ -13,8 +13,6 @@ import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
 import org.junit.Assert.assertThat
 import org.junit.Test
-import org.threeten.bp.LocalDateTime
-import retrofit2.Response
 
 class MediaDetailPresenterTest {
 
@@ -41,12 +39,7 @@ class MediaDetailPresenterTest {
         val episodeToCheckIn = season.episodes.first();
 
         val presenter = arrangePresenterInstanceWithMockedDataService({
-            on { doCheckin(any()) } doReturn Single.just(
-                Response.success(
-                    CheckinResponse(1, LocalDateTime.now(), null),
-                    arrangeOkhttpResponse201()
-                )
-            )
+            on { doCheckin(any()) } doReturn  Single.just(CheckinResult.Success) as Single<CheckinResult>
         })
 
         val view = mock<MediaDetailView>()
@@ -61,12 +54,16 @@ class MediaDetailPresenterTest {
 
         // act / when
         presenter.checkinActionClicked(episodeToCheckIn)
+        verify(view).showCheckinDialog()
+
+        presenter.checkinConfirmed(CheckinTime.Now)
 
         // assert / then
         verify(mediaManager).doCheckin(any())
 
         verify(view).showLoading()
         verify(view).hideLoading()
+
         verify(view).showCheckinSuccess()
         argumentCaptor<MediaDetailModel>().apply {
             verify(view).showMedia(capture())
@@ -87,12 +84,7 @@ class MediaDetailPresenterTest {
         val movieToCheckin = MovieDetail("movie", MediaIds(1), 1997)
 
         val presenter = arrangePresenterInstanceWithMockedDataService({
-            on { doCheckin(any()) } doReturn Single.just(
-                    Response.success(
-                            CheckinResponse(1, LocalDateTime.now(), null),
-                            arrangeOkhttpResponse201()
-                    )
-            )
+            on { doCheckin(any()) } doReturn  Single.just(CheckinResult.Success) as Single<CheckinResult>
         })
 
         val view = mock<MediaDetailView>()
@@ -104,6 +96,9 @@ class MediaDetailPresenterTest {
 
         // act / when
         presenter.checkinActionClicked()
+        verify(view).showCheckinDialog()
+
+        presenter.checkinConfirmed(CheckinTime.Now)
 
         // assert / then
         verify(mediaManager).doCheckin(any())
@@ -115,31 +110,6 @@ class MediaDetailPresenterTest {
             verify(view).showMedia(capture())
         }
 
-    }
-
-
-    @Test
-    fun checkinEpisodeAlreadyWatchedTest() {
-        //arrange / given
-
-        val seasonEpisodes = arrangeEpisodesForSeason(testSeasonEpisodeCount, testSeasonNumber)
-        val season = SeasonWithProgress(
-            arrangeTestSeason(seasonEpisodes),
-            episodes = seasonEpisodes.map { EpisodeWithProgress(it, ShowWatchedProgress.EpisodeWatchedProgress(it.number, it.number == 1)) },
-            progress = arrangeSeasonWathchedProgress(testSeasonNumber, seasonEpisodes, 1, testSeasonEpisodeCount)
-        )
-        val episodeToCheckIn = season.episodes.first()
-
-        val presenter = arrangePresenterInstanceWithMockedDataService({ })
-
-        val view = mock<MediaDetailView>()
-        presenter.view = view
-
-        // act / when
-        presenter.checkinActionClicked(episodeToCheckIn)
-
-        // assert / then
-        verify(view).showAlreadyWatchedStats(eq(1), anyOrNull())
     }
 
     private fun arrangeTestSeason(seasonEpisodes: List<Episode>): Season {

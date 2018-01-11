@@ -240,6 +240,9 @@ dependencies {
 
     implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
     implementation 'com.github.josefadamcik:MaterialSearchBar:devel-SNAPSHOT'
+    implementation ('com.wdullaer:materialdatetimepicker:3.5.0') {
+        exclude group: 'com.android.support'
+    }
 
 
 }

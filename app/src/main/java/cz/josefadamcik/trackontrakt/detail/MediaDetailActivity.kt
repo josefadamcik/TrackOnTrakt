@@ -30,6 +30,7 @@ import javax.inject.Inject
 class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(), MediaDetailView, MediaDetailAdapter.InteractionListener {
 
 
+
     @Inject lateinit var myPresenter: MediaDetailPresenter
 
     @BindView(R.id.progress) lateinit var progress: MaterialProgressBar
@@ -187,6 +188,9 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         Snackbar.make(progress, e?.message ?: getString(R.string.err_unknown), Snackbar.LENGTH_LONG).show()
     }
 
+    override fun showCheckinDialog() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun showCheckinSuccess() {
         Snackbar.make(progress, getString(R.string.info_checkin_successful), Snackbar.LENGTH_LONG).show()

@@ -97,6 +97,11 @@ interface TraktApi {
                 @Body data: CheckinRequest
     ): Single<Response<CheckinResponse>>
 
+    @POST("/sync/history")
+    fun addToHistory(@Header("Authorization") authorization: String,
+                @Body data: HistoryRecords
+    ): Single<Response<AddHistoryResponse>>
+
     companion object {
         public const val HEADER_PAGINATION_PAGE = "X-Pagination-Page"
         public const val HEADER_PAGINATION_PAGE_COUNT = "X-Pagination-Page-Count"
