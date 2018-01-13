@@ -5,6 +5,7 @@ import com.nhaarman.mockito_kotlin.*
 import cz.josefadamcik.trackontrakt.data.api.model.*
 import cz.josefadamcik.trackontrakt.util.CurrentTimeProviderImpl
 import io.reactivex.Single
+import junit.framework.Assert.assertTrue
 import kxdate.threeten.bp.ago
 import kxdate.threeten.bp.days
 import okhttp3.Protocol
@@ -34,7 +35,7 @@ class MediaDetailPresenterTest {
         val season = SeasonWithProgress(
             arrangeTestSeason(seasonEpisodes),
             episodes = seasonEpisodes.map { EpisodeWithProgress(it, ShowWatchedProgress.EpisodeWatchedProgress(it.number)) },
-            progress = arrangeSeasonWathchedProgress(testSeasonNumber, seasonEpisodes, 0, testSeasonEpisodeCount)
+            progress = arrangeSeasonWatchedProgress(testSeasonNumber, seasonEpisodes, 0, testSeasonEpisodeCount)
         )
         val episodeToCheckIn = season.episodes.first();
 
@@ -54,12 +55,16 @@ class MediaDetailPresenterTest {
 
         // act / when
         presenter.checkinActionClicked(episodeToCheckIn)
-        verify(view).showCheckinDialog()
+        verify(view).showCheckinDialog(any())
 
         presenter.checkinConfirmed(CheckinTime.Now)
 
         // assert / then
-        verify(mediaManager).doCheckin(any())
+        argumentCaptor<CheckinWithTime>().apply {
+            verify(mediaManager).doCheckin(capture())
+            assertTrue("is checkin for episode", lastValue.subject is CheckinSubject.EpisodeCheckin)
+            assertTrue("is checkin for now", lastValue.time is CheckinTime.Now)
+        }
 
         verify(view).showLoading()
         verify(view).hideLoading()
@@ -96,12 +101,16 @@ class MediaDetailPresenterTest {
 
         // act / when
         presenter.checkinActionClicked()
-        verify(view).showCheckinDialog()
+        verify(view).showCheckinDialog(any())
 
         presenter.checkinConfirmed(CheckinTime.Now)
 
         // assert / then
-        verify(mediaManager).doCheckin(any())
+        argumentCaptor<CheckinWithTime>().apply {
+            verify(mediaManager).doCheckin(capture())
+            assertTrue("is checkin for movie", lastValue.subject is CheckinSubject.MovieCheckin)
+            assertTrue("is checkin for now", lastValue.time is CheckinTime.Now)
+        }
 
         verify(view).showLoading()
         verify(view).hideLoading()
@@ -112,14 +121,6 @@ class MediaDetailPresenterTest {
 
     }
 
-    private fun arrangeTestSeason(seasonEpisodes: List<Episode>): Season {
-        return Season(
-            number = testSeasonNumber,
-            ids = MediaIds(testSeasonNumber.toLong()),
-            episodes = seasonEpisodes,
-            title = "Test season"
-        )
-    }
 
 
     @Test
@@ -144,6 +145,16 @@ class MediaDetailPresenterTest {
 
     }
 
+
+    private fun arrangeTestSeason(seasonEpisodes: List<Episode>): Season {
+        return Season(
+                number = testSeasonNumber,
+                ids = MediaIds(testSeasonNumber.toLong()),
+                episodes = seasonEpisodes,
+                title = "Test season"
+        )
+    }
+
     private fun arrangeShowWatchedProgress(seasonEpisodes: List<Episode>, watchedEpisodes: Int, seasonNumber: Int, episodeCount: Int): ShowWatchedProgress {
         return ShowWatchedProgress(
             aired = seasonEpisodes.size,
@@ -151,11 +162,11 @@ class MediaDetailPresenterTest {
             last_episode = if (watchedEpisodes > 0) seasonEpisodes[watchedEpisodes - 1] else null,
             next_episode = seasonEpisodes[watchedEpisodes],
             last_watched_at = 1.days.ago.atStartOfDay(),
-            seasons = listOf(arrangeSeasonWathchedProgress(seasonNumber, seasonEpisodes, watchedEpisodes, episodeCount))
+            seasons = listOf(arrangeSeasonWatchedProgress(seasonNumber, seasonEpisodes, watchedEpisodes, episodeCount))
         )
     }
 
-    private fun arrangeSeasonWathchedProgress(seasonNumber: Int, seasonEpisodes: List<Episode>, watchedEpisodes: Int, episodeCount: Int): ShowWatchedProgress.SeasonWatchedProgress {
+    private fun arrangeSeasonWatchedProgress(seasonNumber: Int, seasonEpisodes: List<Episode>, watchedEpisodes: Int, episodeCount: Int): ShowWatchedProgress.SeasonWatchedProgress {
         return ShowWatchedProgress.SeasonWatchedProgress(
             number = seasonNumber,
             aired = seasonEpisodes.size,

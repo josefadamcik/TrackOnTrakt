@@ -55,7 +55,7 @@ class MediaDetailManager @Inject constructor(
                             episodes = listOf(HistoryRecord(checkin.time.dateTime, checkin.subject.episode.ids))
                     )
                     is CheckinSubject.MovieCheckin -> HistoryRecords(
-                            episodes = listOf(HistoryRecord(checkin.time.dateTime, checkin.subject.movie.ids))
+                            movies = listOf(HistoryRecord(checkin.time.dateTime, checkin.subject.movie.ids))
                     )
                 }
                 addToHistory(records)

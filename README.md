@@ -49,6 +49,8 @@ Espresso tests:
 * [PaperParcel](https://grandstaish.github.io/paperparcel/)
 * [AndroidState](https://github.com/evernote/android-state)
 * [MaterialSearchBar](https://github.com/mancj/MaterialSearchBar)
+* [material-dialogs](https://github.com/afollestad/material-dialogs)
+* [MaterialDateTimePicker](https://github.com/wdullaer/MaterialDateTimePicker)
 
 
 <!--

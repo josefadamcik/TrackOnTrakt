@@ -68,15 +68,14 @@ class MediaDetailPresenter @Inject constructor(
     fun checkinActionClicked() {
         this.movieDetail?.let { (title, ids, year) ->
             willDoCheckinForSubject = CheckinSubject.MovieCheckin(Movie(title, year, ids))
-//            val request = CheckinRequest(movie = Movie(title, year, ids))
-//            doCheckinRequest(request)
+            view?.showCheckinDialog(title)
+
         }
-        view?.showCheckinDialog()
     }
 
     fun checkinActionClicked(episodeWProgress: EpisodeWithProgress) {
         willDoCheckinForSubject = CheckinSubject.EpisodeCheckin(episodeWProgress.episode)
-        view?.showCheckinDialog()
+        view?.showCheckinDialog("${episodeWProgress.episode.season}x${episodeWProgress.episode.number} ${episodeWProgress.episode.title}")
     }
 
     fun checkinDialogDismissed() {

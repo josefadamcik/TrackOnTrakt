@@ -39,7 +39,6 @@ public abstract class BaseActivity<V : MvpView, P : MvpPresenter<V>> : AppCompat
 
     override fun onPause() {
         super.onPause()
-        mvpDelegate.onPause()
     }
 
     override fun onResume() {

@@ -41,6 +41,10 @@
     <string name="last_month">Last month</string>
     <string name="now_watching">Now watching</string>
     <string name="start_with_search">Lookup movie or show</string>
+  <string name="dialog_checkin">Checkin</string>
+  <string name="dialog_checkin_now">Watching now</string>
+    <string name="checkin_dialog_inhistory">Watched in the past</string>
+    <string name="checkin_dialog_question">Are you watching it now or did you watch it in the past?</string>
 
 
 </resources>

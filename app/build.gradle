@@ -1,9 +1,16 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 apply from: 'jacoco.gradle'
 
+static def buildTime() {
+    def df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'") // you can change it
+    df.setTimeZone(TimeZone.getTimeZone("UTC"))
+    return df.format(new Date())
+}
 
 // Manifest version information!
 def versionMajor = 0
@@ -14,7 +21,6 @@ def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitTimestamp = 'git log -n 1 --format=%at'.execute([], rootDir).text.trim()
-
 def packagename = "cz.josefadamcik.trackontrakt"
 
 kapt {
@@ -48,7 +54,7 @@ android {
 
         buildConfigField 'String', 'GIT_SHA', "\"${gitSha}\""
         buildConfigField 'long', 'GIT_TIMESTAMP', "${gitTimestamp}"
-        buildConfigField 'String', 'BUILD_DATE', "\"2017-04-09\""
+        buildConfigField 'String', 'BUILD_DATE', "\"${buildTime()}\""
 
         buildConfigField "int", "MOCKSERVER_PORT", "8698"
 
@@ -243,6 +249,9 @@ dependencies {
     implementation ('com.wdullaer:materialdatetimepicker:3.5.0') {
         exclude group: 'com.android.support'
     }
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+    implementation 'com.wdullaer:materialdatetimepicker:3.5.0'
 
 
 }

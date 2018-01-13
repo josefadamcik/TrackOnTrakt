@@ -1,0 +1,12 @@
+{
+  "added": {
+    "movies": 1,
+    "episodes": 0
+  },
+  "not_found": {
+    "movies": [],
+    "shows": [],
+    "seasons": [],
+    "episodes": []
+  }
+}
