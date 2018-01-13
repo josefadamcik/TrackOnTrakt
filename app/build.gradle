@@ -95,12 +95,13 @@ android {
         }
     }
 
-//    lintOptions {
-//        textReport true
-//        textOutput 'stdout'
+    lintOptions {
+        abortOnError false
+        //textReport true
+        //textOutput 'stdout'
 //        warning 'InvalidPackage'
 //        warning 'ResourceType' //TODO remove eventually with ButterKnife 8.0 release
-//    }
+    }
 
 //    compileOptions {
 //        sourceCompatibility JavaVersion.VERSION_1_8
@@ -249,9 +250,15 @@ dependencies {
     implementation ('com.wdullaer:materialdatetimepicker:3.5.0') {
         exclude group: 'com.android.support'
     }
-    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
-    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
-    implementation 'com.wdullaer:materialdatetimepicker:3.5.0'
+    implementation ('com.afollestad.material-dialogs:core:0.9.6.0') {
+        exclude group: 'com.android.support'
+    }
+    implementation ('com.afollestad.material-dialogs:commons:0.9.6.0') {
+        exclude group: 'com.android.support'
+    }
+    implementation ('com.wdullaer:materialdatetimepicker:3.5.0') {
+        exclude group: 'com.android.support'
+    }
 
 
 }
