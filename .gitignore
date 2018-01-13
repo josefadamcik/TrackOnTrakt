@@ -12,3 +12,5 @@ keys.properties
 fabric.properties
 ci/secrets.tar
 !ci/secrets.tar.enc
+app/production
+keystore.jks

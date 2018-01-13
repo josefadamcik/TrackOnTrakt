@@ -32,12 +32,25 @@ Properties properties = new Properties()
 properties.load(project.rootProject.file('keys.properties').newDataInputStream())
 def traktclientid = properties.getProperty('trakt.clientid')
 def traktclientsecret = properties.getProperty('trakt.clientsecret')
+def uploadKey = properties.getProperty('playstore.upload_key')
+def uploadStorePassword = properties.getProperty('playstore.upload_store_password')
+def uploadKeyPassword = properties.getProperty('playstore.upload_key_password')
 
 
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
+
+    signingConfigs {
+        release {
+            storeFile file("../keystore.jks")
+            storePassword uploadStorePassword
+            keyAlias uploadKey
+            keyPassword uploadKeyPassword
+        }
+    }
+
     defaultConfig {
         applicationId "${packagename}"
         testApplicationId "${packagename}.test"
@@ -78,7 +91,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), file('proguard-rules.pro')
-            //signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
 
