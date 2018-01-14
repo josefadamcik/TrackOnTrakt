@@ -19,6 +19,7 @@ class TraktAuthPresenterTest {
 
         //when
         presenter.attachView(view)
+        presenter.start()
 
         //than
         verify(view).showProgress()
@@ -35,6 +36,7 @@ class TraktAuthPresenterTest {
 
         //when
         presenter.attachView(view)
+        presenter.start()
 
         //than
         verify(view).continueNavigation()
@@ -50,6 +52,7 @@ class TraktAuthPresenterTest {
 
         //when
         presenter.attachView(view)
+        presenter.start()
         val overriden = presenter.onBrowserRedirected(url)
 
         //than
@@ -70,6 +73,7 @@ class TraktAuthPresenterTest {
 
         //when
         presenter.attachView(view)
+        presenter.start()
         val overriden = presenter.onBrowserRedirected(url)
 
         //than
@@ -91,6 +95,7 @@ class TraktAuthPresenterTest {
 
         //when
         presenter.attachView(view)
+        presenter.start()
         presenter.retry()
 
         //than
