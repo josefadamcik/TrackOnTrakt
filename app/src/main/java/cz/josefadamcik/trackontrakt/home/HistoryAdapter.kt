@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
 import cz.josefadamcik.trackontrakt.util.tint
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import org.threeten.bp.format.DateTimeFormatter
-import org.threeten.bp.format.FormatStyle
 import timber.log.Timber
 
 class HistoryAdapter(
@@ -46,34 +44,34 @@ class HistoryAdapter(
         set(value) {
             field = value
             val newItems = historyListTimeSeparatorAugmenter.augmentList(
-                value.items.map { RowItem.HistoryRowItem(it) }
+                value.items.map { RowItemModel.HistoryRowItem(it) }
             )
 
             if (value.watching is Watching.Something) {
-                newItems.add(0, RowItem.HeaderRowItem(RelativeWatchTime.Now))
-                newItems.add(1, RowItem.WatchingRowItem(value.watching))
+                newItems.add(0, RowItemModel.HeaderRowItem(RelativeWatchTime.Now))
+                newItems.add(1, RowItemModel.WatchingRowItem(value.watching))
             }
 
             if (value.hasNextPage) {
-                newItems.add(RowItem.PagerRowItem(value.loadingNextPage))
+                newItems.add(RowItemModel.PagerRowItem(value.loadingNextPage))
             }
 
             //use DiffUtil to do a proper change propagation
-            val duCallback = DiffUtilCallback(items, newItems)
+            val duCallback = RowItemModel.DiffUtilCallback(items, newItems)
             val diffResult = DiffUtil.calculateDiff(duCallback, true)
             items = newItems.toList()
             diffResult.dispatchUpdatesTo(this)
 
         }
 
-    private var items: List<RowItem> = emptyList()
+    private var items: List<RowItemModel> = emptyList()
 
     override fun getItemViewType(position: Int): Int = items[position].viewType
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return when (viewType) {
-            RowItem.VIEW_TYPE_PAGER -> PagerViewHolder(layoutInflater.inflate(R.layout.item_history_pager, parent, false))
-            RowItem.VIEW_TYPE_HEADER -> HeaderViewHolder(layoutInflater.inflate(R.layout.item_history_header, parent, false))
+            RowItemModel.VIEW_TYPE_PAGER -> PagerViewHolder(layoutInflater.inflate(R.layout.item_history_pager, parent, false))
+            RowItemModel.VIEW_TYPE_HEADER -> HeaderViewHolder(layoutInflater.inflate(R.layout.item_history_header, parent, false))
             else -> HistoryViewHolder(layoutInflater.inflate(R.layout.item_history, parent, false))
         }
     }
@@ -84,77 +82,6 @@ class HistoryAdapter(
 
     override fun getItemCount(): Int {
         return items.size
-    }
-
-    sealed class RowItem(val viewType: Int) {
-        companion object {
-            val VIEW_TYPE_HISTORY = 1
-            val VIEW_TYPE_PAGER = 2
-            val VIEW_TYPE_HEADER = 3
-            val VIEW_TYPE_WATCHING = 4
-            val dateFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
-            val timeFormat: DateTimeFormatter = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-        }
-
-        abstract fun bindViewHolder(holder: ViewHolder)
-
-        class HistoryRowItem(val historyItem: HistoryItem) : RowItem(VIEW_TYPE_HISTORY) {
-            override fun bindViewHolder(holder: ViewHolder) {
-                if (holder is HistoryViewHolder) {
-                    holder.title.text = historyItem.title
-                    if (TextUtils.isEmpty(historyItem.subtitle)) {
-                        holder.subtitle.visibility = View.GONE
-                    } else {
-                        holder.subtitle.visibility = View.VISIBLE
-                        holder.subtitle.text = historyItem.subtitle
-                    }
-
-                    holder.date.text = dateFormat.format(historyItem.watched_at)
-                    holder.chooseTypeInfoIconAndText(historyItem.type, historyItem.year)
-                }
-            }
-
-        }
-
-        class PagerRowItem(val isLoading: Boolean) : RowItem(VIEW_TYPE_PAGER) {
-            override fun bindViewHolder(holder: ViewHolder) {
-                if (holder is PagerViewHolder) {
-                    holder.pagerProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
-                    holder.chooseText(isLoading)
-                }
-            }
-        }
-
-        class HeaderRowItem(val time: RelativeWatchTime) : RowItem(VIEW_TYPE_HEADER) {
-            override fun bindViewHolder(holder: ViewHolder) {
-                if (holder is HeaderViewHolder) {
-                    holder.formatRelativeWatchTime(time)
-                }
-            }
-        }
-
-        class WatchingRowItem(val watching: Watching.Something) : HistoryAdapter.RowItem(VIEW_TYPE_WATCHING) {
-            override fun bindViewHolder(holder: ViewHolder) {
-                if (holder is HistoryViewHolder) {
-                    holder.title.text = watching.title
-                    if (TextUtils.isEmpty(watching.subtitle)) {
-                        holder.subtitle.visibility = View.GONE
-                    } else {
-                        holder.subtitle.visibility = View.VISIBLE
-                        holder.subtitle.text = watching.subtitle
-                    }
-
-
-                    holder.date.text = String.format("%s (%s - %s)",
-                        watching.action,
-                        timeFormat.format(watching.started_at),
-                        timeFormat.format(watching.expires_at)
-                    )
-                    holder.chooseTypeInfoIconAndText(watching.type, watching.year)
-                }
-            }
-
-        }
     }
 
 
@@ -191,12 +118,12 @@ class HistoryAdapter(
     private fun onItemClicked(position: Int) {
         val item = items[position]
         when (item) {
-            is HistoryAdapter.RowItem.HistoryRowItem ->
+            is RowItemModel.HistoryRowItem ->
                 itemInteractionListener.onHistoryItemClicked(item.historyItem, position)
-            is HistoryAdapter.RowItem.PagerRowItem ->
+            is RowItemModel.PagerRowItem ->
                 itemInteractionListener.onPagerClicked()
-            is HistoryAdapter.RowItem.HeaderRowItem -> Timber.d("Clicked on header $position")
-            is HistoryAdapter.RowItem.WatchingRowItem ->
+            is RowItemModel.HeaderRowItem -> Timber.d("Clicked on header $position")
+            is RowItemModel.WatchingRowItem ->
                 itemInteractionListener.onWatchingItemClicked(item.watching, position)
         }
     }
@@ -243,30 +170,7 @@ class HistoryAdapter(
     }
 
 
-    class DiffUtilCallback(
-        private val oldList: List<RowItem>,
-        private val newList: List<RowItem>) : DiffUtil.Callback() {
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldList[oldItemPosition]
-            val newItem = newList[newItemPosition]
-
-            return (oldItem is RowItem.PagerRowItem && newItem is RowItem.PagerRowItem)
-                || (oldItem is RowItem.HistoryRowItem && newItem is RowItem.HistoryRowItem && oldItem.historyItem.id == newItem.historyItem.id)
-        }
-
-        override fun getOldListSize(): Int = oldList.size
-
-        override fun getNewListSize(): Int = newList.size
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldItem = oldList[oldItemPosition]
-            val newItem = newList[newItemPosition]
-
-            return oldItem == newItem //data classes have implemented equals...
-        }
-
-    }
 }
 
 

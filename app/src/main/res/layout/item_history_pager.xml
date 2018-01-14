@@ -10,13 +10,18 @@
 
     <TextView
         android:id="@+id/text"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:padding="@dimen/material_baseline_grid_1x"
-        android:textAppearance="@style/MaterialTypography.Regular.Body1"
+        android:textAppearance="@style/MaterialTypography.Regular.Subheading"
+        android:textColor="@color/colorAccent"
         android:text="@string/pager_load_more"
         android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:drawableLeft="@drawable/ic_expand_more_black_24dp"
+        android:drawableRight="@drawable/ic_expand_more_black_24dp"
+        android:drawablePadding="@dimen/material_baseline_grid_1x"
         />
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar

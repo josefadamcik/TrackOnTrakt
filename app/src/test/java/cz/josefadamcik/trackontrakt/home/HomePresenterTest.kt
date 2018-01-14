@@ -48,6 +48,36 @@ class HomePresenterTest {
     }
 
     @Test
+    fun refreshData() {
+        //given
+        val userHistoryManager = givenHistoryManagerReturningList()
+        val view = givenMockView()
+        val presenter = givenPresenter(userHistoryManager)
+
+
+        //when
+
+        presenter.attachView(view)
+        presenter.loadHomeStreamData(true)
+
+        //then
+
+        verify(view, times(1)).showLoading()
+        verify(view, atLeastOnce()).hideLoading()
+        argumentCaptor<HistoryModel>().apply {
+            verify(view, times(3)).showHistory(capture())
+
+            assertThat("got three model updates", allValues.size, equalTo(3))
+
+            assertThat("First and second model have the same amount of items", firstValue.items.size, Matchers.equalTo(secondValue.items.size))
+            assertThat("Second and third model have the same amount of items", secondValue.items.size, Matchers.equalTo(thirdValue.items.size))
+            assertThat("Second model update with flag that its loading next page ATM.", secondValue.loadingNextPage, equalTo(true))
+            assertThat("Final model update with reset of loading flag", thirdValue.loadingNextPage, equalTo(false))
+
+        }
+    }
+
+    @Test
     fun showErrorWhenUnableToLoad() {
         //given
         val userHistoryManager = mock<UserHistoryManager> {

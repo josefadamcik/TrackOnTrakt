@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -30,6 +31,7 @@ import cz.josefadamcik.trackontrakt.detail.MediaIdentifier
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
 import cz.josefadamcik.trackontrakt.search.TraktFilter
 import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
+import cz.josefadamcik.trackontrakt.util.tintIcons
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -45,6 +47,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     @Inject lateinit var homePresenter: HomePresenter
     @Inject lateinit var currentTimeProvider: CurrentTimeProvider
 
+    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
     @BindView(R.id.list) lateinit var recyclerView: RecyclerView
     @BindView(R.id.progress) lateinit var progress: ProgressBar
@@ -66,11 +69,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
         setContentView(R.layout.activity_home)
         unbinder = ButterKnife.bind(this)
 
-        //setSupportActionBar(toolbar)
-        //toolbar.title = getString(R.string.title_history)
-        toolbarLayout.title = getString(R.string.title_history)
-        toolbarLayout.isTitleEnabled = true
-
+        setSupportActionBar(toolbar)
         swipeRefreshLayout.setOnRefreshListener(this)
 
         initList()
@@ -144,17 +143,15 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds model to the action bar if it is present.
-        //menuInflater.inflate(R.menu.menu_home, menu)
-        return false
+        menuInflater.inflate(R.menu.menu_home, menu)
+        menu.tintIcons(this, R.color.white)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id == R.id.action_search) {
-//            appbar.setExpanded(true, true)
-//            searchView.open(true, item)
-
+        if (id == R.id.action_about) {
+            //todo open about activity
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -190,4 +187,5 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
 
 }
+
 

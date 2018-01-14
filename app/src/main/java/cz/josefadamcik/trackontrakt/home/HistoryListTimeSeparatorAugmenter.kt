@@ -9,16 +9,16 @@ import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
  * It expects that the list is ordered by time from the newest to the oldest.
  */
 class HistoryListTimeSeparatorAugmenter(private val currentTimeProvider: CurrentTimeProvider) {
-    fun augmentList(list: List<HistoryAdapter.RowItem>): MutableList<HistoryAdapter.RowItem> {
+    fun augmentList(list: List<RowItemModel>): MutableList<RowItemModel> {
         val now = currentTimeProvider.dateTime
         var currentRelativeTimeHeader: RelativeWatchTime = RelativeWatchTime.Today
         var currentHeaderAddToOutput = false
-        val augmentedList = mutableListOf<HistoryAdapter.RowItem>()
+        val augmentedList = mutableListOf<RowItemModel>()
 
-        fun tryToConsumeItemUnderCurrentHeader(item: HistoryAdapter.RowItem.HistoryRowItem): Boolean {
+        fun tryToConsumeItemUnderCurrentHeader(item: RowItemModel.HistoryRowItem): Boolean {
             if (currentRelativeTimeHeader.isDateInRelativeRange(time = item.historyItem.watched_at, relativeToOrigin = now)) {
                 if (!currentHeaderAddToOutput) {
-                    augmentedList.add(HistoryAdapter.RowItem.HeaderRowItem(currentRelativeTimeHeader))
+                    augmentedList.add(RowItemModel.HeaderRowItem(currentRelativeTimeHeader))
                     currentHeaderAddToOutput = true
                 }
                 augmentedList.add(item)
@@ -29,7 +29,7 @@ class HistoryListTimeSeparatorAugmenter(private val currentTimeProvider: Current
 
 
         list.forEach { item ->
-            if (item is HistoryAdapter.RowItem.HistoryRowItem) {
+            if (item is RowItemModel.HistoryRowItem) {
                 val watched = item.historyItem.watched_at
                 while (!tryToConsumeItemUnderCurrentHeader(item)) {
                     val lastTime = currentRelativeTimeHeader

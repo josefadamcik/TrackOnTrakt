@@ -22,7 +22,7 @@ class HistoryListTimeSeparatorAugmenterTest {
                 action = Action.watch,
                 type = MediaType.movie,
                 movie = Movie("movie $it", 2000, MediaIds(it.toLong())))
-        }.map { HistoryAdapter.RowItem.HistoryRowItem(it) }
+        }.map { RowItemModel.HistoryRowItem(it) }
 
         val augmenter = HistoryListTimeSeparatorAugmenter(CurrentTimeProviderImpl())
 
@@ -42,10 +42,10 @@ class HistoryListTimeSeparatorAugmenterTest {
 
     }
 
-    private fun isHistoryRow(): Matcher<in HistoryAdapter.RowItem>? {
-        return object : BaseMatcher<HistoryAdapter.RowItem>() {
+    private fun isHistoryRow(): Matcher<in RowItemModel>? {
+        return object : BaseMatcher<RowItemModel>() {
             override fun matches(item: Any?): Boolean {
-                return item is HistoryAdapter.RowItem.HistoryRowItem
+                return item is RowItemModel.HistoryRowItem
             }
 
             override fun describeTo(description: Description?) {
@@ -54,10 +54,10 @@ class HistoryListTimeSeparatorAugmenterTest {
         }
     }
 
-    private fun isHeaderRowWithRelativeTime(time: RelativeWatchTime): Matcher<in HistoryAdapter.RowItem> {
-        return object : BaseMatcher<HistoryAdapter.RowItem>() {
+    private fun isHeaderRowWithRelativeTime(time: RelativeWatchTime): Matcher<in RowItemModel> {
+        return object : BaseMatcher<RowItemModel>() {
             override fun matches(item: Any?): Boolean {
-                return item is HistoryAdapter.RowItem.HeaderRowItem && item.time == time
+                return item is RowItemModel.HeaderRowItem && item.time == time
             }
 
             override fun describeTo(description: Description?) {

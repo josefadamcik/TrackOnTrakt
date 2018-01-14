@@ -45,6 +45,7 @@
   <string name="dialog_checkin_now">Watching now</string>
     <string name="checkin_dialog_inhistory">Watched in the past</string>
     <string name="checkin_dialog_question">Are you watching it now or did you watch it in the past?</string>
+  <string name="about">About</string>
 
 
 </resources>

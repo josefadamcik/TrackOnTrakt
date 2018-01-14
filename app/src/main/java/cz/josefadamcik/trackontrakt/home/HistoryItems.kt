@@ -7,5 +7,4 @@ data class HistoryItems(
     val pageCount: Int,
     val page: Int,
     val itemCount: Int
-
 )

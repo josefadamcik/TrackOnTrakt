@@ -20,11 +20,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:titleEnabled="true"
+            app:titleEnabled="false"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             >
 
+            <android.support.v7.widget.Toolbar
+              android:id="@+id/toolbar"
+              android:layout_width="match_parent"
+              android:layout_height="?attr/actionBarSize"
+              app:layout_collapseMode="pin"
+              app:popupTheme="@style/AppTheme.PopupOverlay"
+              app:title="@string/app_name"
+              app:titleTextAppearance="@style/TextAppearance.HomeToolbarTitle"
+              />
 
             <com.mancj.materialsearchbar.MaterialSearchBar
                 android:id="@+id/search_bar"
@@ -37,14 +46,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/material_baseline_grid_1x"
-                android:layout_marginTop="@dimen/material_baseline_grid_1x"
+                android:layout_marginTop="?attr/actionBarSize"
                 android:layout_marginRight="@dimen/material_baseline_grid_1x"
                 android:layout_marginLeft="@dimen/material_baseline_grid_1x"
+                android:layout_gravity="bottom"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                app:layout_collapseMode="pin"
-                android:elevation="4dp"
+                app:layout_collapseMode="none"
+
                 android:theme="@style/AppTheme.Search"
                 />
+            <!--android:elevation="4dp"-->
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>

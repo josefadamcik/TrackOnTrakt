@@ -8,13 +8,13 @@
               android:padding="16dp">
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/MaterialTypography.Regular.Title"
-        tools:drawableLeft="@drawable/ic_television_classic"
-        android:drawablePadding="@dimen/material_baseline_grid_1x"
-        tools:text="history item title" />
+      android:id="@+id/title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:drawablePadding="@dimen/material_baseline_grid_1x"
+      android:textAppearance="@style/MaterialTypography.Regular.Title"
+      tools:drawableLeft="@drawable/ic_television_classic"
+      tools:text="history item title"/>
 
     <TextView
         android:id="@+id/subtitle"

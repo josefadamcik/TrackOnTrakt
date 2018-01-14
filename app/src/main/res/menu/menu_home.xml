@@ -1,13 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context="cz.josefadamcik.trackontrakt.home.HomeActivity">
+      tools:context="cz.josefadamcik.trackontrakt.home.HomeActivity"
+  >
     <item
-        android:id="@+id/action_search"
-        android:title="@string/search_title"
-        android:icon="@drawable/ic_search_white_24dp"
+        android:id="@+id/action_about"
+        android:title="@string/about"
+        android:icon="@drawable/ic_info_outline_black_24dp"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"
-
         />
 </menu>

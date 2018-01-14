@@ -36,7 +36,7 @@ class HomePresenter @Inject constructor(
         }
         if (forceRefresh) {
             lastPage = 0
-            updateHistoryModel(HistoryModel())
+            updateHistoryModel(loadedHistoryModel.copy(loadingNextPage = true))
         }
         loadingPage = lastPage + 1
         Timber.d("loadHomeStreamData page {$loadingPage}")
@@ -51,7 +51,7 @@ class HomePresenter @Inject constructor(
                         lastPage = loadingPage
                         loadingPage = -1
                         view?.hideLoading()
-                        val allItems = loadedHistoryModel.items.toMutableList()
+                        val allItems = if (forceRefresh) mutableListOf<HistoryItem>() else loadedHistoryModel.items.toMutableList()
                         val now = currentTimeProvider.dateTime
                         allItems.addAll(history.items)
 
