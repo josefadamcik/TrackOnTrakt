@@ -156,7 +156,7 @@ dependencies {
 
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.2.0' //includes mockito
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation'com.android.support.test:rules:1.0.1'
+    androidTestImplementation 'com.android.support.test:rules:1.0.1'
     androidTestImplementation 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
     //androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
     androidTestImplementation('com.schibsted.spain:barista:2.2.0') {
@@ -260,16 +260,16 @@ dependencies {
 
     implementation 'me.zhanghai.android.materialprogressbar:library:1.4.2'
     implementation 'com.github.josefadamcik:MaterialSearchBar:devel-SNAPSHOT'
-    implementation ('com.wdullaer:materialdatetimepicker:3.5.0') {
+    implementation('com.wdullaer:materialdatetimepicker:3.5.0') {
         exclude group: 'com.android.support'
     }
-    implementation ('com.afollestad.material-dialogs:core:0.9.6.0') {
+    implementation('com.afollestad.material-dialogs:core:0.9.6.0') {
         exclude group: 'com.android.support'
     }
-    implementation ('com.afollestad.material-dialogs:commons:0.9.6.0') {
+    implementation('com.afollestad.material-dialogs:commons:0.9.6.0') {
         exclude group: 'com.android.support'
     }
-    implementation ('com.wdullaer:materialdatetimepicker:3.5.0') {
+    implementation('com.wdullaer:materialdatetimepicker:3.5.0') {
         exclude group: 'com.android.support'
     }
 
@@ -312,3 +312,5 @@ task copyTestClasses(type: Copy) {
     from "build/tmp/kotlin-classes/internalDebug"
     into "build/intermediates/classes/internalDebug"
 }
+
+apply plugin: 'kotlin-android-extensions'

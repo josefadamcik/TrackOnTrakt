@@ -1,5 +1,6 @@
 package cz.josefadamcik.trackontrakt.traktauth
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -52,7 +53,10 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
         return traktAuthPresenter
     }
 
-
+    override fun onStart() {
+        super.onStart()
+        presenter.start()
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -60,6 +64,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
         unbinder.unbind()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun requestLoginToTraktInBrowser(url: String) {
         webview.visibility = VISIBLE
         errorView.visibility = GONE

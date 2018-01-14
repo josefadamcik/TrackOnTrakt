@@ -17,7 +17,6 @@ class TraktAuthPresenter @Inject constructor(
 
     override fun attachView(view: TraktAuthView) {
         super.attachView(view)
-        checkOrStartAuth()
     }
 
 
@@ -53,6 +52,10 @@ class TraktAuthPresenter @Inject constructor(
         view?.showErrorMessageWithRetry(R.string.err_trakt_auth_failed)
     }
 
+    fun start() {
+        checkOrStartAuth()
+    }
+
     fun retry() {
         checkOrStartAuth()
     }
@@ -72,6 +75,7 @@ class TraktAuthPresenter @Inject constructor(
         val oauthUrl = authorizationProvider.getOauthAuthorizationUrl()
         view?.requestLoginToTraktInBrowser(oauthUrl)
     }
+
 
 
 

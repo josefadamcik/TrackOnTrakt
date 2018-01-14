@@ -20,6 +20,7 @@ import butterknife.ButterKnife
 import com.mancj.materialsearchbar.MaterialSearchBar
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
+import cz.josefadamcik.trackontrakt.about.AboutActivity
 import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.base.SearchViewWrapper
 import cz.josefadamcik.trackontrakt.data.api.model.HistoryItem
@@ -37,15 +38,9 @@ import javax.inject.Inject
 
 
 class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout.OnRefreshListener, HomeView, SearchViewWrapper.SearchCallback, HistoryAdapter.ItemInteractionListener {
-
-
-    enum class Mode {
-        History,
-        Search
-    }
-
     @Inject lateinit var homePresenter: HomePresenter
     @Inject lateinit var currentTimeProvider: CurrentTimeProvider
+
 
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.toolbar_layout) lateinit var toolbarLayout: CollapsingToolbarLayout
@@ -56,13 +51,8 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     @BindDrawable(R.drawable.ic_local_movies_black_24dp) lateinit var icoTypeMovieDrawable: Drawable
     @BindDrawable(R.drawable.ic_television_classic) lateinit var icoTypeShowDrawable: Drawable
 
-
-
     private lateinit var historyAdapter: HistoryAdapter
     private lateinit var searchViewWrapper: SearchViewWrapper
-
-    private var currentMode: Mode = Mode.History
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as TrackOnTraktApplication).component.inject(this)
@@ -80,7 +70,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
     private fun initList() {
         historyAdapter = HistoryAdapter(LayoutInflater.from(this), this, this, icoTypeMovieDrawable, icoTypeShowDrawable, currentTimeProvider)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this) as RecyclerView.LayoutManager?
 //        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.setHasFixedSize(true)
 
@@ -113,7 +103,6 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
     override fun showHistory(items: HistoryModel) {
         hidePullToRefreshRefreshing()
-        currentMode = Mode.History
         historyAdapter.model = items
         setAdapterForMode()
     }
@@ -151,7 +140,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.action_about) {
-            //todo open about activity
+            startActivity(AboutActivity.createIntent(this))
             return true
         }
         return super.onOptionsItemSelected(item)

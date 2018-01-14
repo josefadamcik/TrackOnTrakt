@@ -19,12 +19,16 @@ class TestApiModule(private val app: TrackOnTraktApplication) : ApiModule(app) {
     }
 
     override fun createTraktApiConfig(): TraktApiConfig {
-        return TraktApiConfig("test", "test", "test", "http://127.0.0.1:" + BuildConfig.MOCKSERVER_PORT, BuildConfig.TRAKT_LOGIN_URL)
+        return TraktApiConfig(clientId = "test",
+                clientSecret = "test",
+                oauthRedirectUrl = "oauth://test",
+                apiBaseUrl = "http://127.0.0.1:" + BuildConfig.MOCKSERVER_PORT,
+                loginUrl =    "http://127.0.0.1:" + BuildConfig.MOCKSERVER_PORT + "/loginform")
     }
 
 
     override fun createTraktAuthTokenHolderImpl(preferences: SharedPreferences, moshi: Moshi): TraktAuthTokenHolder {
-        return TestTraktAuthTokenHolder()
+        return TestTraktAuthTokenHolder.instance
     }
 
     override fun afterOkHttpClientCreated(client: OkHttpClient) {

@@ -18,6 +18,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.R
+import cz.josefadamcik.trackontrakt.about.AboutActivity
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
 import cz.josefadamcik.trackontrakt.detail.MediaDetailActivity
@@ -202,14 +203,31 @@ class HomeActivityTestCase {
             pressImeActionButton()
         )
 
-        //assert intent
         intended(
-            allOf(
-                hasAction(Intent.ACTION_SEARCH),
-                hasComponent(SearchResultsActivity::class.java.name),
-                hasExtra(SearchManager.QUERY, searchQuery)
-            )
+                allOf(
+                        hasAction(Intent.ACTION_SEARCH),
+                        hasComponent(SearchResultsActivity::class.java.name),
+                        hasExtra(SearchManager.QUERY, searchQuery)
+                )
         )
+
+    }
+
+
+    @Test
+    fun testAboutMenuClick() {
+        //launch activity
+        val appContext = InstrumentationRegistry.getTargetContext()
+        whenHomeActivityIsLaunched(appContext)
+
+        //when clicked on about icon
+        onView(withId(R.id.action_about))
+                .check(matches(isDisplayed()))
+                .perform(click())
+
+        //assert intent
+        intended(allOf(hasComponent(AboutActivity::class.java.name)))
+
     }
 
     private fun whenHomeActivityIsLaunched(appContext: Context?) {
