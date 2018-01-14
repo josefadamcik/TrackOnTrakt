@@ -60,7 +60,7 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
         setContentView(R.layout.activity_search_results)
         unbinder = ButterKnife.bind(this)
 
-        icoTypeMovieDrawable = icoTypeShowDrawable.tint(this, R.color.colorAccent)
+        icoTypeMovieDrawable = icoTypeMovieDrawable.tint(this, R.color.colorAccent)
         icoTypeShowDrawable = icoTypeShowDrawable.tint(this, R.color.colorAccent)
 
         searchViewWrapper = SearchViewWrapper(searchBar, this)

@@ -285,7 +285,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
 
         override fun onDateSet(view: DatePickerDialog, year: Int, monthOfYear: Int, dayOfMonth: Int) {
             dateTime = dateTime.withYear(year)
-                    .withMonth(monthOfYear)
+                    .withMonth(monthOfYear + 1)
                     .withDayOfMonth(dayOfMonth)
         }
 
@@ -306,7 +306,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         fun onDateTimeClick(view: View) {
             when(view.id) {
                 R.id.txt_date -> {
-                    dateDialog = DatePickerDialog.newInstance(this, dateTime.year, dateTime.monthValue, dateTime.dayOfMonth )
+                    dateDialog = DatePickerDialog.newInstance(this, dateTime.year, dateTime.monthValue - 1, dateTime.dayOfMonth )
                     dateDialog?.show(fragmentManager, "datedialog")
                 }
                 R.id.txt_time -> {
