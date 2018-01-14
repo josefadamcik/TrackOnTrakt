@@ -2,29 +2,16 @@
   "expires_at": "2017-05-07T22:20:31.000Z",
   "started_at": "2017-05-07T21:20:31.000Z",
   "action": "scrobble",
-  "type": "episode",
-  "episode": {
-    "season": 0,
-    "number": 2,
-    "title": "Wedding Day",
+  "type": "movie",
+  "movie": {
+    "title": "Children of apes",
+    "year": 2006,
     "ids": {
-      "trakt": 2,
-      "tvdb": 3859791,
-      "imdb": "",
-      "tmdb": 62133,
-      "tvrage": null
-    }
-  },
-  "show": {
-    "title": "Breaking Bread",
-    "year": 2008,
-    "ids": {
-      "trakt": 1,
-      "slug": "breaking-bread",
-      "tvdb": 81189,
-      "imdb": "tt0903747",
-      "tmdb": 1396,
-      "tvrage": 18164
+      "trakt": 4965,
+      "slug": "children-of-apes-2006",
+      "imdb": "tt0206634",
+      "tmdb": 9693
     }
   }
+
 }
