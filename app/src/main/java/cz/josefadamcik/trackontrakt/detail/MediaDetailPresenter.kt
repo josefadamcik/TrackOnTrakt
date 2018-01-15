@@ -14,9 +14,9 @@ class MediaDetailPresenter @Inject constructor(
 
     private var identifier: MediaIdentifier? = null
     private var showDetail: ShowDetail? = null
+    private var willDoCheckinForSubject: CheckinSubject? = null
     var movieDetail: MovieDetail? = null
     var model: MediaDetailModel? = null
-    var willDoCheckinForSubject: CheckinSubject? = null
 
 
     fun load(mediaId: MediaIdentifier?, name: String?) {
@@ -53,9 +53,7 @@ class MediaDetailPresenter @Inject constructor(
                     .subscribe(
                         { show ->
                             view?.hideLoading()
-                            if (show != null) {
-                                showShow(show)
-                            }
+                            showShow(show)
                         },
                         getOnError()
                     )
@@ -63,7 +61,6 @@ class MediaDetailPresenter @Inject constructor(
         }
 
     }
-
 
     fun checkinActionClicked() {
         this.movieDetail?.let { (title, ids, year) ->
@@ -78,9 +75,6 @@ class MediaDetailPresenter @Inject constructor(
         view?.showCheckinDialog("${episodeWProgress.episode.season}x${episodeWProgress.episode.number} ${episodeWProgress.episode.title}")
     }
 
-    fun checkinDialogDismissed() {
-        willDoCheckinForSubject = null
-    }
 
     fun checkinConfirmed(checkinTime: CheckinTime) {
         val checkinSubject = willDoCheckinForSubject ?: throw IllegalStateException("ne undergoing checkin")
@@ -89,31 +83,28 @@ class MediaDetailPresenter @Inject constructor(
         doCheckinRequest(checkin)
     }
 
-
     private fun doCheckinRequest(request: CheckinWithTime) {
         view?.showLoading()
         view?.itemCheckInactionEnabled(false)
         disposables.add(
             manager.doCheckin(request).subscribe(
                 { result ->
-                        Timber.d("checkin complete $result")
-                        view?.hideLoading()
-                        view?.itemCheckInactionEnabled(true)
-                        when(result) {
-                            is CheckinResult.Success -> {
-                                view?.showCheckinSuccess()
-                                model?.let { it ->
-                                    model = applyCheckinOnDataModel(it, request)
-                                    showModel(model)
-                                }
+                    Timber.d("checkin complete $result")
+                    view?.hideLoading()
+                    view?.itemCheckInactionEnabled(true)
+                    when(result) {
+                        is CheckinResult.Success -> {
+                            view?.showCheckinSuccess()
+                            model?.let { it ->
+                                model = applyCheckinOnDataModel(it, request)
+                                showModel(model)
                             }
-                            is CheckinResult.InProgress -> view?.showCheckinAlreadyInProgress()
-                            else -> view?.showError(IllegalStateException("Request failed"))
-
                         }
-                    },
+                        is CheckinResult.InProgress -> view?.showCheckinAlreadyInProgress()
+                        else -> view?.showError(IllegalStateException("Request failed"))
+                    }
+                },
                 getOnError()
-
             )
         )
     }
@@ -121,10 +112,11 @@ class MediaDetailPresenter @Inject constructor(
     private fun applyCheckinOnDataModel(model: MediaDetailModel, request: CheckinWithTime): MediaDetailModel {
         var episodeFoundAndCompletedStatusChanged = false
         if (request.subject is CheckinSubject.EpisodeCheckin ) {
+            val requestedEpisode = request.subject.episode
             val modifiedSeasons = model.seasons.map { season ->
-                if (season.season.number == request.subject.episode.season) {
+                if (season.season.number == requestedEpisode.season) {
                     val modifiedEpisodes = season.episodes.map { e ->
-                        if (e.episode.number == request.subject.episode.number) {
+                        if (e.episode.number == requestedEpisode.number) {
                             episodeFoundAndCompletedStatusChanged = true;
                             e.copy(progress = ShowWatchedProgress.EpisodeWatchedProgress(
                                     e.episode.number,
@@ -140,18 +132,29 @@ class MediaDetailPresenter @Inject constructor(
                     season
                 }
             }
+
+
+            var nextEpisode : Episode? = null
+            modifiedSeasons.forEach { season ->
+                if (!season.season.isSpecials) { //skip specials season
+                    nextEpisode = season.episodes.find { ep -> !ep.progress.completed }?.episode
+                    if (nextEpisode != null) {
+                        return@forEach
+                    }
+                }
+            }
             return model.copy(
                     seasons = modifiedSeasons,
                     showProgress = model.showProgress.copy(
                             completed = model.showProgress.completed + if (episodeFoundAndCompletedStatusChanged) 1 else 0,
-                            last_watched_at = currentTimeProvider.dateTime
+                            last_watched_at = currentTimeProvider.dateTime,
+                            last_episode = requestedEpisode,
+                            next_episode = nextEpisode
                     )
             )
         } else {
             return model
         }
-
-
     }
 
     private fun getOnError(): (Throwable?) -> Unit {

@@ -25,16 +25,12 @@ class UserHistoryManager
             return traktApi.watching(authTokenProvider.httpAuth())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map { r ->
-                    if (r.code() == 204) {
-                        //NotWatchingAnything
-                        Watching.Nothing
-                    } else if (r.isSuccessful) {
-                        r.body()
-                    } else {
-                        throw ApiException("Unable to load currently watching, response not successful {${r.code()}", r.code(), r.message())
+                .map { r -> when {
+                        r.code() == 204 -> //NotWatchingAnything
+                            Watching.Nothing
+                        r.isSuccessful -> r.body()
+                        else -> throw ApiException("Unable to load currently watching, response failed ${r.code()} ${r.message()}", r.code(), r.message())
                     }
-
                 }
         }
     }

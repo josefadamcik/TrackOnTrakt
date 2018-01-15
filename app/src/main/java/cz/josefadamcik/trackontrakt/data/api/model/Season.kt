@@ -14,6 +14,8 @@ data class Season(
     val first_aired: LocalDate? = null,
     val network: String? = null,
     val episodes: List<Episode>? = emptyList()
-)
+) {
+    val isSpecials: Boolean get() = number == 0
+}
 
 

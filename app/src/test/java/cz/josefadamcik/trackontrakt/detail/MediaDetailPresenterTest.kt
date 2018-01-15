@@ -8,8 +8,6 @@ import io.reactivex.Single
 import junit.framework.Assert.assertTrue
 import kxdate.threeten.bp.ago
 import kxdate.threeten.bp.days
-import okhttp3.Protocol
-import okhttp3.Request
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.notNullValue
 import org.junit.Assert.assertThat
@@ -29,37 +27,29 @@ class MediaDetailPresenterTest {
 
     @Test
     fun checkinEpisodeTest() {
-        //arrange / given
+        //given
 
-        val seasonEpisodes = arrangeEpisodesForSeason(testSeasonEpisodeCount, testSeasonNumber)
-        val season = SeasonWithProgress(
-            arrangeTestSeason(seasonEpisodes),
-            episodes = seasonEpisodes.map { EpisodeWithProgress(it, ShowWatchedProgress.EpisodeWatchedProgress(it.number)) },
-            progress = arrangeSeasonWatchedProgress(testSeasonNumber, seasonEpisodes, 0, testSeasonEpisodeCount)
-        )
+        val seasonEpisodes = givenEpisodesForSeason(testSeasonEpisodeCount, testSeasonNumber)
+        val season = givenSeasonWithProgress(seasonEpisodes)
         val episodeToCheckIn = season.episodes.first();
 
-        val presenter = arrangePresenterInstanceWithMockedDataService({
-            on { doCheckin(any()) } doReturn  Single.just(CheckinResult.Success) as Single<CheckinResult>
+        val presenter = givenPresenterInstanceWithMockedDataService({
+            on { doCheckin(any()) } doReturn Single.just<CheckinResult>(CheckinResult.Success)
         })
 
         val view = mock<MediaDetailView>()
         presenter.view = view
 
         // inject model into presenter -> we will observe if the model changed
-        presenter.model = MediaDetailModel(
-            MediaDetailModel.MediaDetailInfo(),
-            seasons = listOf(season),
-            showProgress = arrangeShowWatchedProgress(seasonEpisodes, 0, testSeasonNumber, testSeasonEpisodeCount)
-        )
+        presenter.model = givenMediaDetailModel(season, seasonEpisodes)
 
-        // act / when
+        //when
         presenter.checkinActionClicked(episodeToCheckIn)
         verify(view).showCheckinDialog(any())
 
         presenter.checkinConfirmed(CheckinTime.Now)
 
-        // assert / then
+        //then
         argumentCaptor<CheckinWithTime>().apply {
             verify(mediaManager).doCheckin(capture())
             assertTrue("is checkin for episode", lastValue.subject is CheckinSubject.EpisodeCheckin)
@@ -78,34 +68,34 @@ class MediaDetailPresenterTest {
             assertThat("checked episode exists in model", modelEpisode, notNullValue())
             assertThat("checked episode in model is watched", modelEpisode?.progress?.completed ?: false, equalTo(true))
             assertThat("number of watched episodes is increased", model.showProgress.completed, equalTo(1))
+            assertThat("the last watched episode should be changed to next the first (number 1)", model.showProgress.last_episode?.number, equalTo(1))
+            assertThat("next to watch episode should be changed to number 2", model.showProgress.next_episode?.number, equalTo(2))
+            assertThat("nextShowEpisodeToWatch episode should return ep number 2", model.nextShowEpisodeToWatch?.second?.episode?.number, equalTo(2))
         }
 
     }
 
+
+
     @Test
     fun checkinMovieTest() {
-        //arrange / given
-
+        //given
         val movieToCheckin = MovieDetail("movie", MediaIds(1), 1997)
-
-        val presenter = arrangePresenterInstanceWithMockedDataService({
-            on { doCheckin(any()) } doReturn  Single.just(CheckinResult.Success) as Single<CheckinResult>
+        val presenter = givenPresenterInstanceWithMockedDataService({
+            on { doCheckin(any()) } doReturn  Single.just(CheckinResult.Success as CheckinResult)
         })
-
         val view = mock<MediaDetailView>()
         presenter.view = view
-
         // inject model into presenter -> we will observe if the model changed
         presenter.model = MediaDetailModel(MediaDetailModel.MediaDetailInfo())
         presenter.movieDetail = movieToCheckin
 
-        // act / when
+        //when
         presenter.checkinActionClicked()
-        verify(view).showCheckinDialog(any())
-
         presenter.checkinConfirmed(CheckinTime.Now)
 
-        // assert / then
+        // then
+        verify(view).showCheckinDialog(any())
         argumentCaptor<CheckinWithTime>().apply {
             verify(mediaManager).doCheckin(capture())
             assertTrue("is checkin for movie", lastValue.subject is CheckinSubject.MovieCheckin)
@@ -121,15 +111,13 @@ class MediaDetailPresenterTest {
 
     }
 
-
-
     @Test
     fun combineSeasonDataWithProgressTest() {
         //arrange / given
-        val presenter = arrangePresenterInstanceWithMockedDataService({ })
-        val seasonEpisodes = arrangeEpisodesForSeason(testSeasonEpisodeCount, testSeasonNumber)
+        val presenter = givenPresenterInstanceWithMockedDataService({ })
+        val seasonEpisodes = givenEpisodesForSeason(testSeasonEpisodeCount, testSeasonNumber)
         val seasonsWithoutProgress = listOf(arrangeSeasonWithProgress(testSeasonNumber, seasonEpisodes))
-        val watchedProgress = arrangeShowWatchedProgress(seasonEpisodes, testSeasonWatchedEpisodes, testSeasonNumber, testSeasonEpisodeCount)
+        val watchedProgress = givenShowWatchedProgress(seasonEpisodes, testSeasonWatchedEpisodes, testSeasonNumber, testSeasonEpisodeCount)
 
         //act / when
         val result = presenter.combineSeasonDataWithProgress(seasonsWithoutProgress, watchedProgress)
@@ -145,8 +133,24 @@ class MediaDetailPresenterTest {
 
     }
 
+    private fun givenMediaDetailModel(season: SeasonWithProgress, seasonEpisodes: List<Episode>): MediaDetailModel {
+        return MediaDetailModel(
+                MediaDetailModel.MediaDetailInfo(),
+                seasons = listOf(season),
+                showProgress = givenShowWatchedProgress(seasonEpisodes, 0, testSeasonNumber, testSeasonEpisodeCount)
+        )
+    }
 
-    private fun arrangeTestSeason(seasonEpisodes: List<Episode>): Season {
+    private fun givenSeasonWithProgress(seasonEpisodes: List<Episode>): SeasonWithProgress {
+        return SeasonWithProgress(
+                givenTestSeason(seasonEpisodes),
+                episodes = seasonEpisodes.map { EpisodeWithProgress(it, ShowWatchedProgress.EpisodeWatchedProgress(it.number)) },
+                progress = arrangeSeasonWatchedProgress(testSeasonNumber, seasonEpisodes, 0, testSeasonEpisodeCount)
+        )
+    }
+
+
+    private fun givenTestSeason(seasonEpisodes: List<Episode>): Season {
         return Season(
                 number = testSeasonNumber,
                 ids = MediaIds(testSeasonNumber.toLong()),
@@ -155,7 +159,7 @@ class MediaDetailPresenterTest {
         )
     }
 
-    private fun arrangeShowWatchedProgress(seasonEpisodes: List<Episode>, watchedEpisodes: Int, seasonNumber: Int, episodeCount: Int): ShowWatchedProgress {
+    private fun givenShowWatchedProgress(seasonEpisodes: List<Episode>, watchedEpisodes: Int, seasonNumber: Int, episodeCount: Int): ShowWatchedProgress {
         return ShowWatchedProgress(
             aired = seasonEpisodes.size,
             completed = watchedEpisodes,
@@ -178,20 +182,11 @@ class MediaDetailPresenterTest {
     }
 
 
-    private fun arrangePresenterInstanceWithMockedDataService(dataServiceStubbing: KStubbing<MediaDetailManager>.(MediaDetailManager) -> Unit): MediaDetailPresenter {
+    private fun givenPresenterInstanceWithMockedDataService(dataServiceStubbing: KStubbing<MediaDetailManager>.(MediaDetailManager) -> Unit): MediaDetailPresenter {
         mediaManager = mock<MediaDetailManager>(stubbing = dataServiceStubbing)
         presenter = MediaDetailPresenter(mediaManager, CurrentTimeProviderImpl())
 
         return presenter
-    }
-
-    private fun arrangeOkhttpResponse201(): okhttp3.Response? {
-        return okhttp3.Response.Builder()
-            .code(201)
-            .message("OK")
-            .request(Request.Builder().url("http://localhost/").build())
-            .protocol(Protocol.HTTP_1_1)
-            .build()
     }
 
     private fun arrangeSeasonWithProgress(seasonNumber: Int, seasonEpisodes: List<Episode>): SeasonWithProgress {
@@ -206,6 +201,6 @@ class MediaDetailPresenterTest {
         )
     }
 
-    private fun arrangeEpisodesForSeason(episodeCount: Int, seasonNumber: Int) =
+    private fun givenEpisodesForSeason(episodeCount: Int, seasonNumber: Int) =
         (1..episodeCount).map { Episode(season = seasonNumber, number = it, ids = MediaIds(it.toLong()), title = "test episode $it") }
 }
