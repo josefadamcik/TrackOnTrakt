@@ -4,6 +4,7 @@ Android application for tracking watched movies and shows on [trakt.tv](https://
  
 [![Build Status](https://travis-ci.org/josefadamcik/TrackOnTrakt.svg?branch=master)](https://travis-ci.org/josefadamcik/TrackOnTrakt)
 [![codecov](https://codecov.io/gh/josefadamcik/TrackOnTrakt/branch/master/graph/badge.svg)](https://codecov.io/gh/josefadamcik/TrackOnTrakt)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosefadamcik%2FTrackOnTrakt.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosefadamcik%2FTrackOnTrakt?ref=badge_shield)
 
 ## Motivation
 
@@ -77,3 +78,6 @@ See also the list of [contributors](https://github.com/josefadamcik/TrackOnTrakt
 This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details
 
 
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjosefadamcik%2FTrackOnTrakt.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjosefadamcik%2FTrackOnTrakt?ref=badge_large)
