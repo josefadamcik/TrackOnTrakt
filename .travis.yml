@@ -50,6 +50,7 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_923bf72da533_key -iv $encrypted_923bf72da533_iv -in ci/secrets.tar.enc -out ci/secrets.tar -d
   - tar xvf ci/secrets.tar
   - chmod +x gradlew
+  - chmod +x ./ci/init_emulator.sh
 
 
 before_script:
@@ -61,18 +62,17 @@ before_script:
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_HOME/licenses/android-sdk-license"
   #- yes | sdkmanager --licenses
-  - echo no | android create avd --force -n test -t $EMULATOR_SDK --abi $ABI
-  - emulator -avd test -no-audio -no-window &
-  - ./gradlew clean build
-  - adb shell settings put global window_animation_scale 0 &
-  - adb shell settings put global transition_animation_scale 0 &
-  - adb shell settings put global animator_duration_scale 0 &
+   - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-${API};default;${ABI}' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
+   - $ANDROID_HOME/emulator/emulator -avd test -skin 768x1280 -no-audio -no-window &
+#  - echo no | android create avd --force -n test -t $EMULATOR_SDK --abi $ABI --sdcard 128M -s "768x1280"
+#  - emulator -avd test -no-audio -no-window &
+  - ./gradlew --stacktrace clean build
   - android-wait-for-emulator
-  - adb shell input keyevent 82 &
+  - ./ci/init_emulator.sh
 
 script:
-  - ./gradlew jacocoTestReport
-  - travis_wait 60 ./gradlew connectedCheck
+  - ./gradlew --stacktrace jacocoTestReport
+  - travis_wait 60 ./gradlew --stacktrace connectedCheck
 
 after_script:
   # Show tests and lint results

@@ -1,6 +1,7 @@
 package cz.josefadamcik.trackontrakt.detail
 
 
+//import com.facebook.testing.screenshot.Screenshot
 import android.content.Context
 import android.support.design.widget.CollapsingToolbarLayout
 import android.support.test.InstrumentationRegistry
@@ -17,6 +18,7 @@ import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.github.tomakehurst.wiremock.matching.StringValuePattern
+import com.squareup.spoon.Spoon
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
@@ -73,6 +75,8 @@ class MediaDetailActivityTest {
         ))
 
         textView2.check(matches(withText("Next to watch")))
+
+        Spoon.screenshot(activityTestRule.activity, "finished")
     }
 
     @Test
