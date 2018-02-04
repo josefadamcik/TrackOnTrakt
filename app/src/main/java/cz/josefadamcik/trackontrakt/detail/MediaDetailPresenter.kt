@@ -17,6 +17,7 @@ class MediaDetailPresenter @Inject constructor(
     private var willDoCheckinForSubject: CheckinSubject? = null
     var movieDetail: MovieDetail? = null
     var model: MediaDetailModel? = null
+    private val rowItemListFactory = MediaDetailRowItemListFactory()
 
 
     fun load(mediaId: MediaIdentifier?, name: String?) {
@@ -194,23 +195,63 @@ class MediaDetailPresenter @Inject constructor(
         view?.showLoading()
         Timber.d("loadEpisodes ")
         disposables.add(
-            manager.loadShowSeasonsWithEpisodes(showId)
+            manager.loadShowSeasons(showId)
                 .subscribe(
                     { seasons ->
                         view?.hideLoading()
-                        val seasonsWithProgress = seasons.map { season ->
-                            SeasonWithProgress(
-                                season = season,
-                                episodes = season.episodes?.map { ep -> EpisodeWithProgress(ep) } ?: emptyList()
-                            )
-                        }
+                        val seasonsWithProgress = seasons.map { season -> SeasonWithProgress(season = season) }
                         showModel(model?.copy(seasons = seasonsWithProgress))
-                        loadProgress(showId)
+                        loadEpisodes(showId, seasons)
+//                        loadProgress(showId)
                     },
                     getOnError()
                 )
 
+//            manager.loadShowSeasonsWithEpisodes(showId)
+//                .subscribe(
+//                    { seasons ->
+//                        view?.hideLoading()
+//                        val seasonsWithProgress = seasons.map { season ->
+//                            SeasonWithProgress(
+//                                season = season,
+//                                episodes = season.episodes?.map { ep -> EpisodeWithProgress(ep) } ?: emptyList()
+//                            )
+//                        }
+//                        showModel(model?.copy(seasons = seasonsWithProgress))
+//                        loadProgress(showId)
+//                    },
+//                    getOnError()
+//                )
+
         )
+    }
+
+    private fun loadEpisodes(showId: Long, seasons: List<Season>) {
+        disposables.add(
+                manager.loadEpisodesForSeasons(showId, seasons)
+                        .subscribe(
+                                { seasonWithProgress -> //onNext -> update model and propagate to view
+                                    model?.let { model ->
+                                        showModel(model.copy(seasons = model.seasons.map { //replace loaded season
+                                            if (it.season.ids.trakt == seasonWithProgress.season.ids.trakt) {
+                                                seasonWithProgress
+                                            } else {
+                                                it
+                                            }
+                                        }))
+                                    }
+                                },
+                                getOnError(),
+                                { //onComplete
+                                    view?.hideLoading()
+                                    loadProgress(showId)
+                                }
+                        )
+
+        )
+
+
+
     }
 
     private fun loadProgress(showId: Long) {
@@ -274,7 +315,7 @@ class MediaDetailPresenter @Inject constructor(
     private fun showModel(model: MediaDetailModel?) {
         if (model != null) {
             this.model = model
-            view?.showMedia(model = model)
+            view?.showMedia(rowItemListFactory.buildItems(model))
         }
     }
 

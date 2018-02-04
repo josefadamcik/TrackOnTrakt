@@ -43,17 +43,17 @@ sealed class RowItemModel(val viewType: Int) {
     }
 
     data class InfoRowItem(
-            val label: String,
+            val labelResource: Int,
             val value: String,
             val iconResource: Int,
             val link: String? = null) : RowItemModel(VIEWTYPE_MEDIA_INFO_ROW) {
         override fun bindViewHolder(holder: MediaDetailAdapter.ViewHolder, resources: Resources) {
             if (holder is MediaDetailAdapter.InfoRowViewHolder) {
-                holder.txtLabel.text = label
+                holder.txtLabel.text = resources.getString(labelResource)
                 holder.txtValue.movementMethod = LinkMovementMethod.getInstance()
                 holder.txtValue.text = value
                 holder.iconInfo.setImageResource(iconResource)
-                holder.iconInfo.contentDescription = label
+                holder.iconInfo.contentDescription = resources.getString(labelResource)
                 if (link != null) {
                     holder.link = link
                     holder.txtValue.setSingleLine(true)
@@ -133,11 +133,12 @@ sealed class RowItemModel(val viewType: Int) {
             val oldItem = oldList[oldItemPosition]
             val newItem = newList[newItemPosition]
 
-            return (oldItem is RowItemModel.MainInfoRowItem && newItem is RowItemModel.MainInfoRowItem)
-                    || (oldItem is RowItemModel.InfoRowItem && oldItem == newItem)
-                    || (oldItem is RowItemModel.SeasonRowItem && newItem is RowItemModel.SeasonRowItem
+            return (oldItem is MainInfoRowItem && newItem is MainInfoRowItem)
+                    || (oldItem is InfoRowItem && oldItem == newItem)
+                    || (oldItem is NextEpisodeHeaderRowItem && newItem is NextEpisodeHeaderRowItem)
+                    || (oldItem is SeasonRowItem && newItem is SeasonRowItem
                         && oldItem.seasonWithProgress.season.number == newItem.seasonWithProgress.season.number)
-                    || (oldItem is RowItemModel.EpisodeRowItem && newItem is RowItemModel.EpisodeRowItem
+                    || (oldItem is EpisodeRowItem && newItem is EpisodeRowItem
                     && oldItem.episodeWithProgress.episode.ids.trakt == newItem.episodeWithProgress.episode.ids.trakt)
         }
 

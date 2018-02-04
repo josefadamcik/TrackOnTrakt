@@ -60,17 +60,19 @@ class MediaDetailPresenterTest {
         verify(view).hideLoading()
 
         verify(view).showCheckinSuccess()
-        argumentCaptor<MediaDetailModel>().apply {
+        argumentCaptor<List<RowItemModel>>().apply {
             verify(view).showMedia(capture())
 
-            val model = lastValue
-            val modelEpisode = model.seasons.firstOrNull()?.episodes?.firstOrNull()
-            assertThat("checked episode exists in model", modelEpisode, notNullValue())
-            assertThat("checked episode in model is watched", modelEpisode?.progress?.completed ?: false, equalTo(true))
-            assertThat("number of watched episodes is increased", model.showProgress.completed, equalTo(1))
-            assertThat("the last watched episode should be changed to next the first (number 1)", model.showProgress.last_episode?.number, equalTo(1))
-            assertThat("next to watch episode should be changed to number 2", model.showProgress.next_episode?.number, equalTo(2))
-            assertThat("nextShowEpisodeToWatch episode should return ep number 2", model.nextShowEpisodeToWatch?.second?.episode?.number, equalTo(2))
+            val model = presenter.model
+            val modelEpisodeRow = lastValue.find { it is RowItemModel.EpisodeRowItem
+                    &&  it.episodeWithProgress.episode.ids.trakt == episodeToCheckIn.episode.ids.trakt}
+                    as RowItemModel.EpisodeRowItem?
+            assertThat("checked episode exists in model", modelEpisodeRow, notNullValue())
+            assertThat("checked episode in model is watched", modelEpisodeRow?.episodeWithProgress?.progress?.completed ?: false, equalTo(true))
+            assertThat("number of watched episodes is increased", model?.showProgress?.completed, equalTo(1))
+            assertThat("the last watched episode should be changed to next the first (number 1)", model?.showProgress?.last_episode?.number, equalTo(1))
+            assertThat("next to watch episode should be changed to number 2", model?.showProgress?.next_episode?.number, equalTo(2))
+            assertThat("nextShowEpisodeToWatch episode should return ep number 2", model?.nextShowEpisodeToWatch?.second?.episode?.number, equalTo(2))
         }
 
     }
@@ -105,7 +107,7 @@ class MediaDetailPresenterTest {
         verify(view).showLoading()
         verify(view).hideLoading()
         verify(view).showCheckinSuccess()
-        argumentCaptor<MediaDetailModel>().apply {
+        argumentCaptor<List<RowItemModel>>().apply {
             verify(view).showMedia(capture())
         }
 

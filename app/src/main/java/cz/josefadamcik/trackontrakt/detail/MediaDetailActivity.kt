@@ -193,8 +193,8 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         progress.visibility = View.GONE
     }
 
-    override fun showMedia(model: MediaDetailModel) {
-        adapter.model = model
+    override fun showMedia(rowItems: List<RowItemModel>) {
+        adapter.items = rowItems
     }
 
     override fun showAlreadyWatchedStats(number: Int, last_watched_at: LocalDateTime?) {

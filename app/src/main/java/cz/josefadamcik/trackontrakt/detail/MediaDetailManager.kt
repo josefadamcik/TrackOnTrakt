@@ -144,4 +144,23 @@ class MediaDetailManager @Inject constructor(
             .toList()
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun loadEpisodesForSeasons(showId: Long, seasons: List<Season>): Observable<SeasonWithProgress> {
+        return Observable.fromIterable(seasons)
+                .subscribeOn(Schedulers.io())
+                .flatMap { s -> Observable.zip(
+                            traktApi.showSeasonEpisodes(tokenHolder.httpAuth(), showId, s.number, TraktApi.ExtendedInfo.full).toObservable(),
+                            Observable.just(s),
+                            BiFunction { t1: Response<List<Episode>>, t2: Season -> Pair(t1, t2) }
+                    ) }
+                .map { (response, season) ->
+                    if (response.isSuccessful) {
+                        SeasonWithProgress(season, response.body()?.map { ep -> EpisodeWithProgress(ep) } ?: emptyList())
+                    } else {
+                        throw ApiException("Unable to load episodes for season $season", response.code(), response.message())
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+
+    }
 }

@@ -12,7 +12,7 @@ interface MediaDetailView : MvpView {
     fun showLoading()
     fun hideLoading()
     fun showError(e: Throwable?)
-    fun showMedia(model: MediaDetailModel)
+    fun showMedia(rowItems: List<RowItemModel>)
     fun showCheckinSuccess()
     fun showCheckinAlreadyInProgress()
     fun showAlreadyWatchedStats(number: Int, last_watched_at: LocalDateTime?)

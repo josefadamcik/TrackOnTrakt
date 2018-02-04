@@ -5,8 +5,6 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.support.annotation.DrawableRes
-import android.support.annotation.StringRes
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
@@ -32,6 +30,7 @@ class MediaDetailAdapter(
     private val context: Context,
     private val listener: InteractionListener,
     private val roundedSpanConfig: RoundedBackgroundSpan.Config
+
 ) : RecyclerView.Adapter<MediaDetailAdapter.ViewHolder>() {
 
     interface InteractionListener {
@@ -39,70 +38,25 @@ class MediaDetailAdapter(
         fun onOpenWebPageClick(uri: Uri)
     }
 
-    private var items = listOf<RowItemModel>()
-
-    var model: MediaDetailModel? = null
+    var items = listOf<RowItemModel>()
         set(value) {
-            field = value
-            val newItems  = buildItems()
-            val duCallback = RowItemModel.DiffUtilCallback(items, newItems)
+            val duCallback = RowItemModel.DiffUtilCallback(items, value)
             val diffResult = DiffUtil.calculateDiff(duCallback, true)
-            items = newItems
+            field = value
             diffResult.dispatchUpdatesTo(this)
         }
-
 
     override fun getItemViewType(position: Int): Int {
         return items[position].viewType
     }
 
-
     override fun getItemCount(): Int {
         return items.size
-    }
-
-    private fun buildItems(): List<RowItemModel> {
-        val list = mutableListOf<RowItemModel>()
-        val model = this.model
-        if (model != null) {
-            list.add(RowItemModel.MainInfoRowItem(model.basic))
-
-            with(model.basic) {
-                if (genres.isNotEmpty()) {
-                    list.add(itemFormInfoRow(R.string.label_genres, R.drawable.ic_label_outline_black_24dp, genres.joinToString(", ")))
-                }
-                network?.let { list.add(itemFormInfoRow(R.string.label_network, R.drawable.ic_television_classic, it)) }
-                language?.let { list.add(itemFormInfoRow(R.string.label_language, R.drawable.ic_language_black_24dp, it)) }
-                //status?.let { list.add(itemFormInfoRow(R.string.label_status, it)) }
-                trailer?.let { list.add(itemFormInfoRow(R.string.label_trailer, R.drawable.ic_ondemand_video_black_24dp, it, it)) }
-                homepage?.let { list.add(itemFormInfoRow(R.string.label_homepage, R.drawable.ic_web_black_24dp, it, it)) }
-                list.add(itemFormInfoRow(R.string.label_traktpage, R.drawable.ic_web_black_24dp, traktPage ?: "", traktPage))
-            }
-
-            model.nextShowEpisodeToWatch?.let { (season, episode) ->
-                list.add(RowItemModel.NextEpisodeHeaderRowItem)
-                list.add(RowItemModel.EpisodeRowItem(episode))
-            }
-
-            if (model.seasons.isNotEmpty()) {
-                model.seasons.forEach { season ->
-                    list.add(RowItemModel.SeasonRowItem(season))
-                    season.episodes.mapTo(list, transform = { ep -> RowItemModel.EpisodeRowItem(ep) })
-                }
-            }
-        }
-        return list
-    }
-
-    private fun itemFormInfoRow(@StringRes labelResource: Int, @DrawableRes iconResource: Int, value: String, link: String? = null): RowItemModel {
-        return RowItemModel.InfoRowItem(resources.getString(labelResource), value, iconResource, link)
     }
 
     override fun onBindViewHolder(holder: MediaDetailAdapter.ViewHolder?, position: Int) {
         holder?.let { items[position].bindViewHolder(it, resources) }
     }
-
-
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MediaDetailAdapter.ViewHolder {
         return when (viewType) {
