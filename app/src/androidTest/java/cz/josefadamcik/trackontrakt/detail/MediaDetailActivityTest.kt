@@ -13,12 +13,13 @@ import android.support.test.espresso.contrib.RecyclerViewActions
 import android.support.test.espresso.matcher.BoundedMatcher
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.runner.AndroidJUnit4
+import android.support.test.runner.screenshot.Screenshot
 import android.view.View
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import com.github.tomakehurst.wiremock.matching.StringValuePattern
-import com.squareup.spoon.Spoon
+import com.squareup.spoon.SpoonRule
 import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.MediaType
@@ -46,6 +47,7 @@ class MediaDetailActivityTest {
 
     @get:Rule
     var activityTestRule = activityTestRule<MediaDetailActivity>()
+
 
     @Test
     fun showDetailTest() {
@@ -76,7 +78,8 @@ class MediaDetailActivityTest {
 
         textView2.check(matches(withText("Next to watch")))
 
-        Spoon.screenshot(activityTestRule.activity, "finished")
+
+        activityTestRule.screenshot("finished")
     }
 
     @Test

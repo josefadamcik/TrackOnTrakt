@@ -5,6 +5,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 apply from: 'jacoco.gradle'
+apply plugin: "com.jaredsburrows.spoon"
+
 
 static def buildTime() {
     def df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'") // you can change it
@@ -22,10 +24,6 @@ def versionBuild = 1 // bump for dogfood builds, public betas, etc.
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitTimestamp = 'git log -n 1 --format=%at'.execute([], rootDir).text.trim()
 def packagename = "cz.josefadamcik.trackontrakt"
-
-kapt {
-    generateStubs = true
-}
 
 
 Properties properties = new Properties()
@@ -193,7 +191,8 @@ dependencies {
 
     androidTestImplementation 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
     androidTestImplementation 'commons-io:commons-io:2.5'
-    androidTestImplementation "com.squareup.spoon:spoon-client:1.5.6"
+    //androidTestImplementation "com.squareup.spoon:spoon-client:1.5.6"
+    androidTestImplementation "com.squareup.spoon:spoon-client:2.0.0-SNAPSHOT" // For Spoon snapshot, until 2.0.0 is released
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
@@ -298,14 +297,14 @@ gradle.buildFinished { buildResult ->
 }
 
 // This section is optional
-//spoon {
-//    // for debug output
-//    debug = true
-//
-//    codeCoverage = false
-//
-//    shard = true
-//}
+spoon {
+    // for debug output
+    debug = true
+    codeCoverage = false
+    shard = false
+    adbTimeout = 10
+    ignoreFailures = true
+}
 
 
 task copyTestClasses(type: Copy) {

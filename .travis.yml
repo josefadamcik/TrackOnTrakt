@@ -14,63 +14,100 @@ notifications:
       on_success: always # default: change
       on_failure: always # default: always
 
-before_cache:
-  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
-  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/classAnalysis/classAnalysis.lock
-  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/jarSnapshots/jarSnapshots.lock
+addons:
+  artifacts:
+    bucket: artifacts-trackontrakt
+    key:
+      secure: "coc2HL4MV8sYutu8ZoEJpkm5uDb7O5ifsstVhcA5QGaQCMO0JDotYRjnh1gDQKaRSRrKXTAU1ylXD6OQM3CIZz7a/YQOuKYSioITbRknkyY5pWBBPNQVvgebfNNIRQovJcxzDDr/215B92JgctsUHD9UZkMFdNB+z7tGk0M7Dyi9bq0R2TFpMENwEnFzS5OPnFo/zTxg5fZI+818O8kk3OFNaICLTdE5LH1vOy5dd2bzAacCctrUwcyjurhPWeEsffScS+KtQoyh0yKEsd1jZKWK16HA0e8D4bJ4xYif2S4NZEi/mydBGHx9YSSzT/eyfgjuM3Bip1leGohTuUtzMqNJw4brd7v198ur9pFq4np76PW1FZ7/Sti0goFj5+NAwCqyyBH8cN3UH6No4uppHnRhHax85xBV9erM6rjZVfQnqyZQ9g64Svl93JI59PaUf6EBmsWwubZjSk51JCIo0pnXu3GYel/yrO0vNUhEbwCEbeXO0Z+FaO33NhbI2guUKbgc9GfOkBt2xhPT5t/+WNSUu2fLabtgfeCAFSHx19xx8RwiBNtkhL0ifnGEyAe/m+Wb55X0E0BklDKw8glIwTGUbtjZ5Uy06lRy37vqRW0yJglHcg9QOB5dLmK8DdhV3RdKxF8hl1xnc/BBi3gwQtv1WOYmyQmCEDybNDFcBPk="
+    secret:
+      secure: "Obya+/8PSf771p6P+6VujLPNLouGJig7bJxudkV82SaB2n4L7mRZJYwj1MXyKa5oe5HuSKlD4dGqSszeBdMZnCyAF2KoXNrRlQfdliVcR5nSMWtlFdA9qOLBmYZxUjSbOKtJP8GPR1VxiVcMVOrZPd8QPr6Y4vgdJx+/kgcVqSFYW5O3pRGEX4qlsvOOhy4g3ktVcFbb91iAyCLIyEIhkSkUj/1cfdIjrh9XaMEpyIZ5AesUFZ2kDMRyYYNepVakqMVTaZXdgfdKzEAfg0iMFhGahuZ1mHkFYvDAGDNniTMl3VM0RzxoD8XHHvo2pf3Gtu1OzncbG+ly1n0/jTk+pHG9FZH3kJkGujYyGTJhP+UHrkoOD9yFItsliqzEaZ0Vaq+/p2ymkqM5UgwIZH/SnULsaFw2BX93SJAkMQLJll1eOAqyPlJi/Z/2waerlj3PSsnLSkMSRw1iGelr/Yb7cY+o5ls8o7mUGqGjLaZJ3i25MW8lYRvtaRKSsf/jRk0imjfKMefDHEF+JUTk5jbtQp5mF8NNx9CFZKzs669EaJnqDWWQmyBu/V0kMNUtFDxAD2aCK8SuKVjKb0OD6MJJwaxwePn4alHWajHczIXG7oKVsrrfYQ0gCyB7xNbbD88jHq8hQH8SZfXGQ3k942elbcjjuHTFLp0bzlxzfbZgb1I="
+    paths:
+      - app/build/outputs
+      - app/build/reports
+      - app/build/jacoco
+      - app/build/test-results
+      - app/build/spoon-output
+    debug: false
+
 
 cache:
   directories:
-    - ${TRAVIS_BUILD_DIR}/gradle/caches/
-    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/dists/
+    - $HOME/.cache/ci-support
+    - $HOME/.cache/lint
+    - $HOME/.cache/ndk
+before_cache:
+  - find $HOME/.gradle -name "*.lock" -exec rm {} \;
+  - rm -rf $HOME/.gradle/caches/[1-9]*
+
+#before_cache:
+#  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
+#  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/classAnalysis/classAnalysis.lock
+#  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/jarSnapshots/jarSnapshots.lock
+#cache:
+#  directories:
+#    - ${TRAVIS_BUILD_DIR}/gradle/caches/
+#    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
 
 env:
   global:
     - TARGET_SDK=27
     - BUILD_TOOLS_VERSION=27.0.2
+    - ANDROID_TOOLS_URL="https://dl.google.com/android/repository/tools_r25.2.3-linux.zip"
+    - ADB_INSTALL_TIMEOUT=8
   matrix:
     - EMULATOR_SDK=android-22 ABI=armeabi-v7a
 
-android:
-  components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/tree/9c6cd11
-    - tools
-    - platform-tools
-    - tools
-    - android-${TARGET_SDK}
-    - android-26
-    - android-22
-    - build-tools-${BUILD_TOOLS_VERSION}
-    - extra-android-m2repository
+#android:
+#  components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/tree/9c6cd11
+#    - tools
+#    - platform-tools
+#    - tools
+#    - android-${TARGET_SDK}
+#    - android-26
+#    - android-22
+#    - build-tools-${BUILD_TOOLS_VERSION}
+#    - extra-android-m2repository
 
 
 before_install:
-#  - export EMULATOR="system-images;android-${API};${TAG};${ABI}" # Used to install/create emulator
-#  - echo 'count=0' > /home/travis/.android/repositories.cfg # Avoid warning
   - openssl aes-256-cbc -K $encrypted_923bf72da533_key -iv $encrypted_923bf72da533_iv -in ci/secrets.tar.enc -out ci/secrets.tar -d
   - tar xvf ci/secrets.tar
   - chmod +x gradlew
   - chmod +x ci/init_emulator.sh
 
 before_script:
-  - android-update-sdk --components=sys-img-$ABI-$EMULATOR_SDK --accept-licenses='android-sdk-license-[0-9a-f]{8}'
-  - mkdir -p $ANDROID_HOME/licenses
-  - ls $ANDROID_HOME || true
-  - ls $ANDROID_HOME/licences || true
-  - touch $ANDROID_HOME/licenses/android-sdk-license
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_HOME/licenses/android-sdk-license"
-  #- yes | sdkmanager --licenses
-  - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-${API};default;${ABI}' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
+  - curl -L $ANDROID_TOOLS_URL -o $HOME/tools.zip
+  - unzip -oq $HOME/tools.zip -d $ANDROID_HOME
+  - mkdir $ANDROID_HOME/licenses
+  - echo -ne "\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_HOME/licenses/android-sdk-license
+  - echo -ne "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" >> $ANDROID_HOME/licenses/android-sdk-preview-license
+  - touch $HOME/.android/repositories.cfg
+  - $ANDROID_HOME/tools/bin/sdkmanager tools > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager platform-tools > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'emulator' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'system-images;android-22;default;armeabi-v7a' > /dev/null
+  # Create and start emulator as early as possible
+  - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-22;default;armeabi-v7a' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
   - $ANDROID_HOME/emulator/emulator -avd test -skin 768x1280 -no-audio -no-window &
-#  - echo no | android create avd --force -n test -t $EMULATOR_SDK --abi $ABI --sdcard 128M -s "768x1280"
-#  - emulator -avd test -no-audio -no-window &
+  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;27.0.2' >  /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-26' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-22' > /dev/null # for emulator
+  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services' > /dev/null
   - ./gradlew --stacktrace clean build
   - android-wait-for-emulator
   - ./ci/init_emulator.sh
 
 script:
+  - ./gradlew --stacktrace clean
+  - ./gradlew --stacktrace assemble
+  - ./gradlew --stacktrace check
   - ./gradlew --stacktrace jacocoTestReport
-  - travis_wait 60 ./gradlew --stacktrace connectedCheck
+  - travis_wait 60 ./gradlew --stacktrace spoonInternalDebugAndroidTest
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - ls app/build
