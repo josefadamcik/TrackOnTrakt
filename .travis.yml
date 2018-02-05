@@ -14,62 +14,84 @@ notifications:
       on_success: always # default: change
       on_failure: always # default: always
 
-before_cache:
-  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
-  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/classAnalysis/classAnalysis.lock
-  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/jarSnapshots/jarSnapshots.lock
+
 
 cache:
   directories:
-    - ${TRAVIS_BUILD_DIR}/gradle/caches/
-    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/dists/
+    - $HOME/.cache/ci-support
+    - $HOME/.cache/lint
+    - $HOME/.cache/ndk
+before_cache:
+  - find $HOME/.gradle -name "*.lock" -exec rm {} \;
+  - rm -rf $HOME/.gradle/caches/[1-9]*
+
+#before_cache:
+#  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/modules-2/modules-2.lock # Avoid to repack it due locks
+#  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/classAnalysis/classAnalysis.lock
+#  - rm -f ${TRAVIS_BUILD_DIR}/gradle/caches/3.3/jarSnapshots/jarSnapshots.lock
+#cache:
+#  directories:
+#    - ${TRAVIS_BUILD_DIR}/gradle/caches/
+#    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
 
 env:
   global:
     - TARGET_SDK=27
-    - BUILD_TOOLS_VERSION=27.0.2
+#    - BUILD_TOOLS_VERSION=27.0.2
+    - ANDROID_TOOLS_URL="https://dl.google.com/android/repository/tools_r25.2.3-linux.zip"
   matrix:
     - EMULATOR_SDK=android-22 ABI=armeabi-v7a
 
-android:
-  components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/tree/9c6cd11
-    - tools
-    - platform-tools
-    - tools
-    - android-${TARGET_SDK}
-    - android-26
-    - android-22
-    - build-tools-${BUILD_TOOLS_VERSION}
-    - extra-android-m2repository
+#android:
+#  components: # Cookbooks version: https://github.com/travis-ci/travis-cookbooks/tree/9c6cd11
+#    - tools
+#    - platform-tools
+#    - tools
+#    - android-${TARGET_SDK}
+#    - android-26
+#    - android-22
+#    - build-tools-${BUILD_TOOLS_VERSION}
+#    - extra-android-m2repository
 
 
 before_install:
-#  - export EMULATOR="system-images;android-${API};${TAG};${ABI}" # Used to install/create emulator
-#  - echo 'count=0' > /home/travis/.android/repositories.cfg # Avoid warning
   - openssl aes-256-cbc -K $encrypted_923bf72da533_key -iv $encrypted_923bf72da533_iv -in ci/secrets.tar.enc -out ci/secrets.tar -d
   - tar xvf ci/secrets.tar
   - chmod +x gradlew
   - chmod +x ci/init_emulator.sh
 
 before_script:
-  - android-update-sdk --components=sys-img-$ABI-$EMULATOR_SDK --accept-licenses='android-sdk-license-[0-9a-f]{8}'
-  - mkdir -p $ANDROID_HOME/licenses
-  - ls $ANDROID_HOME || true
-  - ls $ANDROID_HOME/licences || true
-  - touch $ANDROID_HOME/licenses/android-sdk-license
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_HOME/licenses/android-sdk-license"
-  #- yes | sdkmanager --licenses
-  - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-${API};default;${ABI}' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
+  - curl -L $ANDROID_TOOLS_URL -o $HOME/tools.zip
+  - unzip -oq $HOME/tools.zip -d $ANDROID_HOME
+  - echo -ne "\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" >> $ANDROID_HOME/licenses/android-sdk-license
+  - echo -ne "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" >> $ANDROID_HOME/licenses/android-sdk-preview-license
+  - touch $HOME/.android/repositories.cfg
+  - $ANDROID_HOME/tools/bin/sdkmanager tools > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager platform-tools > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'emulator' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'system-images;android-22;default;armeabi-v7a' > /dev/null
+  # Create and start emulator as early as possible
+  - $ANDROID_HOME/tools/bin/avdmanager create avd --force --name test --package 'system-images;android-22;default;armeabi-v7a' --abi armeabi-v7a --device 'Nexus 4' --sdcard 128M
   - $ANDROID_HOME/emulator/emulator -avd test -skin 768x1280 -no-audio -no-window &
-#  - echo no | android create avd --force -n test -t $EMULATOR_SDK --abi $ABI --sdcard 128M -s "768x1280"
-#  - emulator -avd test -no-audio -no-window &
+  - $ANDROID_HOME/tools/bin/sdkmanager 'build-tools;${BUILD_TOOLS_VERSION}' >  /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-26' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'platforms;android-22' > /dev/null # for emulator
+  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services' > /dev/null
+  - $ANDROID_HOME/tools/bin/sdkmanager ndk-bundle > /dev/null
   - ./gradlew --stacktrace clean build
   - android-wait-for-emulator
   - ./ci/init_emulator.sh
 
 script:
+  - ./gradlew --stacktrace clean
+  - ./gradlew --stacktrace assemble
+  - ./gradlew --stacktrace check
   - ./gradlew --stacktrace jacocoTestReport
+  - ./gradlew --stacktrace connectedCheck
   - travis_wait 60 ./gradlew --stacktrace connectedCheck
 
 after_success:
