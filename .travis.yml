@@ -26,7 +26,8 @@ addons:
       - app/build/reports
       - app/build/jacoco
       - app/build/test-results
-    debug: true
+      - app/build/spoon-output
+    debug: false
 
 
 cache:
@@ -109,3 +110,4 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - ls app/build
