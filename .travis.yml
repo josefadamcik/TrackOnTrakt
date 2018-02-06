@@ -16,6 +16,11 @@ notifications:
 
 addons:
   artifacts:
+    bucket: artifacts-trackontrakt
+    key:
+      secure: "coc2HL4MV8sYutu8ZoEJpkm5uDb7O5ifsstVhcA5QGaQCMO0JDotYRjnh1gDQKaRSRrKXTAU1ylXD6OQM3CIZz7a/YQOuKYSioITbRknkyY5pWBBPNQVvgebfNNIRQovJcxzDDr/215B92JgctsUHD9UZkMFdNB+z7tGk0M7Dyi9bq0R2TFpMENwEnFzS5OPnFo/zTxg5fZI+818O8kk3OFNaICLTdE5LH1vOy5dd2bzAacCctrUwcyjurhPWeEsffScS+KtQoyh0yKEsd1jZKWK16HA0e8D4bJ4xYif2S4NZEi/mydBGHx9YSSzT/eyfgjuM3Bip1leGohTuUtzMqNJw4brd7v198ur9pFq4np76PW1FZ7/Sti0goFj5+NAwCqyyBH8cN3UH6No4uppHnRhHax85xBV9erM6rjZVfQnqyZQ9g64Svl93JI59PaUf6EBmsWwubZjSk51JCIo0pnXu3GYel/yrO0vNUhEbwCEbeXO0Z+FaO33NhbI2guUKbgc9GfOkBt2xhPT5t/+WNSUu2fLabtgfeCAFSHx19xx8RwiBNtkhL0ifnGEyAe/m+Wb55X0E0BklDKw8glIwTGUbtjZ5Uy06lRy37vqRW0yJglHcg9QOB5dLmK8DdhV3RdKxF8hl1xnc/BBi3gwQtv1WOYmyQmCEDybNDFcBPk="
+    secret:
+      secure: "Obya+/8PSf771p6P+6VujLPNLouGJig7bJxudkV82SaB2n4L7mRZJYwj1MXyKa5oe5HuSKlD4dGqSszeBdMZnCyAF2KoXNrRlQfdliVcR5nSMWtlFdA9qOLBmYZxUjSbOKtJP8GPR1VxiVcMVOrZPd8QPr6Y4vgdJx+/kgcVqSFYW5O3pRGEX4qlsvOOhy4g3ktVcFbb91iAyCLIyEIhkSkUj/1cfdIjrh9XaMEpyIZ5AesUFZ2kDMRyYYNepVakqMVTaZXdgfdKzEAfg0iMFhGahuZ1mHkFYvDAGDNniTMl3VM0RzxoD8XHHvo2pf3Gtu1OzncbG+ly1n0/jTk+pHG9FZH3kJkGujYyGTJhP+UHrkoOD9yFItsliqzEaZ0Vaq+/p2ymkqM5UgwIZH/SnULsaFw2BX93SJAkMQLJll1eOAqyPlJi/Z/2waerlj3PSsnLSkMSRw1iGelr/Yb7cY+o5ls8o7mUGqGjLaZJ3i25MW8lYRvtaRKSsf/jRk0imjfKMefDHEF+JUTk5jbtQp5mF8NNx9CFZKzs669EaJnqDWWQmyBu/V0kMNUtFDxAD2aCK8SuKVjKb0OD6MJJwaxwePn4alHWajHczIXG7oKVsrrfYQ0gCyB7xNbbD88jHq8hQH8SZfXGQ3k942elbcjjuHTFLp0bzlxzfbZgb1I="
     paths:
       - app/build/outputs
       - app/build/reports
@@ -23,10 +28,6 @@ addons:
       - app/build/test-results
     debug: true
 
-#    bucket: artifacts-trackontrakt
-#    key: ii
-#    secret: ee
-#    s3_region: "eu-west-1"
 
 cache:
   directories:
