@@ -6,7 +6,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.espresso.Espresso
 import android.support.test.espresso.base.DefaultFailureHandler
 import android.support.test.espresso.intent.rule.IntentsTestRule
-import com.squareup.spoon.Spoon
+import com.squareup.spoon.SpoonRule
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
@@ -18,6 +18,7 @@ class ComponentActivityTestRule<T : Activity>(
     initialTouchMode: Boolean = true,
     launchActivity: Boolean = false
 ) : IntentsTestRule<T>(activityClass, initialTouchMode, launchActivity) {
+    public val spoon = SpoonRule()
 
     override fun beforeActivityLaunched() {
         super.beforeActivityLaunched()
@@ -25,14 +26,23 @@ class ComponentActivityTestRule<T : Activity>(
     }
 
     override fun apply(base: Statement, description: Description): Statement {
+        spoon.apply(base, description)
         val testClassName = description.className
         val testMethodName = description.methodName
         val context = InstrumentationRegistry.getTargetContext()
         Espresso.setFailureHandler { throwable, matcher ->
-            Spoon.screenshot(activity, "Failure", testClassName, testMethodName);
+            spoon.screenshot(activity, "failure");
             DefaultFailureHandler(context).handle(throwable, matcher)
         }
+
         return super.apply(base, description)
     }
+
+    override fun afterActivityLaunched() {
+        super.afterActivityLaunched()
+        spoon.screenshot(activity, "launched")
+    }
+
+    fun screenshot(s: String) { spoon.screenshot(activity, s) }
 }
 

@@ -14,7 +14,19 @@ notifications:
       on_success: always # default: change
       on_failure: always # default: always
 
+addons:
+  artifacts:
+    paths:
+      - app/build/outputs
+      - app/build/reports
+      - app/build/jacoco
+      - app/build/test-results
+    debug: true
 
+#    bucket: artifacts-trackontrakt
+#    key: ii
+#    secret: ee
+#    s3_region: "eu-west-1"
 
 cache:
   directories:
@@ -41,6 +53,7 @@ env:
     - TARGET_SDK=27
     - BUILD_TOOLS_VERSION=27.0.2
     - ANDROID_TOOLS_URL="https://dl.google.com/android/repository/tools_r25.2.3-linux.zip"
+    - ADB_INSTALL_TIMEOUT=8
   matrix:
     - EMULATOR_SDK=android-22 ABI=armeabi-v7a
 
@@ -82,7 +95,6 @@ before_script:
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services' > /dev/null
-  - $ANDROID_HOME/tools/bin/sdkmanager ndk-bundle > /dev/null
   - ./gradlew --stacktrace clean build
   - android-wait-for-emulator
   - ./ci/init_emulator.sh
@@ -92,8 +104,7 @@ script:
   - ./gradlew --stacktrace assemble
   - ./gradlew --stacktrace check
   - ./gradlew --stacktrace jacocoTestReport
-  - ./gradlew --stacktrace connectedCheck
-  - travis_wait 60 ./gradlew --stacktrace connectedCheck
+  - travis_wait 60 ./gradlew --stacktrace spoonInternalDebugAndroidTest
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
