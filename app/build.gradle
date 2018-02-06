@@ -300,7 +300,7 @@ gradle.buildFinished { buildResult ->
 spoon {
     // for debug output
     debug = true
-    codeCoverage = false
+    codeCoverage = true
     shard = false
     adbTimeout = 10
     ignoreFailures = true
