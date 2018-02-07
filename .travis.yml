@@ -101,8 +101,8 @@ before_script:
 script:
   - ./gradlew --stacktrace assemble
   - ./gradlew --stacktrace check
-  - ./gradlew --stacktrace jacocoTestReport
-  - travis_wait 60 ./gradlew --stacktrace spoonInternalDebugAndroidTest
+  - ./gradlew --stacktrace jacocoUnitTestReport
+  - travis_wait 60 ./gradlew --stacktrace jacocoSpoonTestReport
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

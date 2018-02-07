@@ -218,6 +218,7 @@ dependencies {
         transitive = true;
     }
 
+
     //basic utils
     implementation 'com.jakewharton.timber:timber:4.5.1'
     implementation 'com.github.yongjhih.kxdate:kxdate-threetenbp-android:-SNAPSHOT'
@@ -304,6 +305,7 @@ spoon {
     shard = false
     adbTimeout = 10
     ignoreFailures = true
+    singleInstrumentationCall = true
 }
 
 

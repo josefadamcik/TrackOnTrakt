@@ -5,7 +5,26 @@ jacoco {
     reportsDir = file("$buildDir/reports")
 }
 
-task jacocoTestReport(type: JacocoReport, dependsOn: "testInternalDebugUnitTest") {
+// what to exclude from coverage report
+// UI, "noise", generated classes, platform classes, etc.
+def excludes = [
+        '**/R.class',
+        '**/R$*.class',
+        '**/*$ViewInjector*.*',
+        '**/BuildConfig.*',
+        '**/Manifest*.*',
+        '**/*Test*.*',
+        'android/**/*.*'
+]
+
+def unitExcludes = [
+        '**/*Fragment.*',
+        '**/*Activity.*'
+
+]
+unitExcludes.addAll(excludes)
+
+task jacocoUnitTestReport(type: JacocoReport, dependsOn: "testInternalDebugUnitTest") {
     group = "Reporting"
     description = "Generate Jacoco coverage reports for Debug build"
 
@@ -16,20 +35,37 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testInternalDebugUnitTest"
 
     // what to exclude from coverage report
     // UI, "noise", generated classes, platform classes, etc.
-    def excludes = [
-            '**/R.class',
-            '**/R$*.class',
-            '**/*$ViewInjector*.*',
-            '**/BuildConfig.*',
-            '**/Manifest*.*',
-            '**/*Test*.*',
-            'android/**/*.*',
-            '**/*Fragment.*',
-            '**/*Activity.*'
-    ]
+
     // generated classes
     classDirectories = fileTree(
-            dir: "$buildDir/intermediates/classes/internalDebug",
+            dir: "$buildDir/intermediates/classes/internal/debug",
+            excludes: unitExcludes
+    ) + fileTree(
+            dir: "$buildDir/tmp/kotlin-classes/internalDebug",
+            excludes: unitExcludes
+    )
+
+    // sources
+    sourceDirectories = files([
+            android.sourceSets.main.java.srcDirs
+    ])
+    executionData = files("$buildDir/jacoco/testInternalDebugUnitTest.exec" )
+}
+
+
+task jacocoSpoonTestReport(type: JacocoReport, dependsOn: "spoonInternalDebugAndroidTest") {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports for Spoon Debug build"
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+
+    // generated classes
+    classDirectories = fileTree(
+            dir: "$buildDir/intermediates/classes/internal/debug",
             excludes: excludes
     ) + fileTree(
             dir: "$buildDir/tmp/kotlin-classes/internalDebug",
@@ -38,8 +74,7 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testInternalDebugUnitTest"
 
     // sources
     sourceDirectories = files([
-            android.sourceSets.main.java.srcDirs,
-            "src/main/kotlin"
+            android.sourceSets.main.java.srcDirs
     ])
-    executionData = files("$buildDir/jacoco/testInternalDebugUnitTest.exec")
+    executionData = files("$buildDir/spoon-output/internalDebug/coverage/merged-coverage.ec" )
 }
