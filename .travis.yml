@@ -22,12 +22,12 @@ addons:
     secret:
       secure: "Obya+/8PSf771p6P+6VujLPNLouGJig7bJxudkV82SaB2n4L7mRZJYwj1MXyKa5oe5HuSKlD4dGqSszeBdMZnCyAF2KoXNrRlQfdliVcR5nSMWtlFdA9qOLBmYZxUjSbOKtJP8GPR1VxiVcMVOrZPd8QPr6Y4vgdJx+/kgcVqSFYW5O3pRGEX4qlsvOOhy4g3ktVcFbb91iAyCLIyEIhkSkUj/1cfdIjrh9XaMEpyIZ5AesUFZ2kDMRyYYNepVakqMVTaZXdgfdKzEAfg0iMFhGahuZ1mHkFYvDAGDNniTMl3VM0RzxoD8XHHvo2pf3Gtu1OzncbG+ly1n0/jTk+pHG9FZH3kJkGujYyGTJhP+UHrkoOD9yFItsliqzEaZ0Vaq+/p2ymkqM5UgwIZH/SnULsaFw2BX93SJAkMQLJll1eOAqyPlJi/Z/2waerlj3PSsnLSkMSRw1iGelr/Yb7cY+o5ls8o7mUGqGjLaZJ3i25MW8lYRvtaRKSsf/jRk0imjfKMefDHEF+JUTk5jbtQp5mF8NNx9CFZKzs669EaJnqDWWQmyBu/V0kMNUtFDxAD2aCK8SuKVjKb0OD6MJJwaxwePn4alHWajHczIXG7oKVsrrfYQ0gCyB7xNbbD88jHq8hQH8SZfXGQ3k942elbcjjuHTFLp0bzlxzfbZgb1I="
     paths:
-      - app/build/
-#      - app/build/outputs
-#      - app/build/reports
-#      - app/build/jacoco
-#      - app/build/test-results
-#      - app/build/spoon-output
+#      - app/build/
+      - app/build/outputs
+      - app/build/reports
+      - app/build/jacoco
+      - app/build/test-results
+      - app/build/spoon-output
     debug: false
 
 
@@ -103,7 +103,6 @@ before_script:
   - ./ci/init_emulator.sh
 
 script:
-  - ./gradlew --stacktrace clean
   - ./gradlew --stacktrace assemble
   - ./gradlew --stacktrace check
   - ./gradlew --stacktrace jacocoTestReport
