@@ -90,13 +90,6 @@ class MediaDetailManager @Inject constructor(
             }
     }
 
-    fun loadShowLastEpisode(showId: Long): Single<Response<Episode>> {
-        return traktApi.showLastEpisode(tokenHolder.httpAuth(), showId)
-            .subscribeOn(Schedulers.io())
-            .doOnError({ Timber.e(it, "loadShowLastEpisode error") })
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
     fun loadShowSeasons(showId: Long): Single<List<Season>> {
         return loadShowSeasonsInner(showId)
             .observeOn(AndroidSchedulers.mainThread())
@@ -122,27 +115,6 @@ class MediaDetailManager @Inject constructor(
                 }
                 seasons
             }
-    }
-
-    fun loadShowSeasonsWithEpisodes(showId: Long): Single<MutableList<Season>> {
-        return loadShowSeasonsInner(showId)
-            .flatMapObservable { list -> Observable.fromIterable(list) }
-            .flatMapSingle { season: Season ->
-                Single.zip(
-                    traktApi.showSeasonEpisodes(tokenHolder.httpAuth(), showId, season.number, TraktApi.ExtendedInfo.full),
-                    Single.just(season),
-                    BiFunction { t1: Response<List<Episode>>, t2: Season -> Pair(t1, t2) }
-                )
-            }
-            .map { pair ->
-                if (!pair.first.isSuccessful) {
-                    throw ApiException("Unable to load data for season ${pair.second.number}, ${pair.first.code()} ${pair.first.message()}", pair.first.code(), pair.first.message())
-                }
-                pair
-            }
-            .map { pair -> pair.second.copy(episodes = pair.first.body()) }
-            .toList()
-            .observeOn(AndroidSchedulers.mainThread())
     }
 
     fun loadEpisodesForSeasons(showId: Long, seasons: List<Season>): Observable<SeasonWithProgress> {

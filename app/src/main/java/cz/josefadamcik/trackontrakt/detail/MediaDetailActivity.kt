@@ -31,7 +31,6 @@ import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
 import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
-import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
 import cz.josefadamcik.trackontrakt.util.tint
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar
 import org.threeten.bp.LocalDateTime
@@ -106,16 +105,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     }
 
     private fun initList() {
-        val roundedBackgroundSpanConfig = RoundedBackgroundSpan.Config(
-            backgroundColor = otherBgColor,
-            textColor = otherColor,
-            cornerRadius = halfGridStep,
-            horizontalInnerPad = 2 + halfGridStep,
-            verticalInnerPad = halfGridStep,
-            verticalOuterPad = halfGridStep
-
-        )
-        adapter = MediaDetailAdapter(LayoutInflater.from(this), resources, this, this, roundedBackgroundSpanConfig)
+        adapter = MediaDetailAdapter(LayoutInflater.from(this), resources, this, this)
         list.layoutManager = LinearLayoutManager(this)
 
         //list.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))

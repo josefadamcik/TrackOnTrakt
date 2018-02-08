@@ -19,7 +19,6 @@ import butterknife.ButterKnife
 import butterknife.OnClick
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.data.api.model.EpisodeWithProgress
-import cz.josefadamcik.trackontrakt.util.RoundedBackgroundSpan
 import cz.josefadamcik.trackontrakt.util.isEllipsized
 import cz.josefadamcik.trackontrakt.util.tint
 
@@ -28,8 +27,7 @@ class MediaDetailAdapter(
     private val inflater: LayoutInflater,
     private val resources: Resources,
     private val context: Context,
-    private val listener: InteractionListener,
-    private val roundedSpanConfig: RoundedBackgroundSpan.Config
+    private val listener: InteractionListener
 
 ) : RecyclerView.Adapter<MediaDetailAdapter.ViewHolder>() {
 
