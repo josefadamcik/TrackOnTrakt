@@ -3,14 +3,11 @@ ext {
     minSdkVersion = 21
     targetSdkVersion = 26
     compileSdkVersion = 27
-    buildToolsVersion = '27.0.2'
     supportLibraryVersion = '26.1.0'
 }
 
 buildscript {
-    ext.kotlin_version = '1.2.10'
-    //1.2.10-release-Studio3.0-1
-
+    ext.kotlin_version = '1.2.21'
     repositories {
         jcenter()
         google()
@@ -20,6 +17,8 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'org.ow2.asm:asm:6.0' //workaround for a conflict between jacoco and fabric, see https://github.com/jacoco/jacoco/issues/639
+        classpath 'org.jacoco:org.jacoco.core:0.8.0'
         // We recommend changing it to the latest version from our changelog:
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
         classpath 'io.fabric.tools:gradle:1.25.1'
@@ -30,8 +29,8 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        maven { url "https://jitpack.io" }
-        maven {url "https://clojars.org/repo/"}
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://clojars.org/repo/' }
         maven { url 'https://maven.fabric.io/public' }
         google()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // For Spoon snapshot, until 2.0.0 is released
