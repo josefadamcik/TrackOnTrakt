@@ -1,2 +1,5 @@
 trakt.clientid=xxx
 trakt.clientsecret=yy
+playstore.upload_key=keyalias
+playstore.upload_store_password=storepassword
+playstore.upload_key_password=keypassword
