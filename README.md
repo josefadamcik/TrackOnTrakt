@@ -1,14 +1,16 @@
 # TrackOnTrakt
 
-Android application for tracking watched movies and shows on [trakt.tv](https://trakt.tv)
- 
+Android application for tracking of your watched movies and shows on [trakt.tv](https://trakt.tv)
+You need a trakt.tv account in order to use it.
+
+
 [![Build Status](https://travis-ci.org/josefadamcik/TrackOnTrakt.svg?branch=master)](https://travis-ci.org/josefadamcik/TrackOnTrakt)
 [![codecov](https://codecov.io/gh/josefadamcik/TrackOnTrakt/branch/master/graph/badge.svg)](https://codecov.io/gh/josefadamcik/TrackOnTrakt)
 
 ## Motivation
 
-Main motivation is to develop nontrivial application where I can experiment with some technologies 
-and practices I'd like to try. The application can also serve as my personal reference project. 
+Main motivation is to develop a nontrivial application, where I can experiment with some technologies 
+and practices, I'd like to try. The application can also serve as my personal reference project. 
 
 
 ## Setup
