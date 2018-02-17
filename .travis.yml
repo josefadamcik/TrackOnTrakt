@@ -110,3 +110,13 @@ after_success:
 
 after_failure:
   - ./ci/prepare_artifacts.sh
+
+
+deploy:
+  provider: releases
+  api_key:
+    secure: qYQy7hED/J9CFhqScrs997I2p1QXEqbTpiX7TI3cSd5EPaBVCkfLDi3m/MnFQG13c+HWHg980EUH2WNZfst2CQnUTcWbQedWqtLYTZRBRGXgyohxLUBYiWbxLqfnTALr2xaCuUQ1y7tq4NAP2+G7oUrSm5lbKAyUXFV5mi9qnKMb4vk0CxG7JhdKBsV59ZDgjbgO3aAR6H5BxN55DGlk74k1sYJZX3EmBGqQfBubjZl8GYXtnrY0j/VsisUh3mM3K6zC6wzsoop2Bu4QbJDkmKFsnoeQ4C4ny7842hnXAFSlvonxHexwsGceqZbT8BwuVclg3hGlIxmIsFdMs0vey8gqaYwlLb3eOaZyN2ctQMK/t6Zu12uQ+w7N1gjf1H1YEYsaj5g0RpaVtz6BweiqyPGlXXj091Jf+8k3eg4eIGKdq5At/49bZjjryQh3KZdbxi+xygk37ZuHSVJFq8A/ZqJHwwmifMWbLVgBncf4jEZ4g7gQ5mrWT7MHAoPmSCWengv220QYDQ9ewIPSKoIB2yX4FLEoaXtEhAkLxCtZJEOfuA5+skLksluwe427XdVeoUu8bGtMuzDtlSWmEZDVx8a8jl8FnkwhjBr9WTntk+WeXJvH/MdH3yQp0gGsdo8IgP8qzjz1TueGccdABwh90t9eMVFrflFfvWRX4BIkSdc=
+  file: app/build/outputs/apk/release/app-release.apk
+  on:
+    repo: josefadamcik/TrackOnTrakt
+    tags: true
