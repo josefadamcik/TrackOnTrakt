@@ -25,23 +25,24 @@ class TraktAuthPresenter @Inject constructor(
             val code = uriQueryParamParser.getUriParam(url, "code")
             if (code != null) {
                 Timber.d("auth code: %s", code)
+                disposables.add(
+                        authorizationProvider.requestAuthToken(code)
+                                .subscribe(
+                                        { res ->
+                                            if (res.success && res.token != null) {
+                                                view?.hideProgress()
+                                                view?.continueNavigation()
+                                            } else {
+                                                onError()
+                                            }
+                                        },
+                                        { t -> onError() }
+                                )
+                )
+                return true
             }
 
-            disposables.add(
-                authorizationProvider.requestAuthToken(url)
-                    .subscribe(
-                        { res ->
-                            if (res.success && res.token != null) {
-                                view?.hideProgress()
-                                view?.continueNavigation()
-                            } else {
-                                onError()
-                            }
-                        },
-                        { t -> onError() }
-                    )
-            )
-            return true
+
         }
         return false
     }

@@ -15,7 +15,8 @@ class TraktAuthPresenterTest {
         //given
         val tokenHolder = givenTokenHolderWithoutToken()
         val authProvider = givenAuthProvider()
-        val presenter = givenPresenter(authProvider, tokenHolder)
+        val code = "testcode"
+        val presenter = givenPresenter(authProvider, tokenHolder, code)
 
         //when
         presenter.attachView(view)
@@ -47,8 +48,9 @@ class TraktAuthPresenterTest {
         //given
         val tokenHolder = givenTokenHolderWithoutToken()
         val authProvider = givenAuthProvider()
-        val presenter = givenPresenter(authProvider, tokenHolder)
-        val url = "url"
+        val code = "testcode"
+        val presenter = givenPresenter(authProvider, tokenHolder, code)
+        val url = "mysecheme://myurl?code=$code"
 
         //when
         presenter.attachView(view)
@@ -59,7 +61,7 @@ class TraktAuthPresenterTest {
         assertTrue("browser loading overriden", overriden)
         verify(view).showProgress()
         verify(view).requestLoginToTraktInBrowser(any())
-        verify(authProvider).requestAuthToken(url)
+        verify(authProvider).requestAuthToken(code)
         verify(view).continueNavigation()
     }
 
@@ -68,8 +70,9 @@ class TraktAuthPresenterTest {
         //given
         val tokenHolder = givenTokenHolderWithoutToken()
         val authProvider = givenFailingAuthProvider()
-        val presenter = givenPresenter(authProvider, tokenHolder)
-        val url = "url"
+        val code = "testcode"
+        val presenter = givenPresenter(authProvider, tokenHolder, code)
+        val url = "mysecheme://myurl?code=$code"
 
         //when
         presenter.attachView(view)
@@ -80,7 +83,7 @@ class TraktAuthPresenterTest {
         assertTrue("browser loading overriden", overriden)
         verify(view).showProgress()
         verify(view).requestLoginToTraktInBrowser(any())
-        verify(authProvider).requestAuthToken(url)
+        verify(authProvider).requestAuthToken(code)
         verify(view).showErrorView()
         verify(view).showErrorMessageWithRetry(any())
     }
@@ -118,8 +121,8 @@ class TraktAuthPresenterTest {
     private fun givenFailingAuthProvider() = givenAuthProvider(Single.just(TraktAuthorizationResult(false, null)))
 
 
-    private fun givenPresenter(authProvider: AuthorizationProvider, tokenHolder: TraktAuthTokenHolder) =
-        TraktAuthPresenter(authProvider, tokenHolder, givenQueryParamParser("code"))
+    private fun givenPresenter(authProvider: AuthorizationProvider, tokenHolder: TraktAuthTokenHolder, code: String) =
+        TraktAuthPresenter(authProvider, tokenHolder, givenQueryParamParser(code))
 
     private fun givenQueryParamParser(codeParamValue: String) = mock<UriQueryParamParser> {
         on { getUriParam(any(), any()) } doReturn codeParamValue
