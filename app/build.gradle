@@ -16,9 +16,9 @@ static def buildTime() {
 
 // Manifest version information!
 def versionMajor = 0
-def versionMinor = 1
+def versionMinor = 2
 def versionPatch = 0
-def versionBuild = 1 // bump for dogfood builds, public betas, etc.
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
@@ -33,7 +33,6 @@ def traktclientsecret = properties.getProperty('trakt.clientsecret')
 def uploadKey = properties.getProperty('playstore.upload_key')
 def uploadStorePassword = properties.getProperty('playstore.upload_store_password')
 def uploadKeyPassword = properties.getProperty('playstore.upload_key_password')
-
 
 
 android {
@@ -148,11 +147,6 @@ dependencies {
         exclude group: 'org.jetbrains.kotlin' // Only if you already use Kotlin in your project
     }
 
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
-    androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.1'
 
     androidTestImplementation('com.squareup.okhttp3:mockwebserver:3.5.0') {
         exclude module: 'okhttp'
@@ -179,7 +173,11 @@ dependencies {
     androidTestImplementation 'commons-io:commons-io:2.5'
     //androidTestImplementation "com.squareup.spoon:spoon-client:1.5.6"
     androidTestImplementation "com.squareup.spoon:spoon-client:2.0.0-SNAPSHOT" // For Spoon snapshot, until 2.0.0 is released
-    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:2.2.2', {
+    androidTestImplementation("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion", {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-v4'
         exclude group: 'com.android.support', module: 'design'
