@@ -59,7 +59,7 @@ class MediaDetailAdapter(
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): MediaDetailAdapter.ViewHolder {
         return when (viewType) {
             RowItemModel.VIEWTYPE_MEDIA_INFO -> MainInfoViewHolder(inflater.inflate(R.layout.item_media_info, parent, false), listener)
-            RowItemModel.VIEWTYPE_MEDIA_INFO_ROW -> InfoRowViewHolder(inflater.inflate(R.layout.item_media_info_row, parent, false), listener)
+            RowItemModel.VIEWTYPE_MEDIA_INFO_ROW -> InfoRowViewHolder(inflater.inflate(R.layout.item_media_info_row, parent, false))
             RowItemModel.VIEWTYPE_EPISODE -> EpisodeInfoViewHolder(inflater.inflate(R.layout.item_media_info_episode, parent, false))
             RowItemModel.VIEWTYPE_SEASON_HEADER -> SeasonHeaderViewHolder(inflater.inflate(R.layout.item_media_info_season_header, parent, false))
             RowItemModel.VIEWTYPE_NEXT_EPISODE_HEADER -> ViewHolder(inflater.inflate(R.layout.item_media_info_next_episode_separator, parent, false))
@@ -96,7 +96,7 @@ class MediaDetailAdapter(
         }
     }
 
-    inner class InfoRowViewHolder(itemView: View, listener: InteractionListener) : ViewHolder(itemView), View.OnClickListener {
+    inner class InfoRowViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
         public var link: String? = null
         @BindView(R.id.txt_label) lateinit var txtLabel: TextView
         @BindView(R.id.txt_value) lateinit var txtValue: TextView

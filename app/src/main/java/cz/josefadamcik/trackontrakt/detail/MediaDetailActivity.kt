@@ -65,7 +65,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
     private var checkinDialog: MaterialDialog? = null
 
     companion object {
-        public const val PAR_ID = "id"
+        const val PAR_ID = "id"
         public const val PAR_NAME = "name"
         public fun createIntent(context: Context, id: MediaIdentifier, title: String): Intent {
             val intent = Intent(context, MediaDetailActivity::class.java)
@@ -119,7 +119,7 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         StateSaver.saveInstanceState(this, outState);
     }
 
-    @OnClick(R.id.fab) fun onFabClick(view: View) {
+    @OnClick(R.id.fab) fun onFabClick() {
         presenter.checkinActionClicked()
     }
 
@@ -171,8 +171,8 @@ class MediaDetailActivity : BaseActivity<MediaDetailView, MediaDetailPresenter>(
         fab.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
-    override fun itemCheckInactionEnabled(enabled: Boolean) {
-        fab.isEnabled = enabled
+    override fun itemCheckInactionEnabled(visible: Boolean) {
+        fab.isEnabled = visible
     }
 
     override fun showLoading() {

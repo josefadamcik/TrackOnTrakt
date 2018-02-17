@@ -30,7 +30,6 @@ class HistoryListTimeSeparatorAugmenter(private val currentTimeProvider: Current
 
         list.forEach { item ->
             if (item is RowItemModel.HistoryRowItem) {
-                val watched = item.historyItem.watched_at
                 while (!tryToConsumeItemUnderCurrentHeader(item)) {
                     val lastTime = currentRelativeTimeHeader
                     currentRelativeTimeHeader = when (lastTime) {

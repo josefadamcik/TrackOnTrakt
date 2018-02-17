@@ -51,8 +51,8 @@ class HomePresenter @Inject constructor(
                         lastPage = loadingPage
                         loadingPage = -1
                         view?.hideLoading()
-                        val allItems = if (forceRefresh) mutableListOf<HistoryItem>() else loadedHistoryModel.items.toMutableList()
-                        val now = currentTimeProvider.dateTime
+                        val allItems = if (forceRefresh) mutableListOf() else loadedHistoryModel.items.toMutableList()
+                        currentTimeProvider.dateTime
                         allItems.addAll(history.items)
 
                         updateHistoryModel(loadedHistoryModel.copy(
@@ -77,7 +77,7 @@ class HomePresenter @Inject constructor(
 
     private fun removeFirstItemIfDuplicatedInWatching(items: MutableList<HistoryItem>, watching: Watching): List<HistoryItem> {
         return when (watching) {
-            is Watching.Nothing -> items
+            Watching.Nothing -> items
             is Watching.Something -> {
                 if (!items.isEmpty() and items.first().isSameMediaItem(watching)) {
                     items.removeAt(0)

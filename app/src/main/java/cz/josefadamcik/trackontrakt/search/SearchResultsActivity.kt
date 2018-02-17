@@ -46,7 +46,7 @@ class SearchResultsActivity : BaseActivity<SearchResultsView, SearchResultPresen
 
     companion object {
         public const val PAR_FILTER: String = "filter"
-        public fun createIntent(context: Context, query: String, filter: TraktFilter): Intent {
+        public fun createIntent(context: Context, query: String, @Suppress("UNUSED_PARAMETER") filter: TraktFilter): Intent {
             val intent = Intent(context, SearchResultsActivity::class.java)
             intent.action = Intent.ACTION_SEARCH
             intent.putExtra(SearchManager.QUERY, query)

@@ -64,6 +64,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
         unbinder.unbind()
     }
 
+    @Suppress("OverridingDeprecatedMember", "DEPRECATION")
     @SuppressLint("SetJavaScriptEnabled")
     override fun requestLoginToTraktInBrowser(url: String) {
         webview.visibility = VISIBLE
@@ -82,6 +83,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
                 hideProgress()
             }
 
+
             override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
                 super.onReceivedError(view, errorCode, description, failingUrl)
                 Timber.e("webview error: %s %s", errorCode, description)
@@ -98,6 +100,7 @@ class TraktAuthActivity : MvpActivity<TraktAuthView, TraktAuthPresenter>(), Trak
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Timber.d("shouldOverrideUrlLoading %s", url)
                 if (url == null || !presenter.onBrowserRedirected(url)) {
+                    @Suppress("DEPRECATION")
                     return super.shouldOverrideUrlLoading(view, url)
                 } else {
                     return true

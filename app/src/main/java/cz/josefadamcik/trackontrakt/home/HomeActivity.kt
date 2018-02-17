@@ -70,7 +70,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), SwipeRefreshLayout
 
     private fun initList() {
         historyAdapter = HistoryAdapter(LayoutInflater.from(this), this, this, icoTypeMovieDrawable, icoTypeShowDrawable, currentTimeProvider)
-        recyclerView.layoutManager = LinearLayoutManager(this) as RecyclerView.LayoutManager?
+        recyclerView.layoutManager = LinearLayoutManager(this)
 //        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
         recyclerView.setHasFixedSize(true)
 

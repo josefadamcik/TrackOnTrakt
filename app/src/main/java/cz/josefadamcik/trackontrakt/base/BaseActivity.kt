@@ -87,6 +87,7 @@ public abstract class BaseActivity<V : MvpView, P : MvpPresenter<V>> : AppCompat
     }
 
     override fun getMvpView(): V {
+        @Suppress("UNCHECKED_CAST")
         return this as V
     }
 }

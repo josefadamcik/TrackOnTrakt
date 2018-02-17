@@ -26,7 +26,7 @@ class MediaDetailRowItemListFactory() {
             list.add(itemFormInfoRow(string.label_traktpage, drawable.ic_web_black_24dp, traktPage ?: "", traktPage))
         }
 
-        model.nextShowEpisodeToWatch?.let { (season, episode) ->
+        model.nextShowEpisodeToWatch?.let { (_, episode) ->
             list.add(RowItemModel.NextEpisodeHeaderRowItem)
             list.add(RowItemModel.EpisodeRowItem(episode))
         }

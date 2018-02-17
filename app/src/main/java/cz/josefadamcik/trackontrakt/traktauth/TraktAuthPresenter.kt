@@ -36,7 +36,7 @@ class TraktAuthPresenter @Inject constructor(
                                                 onError()
                                             }
                                         },
-                                        { t -> onError() }
+                                        { onError() }
                                 )
                 )
                 return true
