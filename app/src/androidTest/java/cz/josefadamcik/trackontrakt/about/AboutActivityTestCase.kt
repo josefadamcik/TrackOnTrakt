@@ -18,6 +18,8 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class AboutActivityTestCase {
 
+
+
     @get:Rule
     val activityTestRule = activityTestRule<AboutActivity>()
 
@@ -34,6 +36,24 @@ class AboutActivityTestCase {
                 .check(matches(isDisplayed()))
         onView(withText(R.string.about))
                 .check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun clickOnLicences() {
+        //given
+        val appContext = InstrumentationRegistry.getTargetContext()
+
+        //when about is launched
+        val activity = activityTestRule.launchActivity(Intent(appContext, AboutActivity::class.java))
+
+        onView(withId(R.id.licenses))
+                .check(matches(isDisplayed()))
+                .perform(click())
+
+        //check dilaog button and close dialog
+        onView(withId(android.R.id.button1))
+                .check(matches(isDisplayed()))
+                .perform(click());
     }
 
     @Test

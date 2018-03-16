@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
+import butterknife.OnClick
 import cz.josefadamcik.trackontrakt.R
 
 
@@ -18,10 +19,6 @@ class AboutActivity : AppCompatActivity() {
     companion object {
         fun createIntent(context: Context) = Intent(context, AboutActivity::class.java)
     }
-
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,4 +40,19 @@ class AboutActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    @OnClick(R.id.licenses)
+    fun onLicensesClick() {
+        val tag = "dialog_licenes"
+        val ft = fragmentManager.beginTransaction()
+        val prev = fragmentManager.findFragmentByTag(tag)
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+
+        OpenSourceLicensesDialog().show(ft, tag)
+    }
+
+
 }

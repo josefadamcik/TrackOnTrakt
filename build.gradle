@@ -24,6 +24,7 @@ buildscript {
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
         classpath 'io.fabric.tools:gradle:1.25.1'
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.3.0"
+        classpath "com.jaredsburrows:gradle-license-plugin:0.8.41"
     }
 }
 plugins {
