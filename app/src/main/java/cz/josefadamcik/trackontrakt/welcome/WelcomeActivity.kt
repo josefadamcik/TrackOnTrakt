@@ -4,20 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import butterknife.ButterKnife
 import butterknife.OnClick
-import butterknife.Unbinder
-import com.hannesdorfmann.mosby3.mvp.MvpActivity
 import cz.josefadamcik.trackontrakt.R
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
+import cz.josefadamcik.trackontrakt.base.BaseActivity
 import cz.josefadamcik.trackontrakt.home.HomeActivity
 import cz.josefadamcik.trackontrakt.traktauth.TraktAuthActivity
 import javax.inject.Inject
 
 /**
   */
-class WelcomeActivity: MvpActivity<WelcomeView, WelcomePresenter>(), WelcomeView {
+class WelcomeActivity: BaseActivity<WelcomeView, WelcomePresenter>(), WelcomeView {
     @Inject
     lateinit var welcomePresenter: WelcomePresenter
-    private lateinit var unbinder: Unbinder
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as TrackOnTraktApplication).component.inject(this)
@@ -34,11 +32,6 @@ class WelcomeActivity: MvpActivity<WelcomeView, WelcomePresenter>(), WelcomeView
     override fun onStart() {
         super.onStart()
         presenter.start()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        unbinder.unbind()
     }
 
     @OnClick(R.id.login_button)

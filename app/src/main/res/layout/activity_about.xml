@@ -19,7 +19,7 @@
       android:drawableLeft="@mipmap/ic_launcher"
       android:drawablePadding="@dimen/material_baseline_grid_1x"
       android:gravity="center_vertical"
-      android:text="TrackOnTrakt"
+      android:text="@string/app_name"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"/>
