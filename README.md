@@ -6,8 +6,8 @@
 
 ![TrackOnTrakt feature graphics](https://github.com/josefadamcik/TrackOnTrakt/raw/master/feature_graphics.png)
 
-Android application for tracking of your watched movies and shows on [trakt.tv](https://trakt.tv)
-You need a trakt.tv account in order to use it.
+TrackOnTrakt is an opensource Android application for tracking your watched movies and show on  [trakt.tv](https://trakt.tv). You need a trakt.tv account in order to use it.
+
 
 
 ## Motivation
