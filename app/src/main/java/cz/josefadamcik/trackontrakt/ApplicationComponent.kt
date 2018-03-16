@@ -7,6 +7,7 @@ import cz.josefadamcik.trackontrakt.home.HomeActivity
 import cz.josefadamcik.trackontrakt.search.SearchResultsActivity
 import cz.josefadamcik.trackontrakt.traktauth.AuthorizationProvider
 import cz.josefadamcik.trackontrakt.traktauth.TraktAuthActivity
+import cz.josefadamcik.trackontrakt.welcome.WelcomeActivity
 import dagger.Component
 
 @ApplicationScope
@@ -18,6 +19,7 @@ interface ApplicationComponent {
     fun inject(activity: TraktAuthActivity)
     fun inject(activity: SearchResultsActivity)
     fun inject(activity: MediaDetailActivity)
+    fun inject(activity: WelcomeActivity)
 }
 
 

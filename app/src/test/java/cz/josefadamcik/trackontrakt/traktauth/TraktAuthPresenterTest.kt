@@ -2,6 +2,8 @@ package cz.josefadamcik.trackontrakt.traktauth
 
 import com.nhaarman.mockito_kotlin.*
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.givenTokenHolderWithValidToken
+import cz.josefadamcik.trackontrakt.givenTokenHolderWithoutToken
 import cz.josefadamcik.trackontrakt.util.UriQueryParamParser
 import io.reactivex.Single
 import org.junit.Assert.assertTrue
@@ -105,12 +107,7 @@ class TraktAuthPresenterTest {
         verify(view, times(2)).continueNavigation()
     }
 
-    private fun givenTokenHolderWithValidToken(): TraktAuthTokenHolder {
-        return mock<TraktAuthTokenHolder> {
-            on { hasToken() } doReturn true
-            on { expiresSoonerThanDays(any()) } doReturn false
-        }
-    }
+
 
     private fun givenAuthProvider(redirectResult: Single<TraktAuthorizationResult> = Single.just(TraktAuthorizationResult(true, "dummytoken"))) = mock<AuthorizationProvider> {
         on { getOauthAuthorizationUrl() } doReturn "http://example.com"
@@ -128,7 +125,4 @@ class TraktAuthPresenterTest {
         on { getUriParam(any(), any()) } doReturn codeParamValue
     }
 
-    private fun givenTokenHolderWithoutToken(): TraktAuthTokenHolder = mock<TraktAuthTokenHolder> {
-        on { hasToken() } doReturn false
-    }
 }
