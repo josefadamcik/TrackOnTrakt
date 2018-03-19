@@ -2,6 +2,9 @@ package cz.josefadamcik.trackontrakt.welcome
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
+import android.widget.TextView
+import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import cz.josefadamcik.trackontrakt.R
@@ -16,12 +19,14 @@ import javax.inject.Inject
 class WelcomeActivity: BaseActivity<WelcomeView, WelcomePresenter>(), WelcomeView {
     @Inject
     lateinit var welcomePresenter: WelcomePresenter
+    @BindView(R.id.welcomeText) lateinit var welcomeText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         (application as TrackOnTraktApplication).component.inject(this)
         setContentView(R.layout.activity_welcome)
         unbinder = ButterKnife.bind(this)
 
+        welcomeText.movementMethod = LinkMovementMethod.getInstance()
         super.onCreate(savedInstanceState)
     }
 

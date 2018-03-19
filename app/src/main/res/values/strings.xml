@@ -54,5 +54,6 @@
     <string name="about_licences">This application uses various opensource libraries. Tap for more information about their licences.</string>
     <string name="about_licenses_dialog_title">Open source licenses</string>
     <string name="login_button">Login via trakt.tv</string>
+    <string name="welcome_text">TrackOnTrakt is an opensource Android application for tracking your watched movies and shows on the <a href="https://trakt.tv">trakt.tv</a> website. You need a trakt.tv account in order to use it.</string>
 
 </resources>

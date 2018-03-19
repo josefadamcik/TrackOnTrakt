@@ -51,8 +51,6 @@ class WelcomeActivityTestCase {
                 .check(matches(isDisplayed()))
                 .perform(ViewActions.click())
 
-
-
         Intents.intended(Matchers.allOf(IntentMatchers.hasComponent(TraktAuthActivity::class.java.name)))
     }
 

@@ -13,7 +13,6 @@
     android:theme="@style/AppTheme">
     <activity
         android:name=".welcome.WelcomeActivity"
-        android:noHistory="true"
         android:theme="@style/AppTheme.NoActionBar"
         >
       <intent-filter>
