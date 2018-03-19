@@ -71,8 +71,7 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_923bf72da533_key -iv $encrypted_923bf72da533_iv -in ci/secrets.tar.enc -out ci/secrets.tar -d
   - tar xvf ci/secrets.tar
   - chmod +x gradlew
-  - chmod +x ci/init_emulator.sh
-  - chmod +x ci/prepare_artifacts.sh
+  - chmod +x ci/*.sh
 
 before_script:
   - curl -L $ANDROID_TOOLS_URL -o $HOME/tools.zip
@@ -99,9 +98,7 @@ before_script:
   - ./ci/init_emulator.sh
 
 script:
-  - ./gradlew --stacktrace assemble
-  - ./gradlew --stacktrace check
-  - travis_wait 60 ./gradlew --stacktrace jacocoTestReport
+  - ./ci/script.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
