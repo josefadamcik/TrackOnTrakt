@@ -10,6 +10,7 @@ mkdir -p ${SECRETSDIR}"/app"
 cp "app/fabric.properties" ${SECRETSDIR}"/app/"
 cp "keys.properties" ${SECRETSDIR}
 cp "keystore.jks" ${SECRETSDIR}
+cp "play_services_account.p12" ${SECRETSDIR}
 
 cd ${SECRETSDIR}
 tar cvf ../secrets.tar *

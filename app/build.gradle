@@ -7,6 +7,7 @@ apply plugin: 'io.fabric'
 apply from: 'jacoco.gradle'
 apply plugin: "com.jaredsburrows.spoon"
 apply plugin: "com.jaredsburrows.license"
+apply plugin: 'com.github.triplet.play'
 
 static def buildTime() {
     def df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'") // you can change it
@@ -17,7 +18,7 @@ static def buildTime() {
 // Manifest version information!
 def versionMajor = 0
 def versionMinor = 2
-def versionPatch = 1
+def versionPatch = 2
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
 
@@ -38,12 +39,20 @@ def uploadKeyPassword = properties.getProperty('playstore.upload_key_password')
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+
     signingConfigs {
         release {
             storeFile file("../keystore.jks")
             storePassword uploadStorePassword
             keyAlias uploadKey
             keyPassword uploadKeyPassword
+        }
+    }
+
+    playAccountConfigs {
+        defaultAccountConfig {
+            serviceAccountEmail = 'play-publishing-account@api-4802910556474683265-893141.iam.gserviceaccount.com'
+            pk12File = file('../play_services_account.p12')
         }
     }
 
@@ -58,6 +67,7 @@ android {
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        playAccountConfig = playAccountConfigs.defaultAccountConfig
 
 //        vectorDrawables.useSupportLibrary = true
 
