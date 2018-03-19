@@ -13,12 +13,12 @@ TrackOnTrakt is an opensource Android application for tracking your watched movi
 ## Motivation
 
 Main motivation is to develop a nontrivial application, where I can experiment with some technologies 
-and practices, I'd like to try. The application can also serve as my personal reference project. 
+and practices. The application can also serve as my personal reference project. 
 
 
 ## Getting the app
 
-You can download an apk from [Github releases](https://github.com/josefadamcik/TrackOnTrakt/tags).
+You can download an apk from [Github releases](https://github.com/josefadamcik/TrackOnTrakt/releases) or you can [opt-in for Alpha testing](https://play.google.com/apps/testing/cz.josefadamcik.trackontrakt) and [download the latest version from Play Store](https://play.google.com/store/apps/details?id=cz.josefadamcik.trackontrakt).
 
 ## Setup
 

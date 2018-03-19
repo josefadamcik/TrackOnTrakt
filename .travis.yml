@@ -98,7 +98,9 @@ before_script:
   - ./ci/init_emulator.sh
 
 script:
-  - ./ci/script.sh
+  - ./gradlew --stacktrace assemble
+  - ./gradlew --stacktrace check
+  - travis_wait 60 ./ci/script.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
