@@ -16,6 +16,10 @@ Main motivation is to develop a nontrivial application, where I can experiment w
 and practices, I'd like to try. The application can also serve as my personal reference project. 
 
 
+## Getting the app
+
+You can download an apk from [Github releases](https://github.com/josefadamcik/TrackOnTrakt/tags).
+
 ## Setup
 
 Make copy of keys.properties.example file named keys.properties.

@@ -8,6 +8,7 @@ apply from: 'jacoco.gradle'
 apply plugin: "com.jaredsburrows.spoon"
 apply plugin: "com.jaredsburrows.license"
 apply plugin: 'com.github.triplet.play'
+apply plugin: 'org.moallemi.advanced-build-version'
 
 static def buildTime() {
     def df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'") // you can change it
@@ -16,16 +17,27 @@ static def buildTime() {
 }
 
 // Manifest version information!
-def versionMajor = 0
-def versionMinor = 2
-def versionPatch = 2
-def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+
+advancedVersioning {
+    nameOptions {
+        versionMajor 0
+        versionMinor 2
+        versionPatch 3
+    }
+    codeOptions {
+        versionCodeType org.moallemi.gradle.internal.VersionCodeType.AUTO_INCREMENT_DATE
+    }
+    outputOptions { }
+}
+
 
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def gitTimestamp = 'git log -n 1 --format=%at'.execute([], rootDir).text.trim()
 def packagename = "cz.josefadamcik.trackontrakt"
 
+def appVersionName = advancedVersioning.versionName
+def appVersionCode = advancedVersioning.versionCode
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('keys.properties').newDataInputStream())
@@ -34,6 +46,7 @@ def traktclientsecret = properties.getProperty('trakt.clientsecret')
 def uploadKey = properties.getProperty('playstore.upload_key')
 def uploadStorePassword = properties.getProperty('playstore.upload_store_password')
 def uploadKeyPassword = properties.getProperty('playstore.upload_key_password')
+
 
 
 android {
@@ -63,8 +76,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
 
-        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        versionName appVersionName
+        versionCode appVersionCode
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         playAccountConfig = playAccountConfigs.defaultAccountConfig

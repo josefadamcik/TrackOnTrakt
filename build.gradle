@@ -26,6 +26,7 @@ buildscript {
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.3.0"
         classpath "com.jaredsburrows:gradle-license-plugin:0.8.41"
         classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
+        classpath 'org.moallemi.gradle.advanced-build-version:gradle-plugin:1.6.0'
     }
 }
 plugins {
