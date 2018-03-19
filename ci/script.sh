@@ -2,8 +2,8 @@
 
 if [ $TRAVIS_TAG ]; then
   echo "Assembling and publishing release"
-  ./gradlew publishApkRelease
+  ./gradlew --profile --stacktrace  publishApkRelease
 else
   echo "Running Espresso tests"
-  ./gradlew --stacktrace jacocoTestReport
+  ./gradlew --profile --stacktrace jacocoTestReport
 fi

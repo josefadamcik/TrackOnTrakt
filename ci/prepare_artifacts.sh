@@ -12,3 +12,5 @@ for i in "${build_dirs[@]}"
 do
   tar cvjf artifacts/${i}.tar.bz2 app/build/${i}
 done
+
+tar cvjf artifacts/proj_reports.tar.bz2 build/reports

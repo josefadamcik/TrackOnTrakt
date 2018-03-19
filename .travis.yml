@@ -74,6 +74,7 @@ before_install:
   - chmod +x ci/*.sh
 
 before_script:
+  - date
   - curl -L $ANDROID_TOOLS_URL -o $HOME/tools.zip
   - unzip -oq $HOME/tools.zip -d $ANDROID_HOME
   - mkdir $ANDROID_HOME/licenses
@@ -93,22 +94,32 @@ before_script:
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;android;m2repository' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
   - $ANDROID_HOME/tools/bin/sdkmanager 'extras;google;google_play_services' > /dev/null
-  - ./gradlew --stacktrace clean build
+  - date
+  - ./gradlew --stacktrace --profile clean build
+  - date
   - android-wait-for-emulator
   - ./ci/init_emulator.sh
+  - date
 
 script:
-  - ./gradlew --stacktrace assemble
-  - ./gradlew --stacktrace check
+  - date
+  - ./gradlew --stacktrace --profile assemble
+  - date
+  - ./gradlew --stacktrace --profile check
+  - date
   - travis_wait 60 ./ci/script.sh
+  - date
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - date
   - ./ci/prepare_artifacts.sh
-  - ls app/build
+#  - ls app/build
+  - date
 
 after_failure:
   - ./ci/prepare_artifacts.sh
+  - date
 
 
 deploy:
