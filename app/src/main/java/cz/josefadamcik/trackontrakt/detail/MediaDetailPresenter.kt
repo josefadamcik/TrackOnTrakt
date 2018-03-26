@@ -97,7 +97,7 @@ class MediaDetailPresenter @Inject constructor(
                         is CheckinResult.Success -> {
                             view?.showCheckinSuccess()
                             model?.let { it ->
-                                model = applyCheckinOnDataModel(it, request)
+                                model = it.copyWithAppliedCheckin(request, currentTimeProvider)
                                 showModel(model)
                             }
                         }
@@ -108,54 +108,6 @@ class MediaDetailPresenter @Inject constructor(
                 getOnError()
             )
         )
-    }
-
-    private fun applyCheckinOnDataModel(model: MediaDetailModel, request: CheckinWithTime): MediaDetailModel {
-        var episodeFoundAndCompletedStatusChanged = false
-        if (request.subject is CheckinSubject.EpisodeCheckin ) {
-            val requestedEpisode = request.subject.episode
-            val modifiedSeasons = model.seasons.map { season ->
-                if (season.season.number == requestedEpisode.season) {
-                    val modifiedEpisodes = season.episodes.map { e ->
-                        if (e.episode.number == requestedEpisode.number) {
-                            episodeFoundAndCompletedStatusChanged = true;
-                            e.copy(progress = ShowWatchedProgress.EpisodeWatchedProgress(
-                                    e.episode.number,
-                                    true,
-                                    currentTimeProvider.dateTime
-                            ))
-                        } else {
-                            e
-                        }
-                    }
-                    season.copy(episodes = modifiedEpisodes)
-                } else {
-                    season
-                }
-            }
-
-
-            var nextEpisode : Episode? = null
-            modifiedSeasons.forEach { season ->
-                if (!season.season.isSpecials) { //skip specials season
-                    nextEpisode = season.episodes.find { ep -> !ep.progress.completed }?.episode
-                    if (nextEpisode != null) {
-                        return@forEach
-                    }
-                }
-            }
-            return model.copy(
-                    seasons = modifiedSeasons,
-                    showProgress = model.showProgress.copy(
-                            completed = model.showProgress.completed + if (episodeFoundAndCompletedStatusChanged) 1 else 0,
-                            last_watched_at = currentTimeProvider.dateTime,
-                            last_episode = requestedEpisode,
-                            next_episode = nextEpisode
-                    )
-            )
-        } else {
-            return model
-        }
     }
 
     private fun getOnError(): (Throwable?) -> Unit {

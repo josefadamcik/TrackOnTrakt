@@ -6,7 +6,7 @@ buildscript {
         compileSdkVersion = 27
         supportLibraryVersion = '27.0.2'
         espressoVersion = '3.0.2-alpha1'
-        kotlin_version = '1.2.30'
+        kotlin_version = '1.2.31'
     }
 
     repositories {
