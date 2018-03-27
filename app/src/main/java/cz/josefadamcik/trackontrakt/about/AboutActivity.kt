@@ -10,11 +10,14 @@ import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
+import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.R
 
 
 class AboutActivity : AppCompatActivity() {
     @BindView(R.id.info) lateinit var infoText: TextView
+    @BindView(R.id.versionText) lateinit var versionText: TextView
+
 
     companion object {
         fun createIntent(context: Context) = Intent(context, AboutActivity::class.java)
@@ -29,6 +32,7 @@ class AboutActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         infoText.movementMethod = LinkMovementMethod.getInstance()
+        versionText.text = getString(R.string.about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

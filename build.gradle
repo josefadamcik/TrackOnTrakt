@@ -27,6 +27,7 @@ buildscript {
         classpath "com.jaredsburrows:gradle-license-plugin:0.8.41"
         classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
         classpath 'org.moallemi.gradle.advanced-build-version:gradle-plugin:1.6.0'
+        classpath 'com.github.gfx.ribbonizer:ribbonizer-plugin:2.1.0'
     }
 }
 plugins {

@@ -9,6 +9,8 @@ apply plugin: "com.jaredsburrows.spoon"
 apply plugin: "com.jaredsburrows.license"
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'org.moallemi.advanced-build-version'
+apply plugin: 'com.github.gfx.ribbonizer'
+
 
 static def buildTime() {
     def df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'") // you can change it
@@ -22,7 +24,7 @@ advancedVersioning {
     nameOptions {
         versionMajor 0
         versionMinor 2
-        versionPatch 3
+        versionPatch 4
     }
     codeOptions {
         versionCodeType org.moallemi.gradle.internal.VersionCodeType.AUTO_INCREMENT_DATE
