@@ -4,15 +4,15 @@ package cz.josefadamcik.trackontrakt
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import cz.josefadamcik.trackontrakt.util.AndroidUriQueryParamParser
-import cz.josefadamcik.trackontrakt.util.CurrentTimeProvider
-import cz.josefadamcik.trackontrakt.util.CurrentTimeProviderImpl
-import cz.josefadamcik.trackontrakt.util.UriQueryParamParser
+import cz.josefadamcik.trackontrakt.util.*
 import dagger.Module
 import dagger.Provides
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 @Module
-open class ApplicationModule(private val app: TrackOnTraktApplication) {
+open class ApplicationModule(
+        private val app: TrackOnTraktApplication) {
 
     @Provides
     @ApplicationScope
@@ -33,6 +33,13 @@ open class ApplicationModule(private val app: TrackOnTraktApplication) {
     @Provides
     @ApplicationScope
     fun provideUriQueryParamParser(): UriQueryParamParser = AndroidUriQueryParamParser()
+
+    @Provides
+    @ApplicationScope
+    fun provideApiRxSchedulers(): RxSchedulers {
+        return RxSchedulers(Schedulers.io(), AndroidSchedulers.mainThread())
+    }
+
 
     open protected fun createCurrentTimeProvider(): CurrentTimeProvider = CurrentTimeProviderImpl()
 }

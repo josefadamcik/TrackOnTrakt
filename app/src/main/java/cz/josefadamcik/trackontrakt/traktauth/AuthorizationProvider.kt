@@ -4,11 +4,11 @@ package cz.josefadamcik.trackontrakt.traktauth
 
 
 import cz.josefadamcik.trackontrakt.ApplicationScope
-import cz.josefadamcik.trackontrakt.data.api.ApiRxSchedulers
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktApiConfig
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
 import cz.josefadamcik.trackontrakt.data.api.model.OauthTokenRequest
+import cz.josefadamcik.trackontrakt.util.RxSchedulers
 import io.reactivex.Single
 import timber.log.Timber
 import javax.inject.Inject
@@ -20,7 +20,7 @@ constructor(
     private val traktApi: TraktApi,
     private val traktApiConfig: TraktApiConfig,
     private val traktAuthTokenHolder: TraktAuthTokenHolder,
-    private val rxSchedulers: ApiRxSchedulers
+    private val rxSchedulers: RxSchedulers
 ) {
 
 

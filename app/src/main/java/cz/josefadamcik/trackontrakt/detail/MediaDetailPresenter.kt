@@ -11,8 +11,6 @@ class MediaDetailPresenter @Inject constructor(
     private val manager: MediaDetailManager,
     private val currentTimeProvider: CurrentTimeProvider
 ) : BasePresenter<MediaDetailView>() {
-
-    private var identifier: MediaIdentifier? = null
     private var showDetail: ShowDetail? = null
     private var willDoCheckinForSubject: CheckinSubject? = null
     var movieDetail: MovieDetail? = null
@@ -154,26 +152,9 @@ class MediaDetailPresenter @Inject constructor(
                         val seasonsWithProgress = seasons.map { season -> SeasonWithProgress(season = season) }
                         showModel(model?.copy(seasons = seasonsWithProgress))
                         loadEpisodes(showId, seasons)
-//                        loadProgress(showId)
                     },
                     getOnError()
                 )
-
-//            manager.loadShowSeasonsWithEpisodes(showId)
-//                .subscribe(
-//                    { seasons ->
-//                        view?.hideLoading()
-//                        val seasonsWithProgress = seasons.map { season ->
-//                            SeasonWithProgress(
-//                                season = season,
-//                                episodes = season.episodes?.map { ep -> EpisodeWithProgress(ep) } ?: emptyList()
-//                            )
-//                        }
-//                        showModel(model?.copy(seasons = seasonsWithProgress))
-//                        loadProgress(showId)
-//                    },
-//                    getOnError()
-//                )
 
         )
     }
@@ -182,7 +163,8 @@ class MediaDetailPresenter @Inject constructor(
         disposables.add(
                 manager.loadEpisodesForSeasons(showId, seasons)
                         .subscribe(
-                                { seasonWithProgress -> //onNext -> update model and propagate to view
+                                //onNext -> update model and propagate to view
+                                { seasonWithProgress ->
                                     model?.let { model ->
                                         showModel(model.copy(seasons = model.seasons.map { //replace loaded season
                                             if (it.season.ids.trakt == seasonWithProgress.season.ids.trakt) {
@@ -194,7 +176,8 @@ class MediaDetailPresenter @Inject constructor(
                                     }
                                 },
                                 getOnError(),
-                                { //onComplete
+                                //onComplete
+                                {
                                     view?.hideLoading()
                                     loadProgress(showId)
                                 }

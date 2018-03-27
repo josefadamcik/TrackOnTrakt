@@ -9,8 +9,6 @@ import cz.josefadamcik.trackontrakt.BuildConfig
 import cz.josefadamcik.trackontrakt.TrackOnTraktApplication
 import dagger.Module
 import dagger.Provides
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -113,11 +111,6 @@ open class ApiModule(private val app: TrackOnTraktApplication) {
         return createTraktApiConfig()
     }
 
-    @Provides
-    @ApplicationScope
-    fun provideApiRxSchedulers(): ApiRxSchedulers {
-        return ApiRxSchedulers(Schedulers.io(), AndroidSchedulers.mainThread())
-    }
 
 
     protected open fun createOkHttpBuilder(cache: Cache, traktApiConfig: TraktApiConfig): OkHttpClient.Builder {

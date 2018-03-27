@@ -6,16 +6,16 @@ import cz.josefadamcik.trackontrakt.data.api.ApiException
 import cz.josefadamcik.trackontrakt.data.api.TraktApi
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenProvider
 import cz.josefadamcik.trackontrakt.data.api.model.Watching
+import cz.josefadamcik.trackontrakt.util.RxSchedulers
 import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @ApplicationScope
 class UserHistoryManager
 @Inject constructor(
     private val traktApi: TraktApi,
-    private val authTokenProvider: TraktAuthTokenProvider
+    private val authTokenProvider: TraktAuthTokenProvider,
+    private val rxSchedulers: RxSchedulers
 ) {
 
     fun loadWatching(): Single<Watching> {
@@ -23,8 +23,8 @@ class UserHistoryManager
             return Single.error(IllegalStateException("Missing authorisation token"));
         } else {
             return traktApi.watching(authTokenProvider.httpAuth())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(rxSchedulers.subscribe)
+                .observeOn(rxSchedulers.observe)
                 .map { r -> when {
                         r.code() == 204 -> //NotWatchingAnything
                             Watching.Nothing
@@ -40,8 +40,8 @@ class UserHistoryManager
             return Single.error(IllegalStateException("Missing authorisation token"));
         } else {
             return traktApi.myHistory(authTokenProvider.httpAuth(), loadingPage)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(rxSchedulers.subscribe)
+                .observeOn(rxSchedulers.observe)
                 .map { r ->
                     if (r.isSuccessful) {
                         val headers = r.headers()

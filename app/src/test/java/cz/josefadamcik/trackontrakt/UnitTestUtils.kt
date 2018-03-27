@@ -3,13 +3,13 @@ package cz.josefadamcik.trackontrakt
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.doReturn
 import com.nhaarman.mockito_kotlin.mock
-import cz.josefadamcik.trackontrakt.data.api.ApiRxSchedulers
 import cz.josefadamcik.trackontrakt.data.api.TraktAuthTokenHolder
+import cz.josefadamcik.trackontrakt.util.RxSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
 public fun givenTestApiScheduler() =
-    ApiRxSchedulers(Schedulers.trampoline(), Schedulers.trampoline())
+        RxSchedulers(Schedulers.trampoline(), Schedulers.trampoline())
 
 
 public fun givenTokenHolderWithValidToken(): TraktAuthTokenHolder {
