@@ -115,7 +115,8 @@ class MediaDetailModelTest {
         val episodes = (1..epCount).map { Episode(seasonNumber, it, "ep $it", MediaIds(it.toLong())) }
         val season = Season(seasonNumber, MediaIds(1), title = "test", episodes = episodes)
         val episodesWithProg = mapEpisodesToEpisodesWProg(episodes, completedEpCount)
-        val seasonWithProg = SeasonWithProgress(season = season,
+        val seasonWithProg = SeasonWithProgress(
+                season = season,
                 episodes = episodesWithProg,
                 progress = ShowWatchedProgress.SeasonWatchedProgress(seasonNumber, epCount, completedEpCount, episodesWithProg.map { it.progress })
         )

@@ -6,7 +6,7 @@ import cz.josefadamcik.trackontrakt.R.drawable
 import cz.josefadamcik.trackontrakt.R.string
 
 /**
- *
+ * Transforms MediaDetailModel to list of RowItemModels because everything is displayed in a list.
  */
 class MediaDetailRowItemListFactory() {
 
@@ -33,7 +33,7 @@ class MediaDetailRowItemListFactory() {
 
         if (model.seasons.isNotEmpty()) {
             model.seasons.forEach { season ->
-                list.add(RowItemModel.SeasonRowItem(season))
+                list.add(RowItemModel.SeasonRowItem(season, if (season.episodesLoaded) RowItemModel.SeasonRowItemState.Expanded else RowItemModel.SeasonRowItemState.Loading ))
                 season.episodes.mapTo(list, transform = { ep -> RowItemModel.EpisodeRowItem(ep) })
             }
         }

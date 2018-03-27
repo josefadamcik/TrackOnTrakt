@@ -99,7 +99,7 @@ sealed class RowItemModel(val viewType: Int) {
         }
     }
 
-    data class SeasonRowItem(val seasonWithProgress: SeasonWithProgress) : RowItemModel(VIEWTYPE_SEASON_HEADER) {
+    data class SeasonRowItem(val seasonWithProgress: SeasonWithProgress, val state: SeasonRowItemState) : RowItemModel(VIEWTYPE_SEASON_HEADER) {
         override fun bindViewHolder(holder: MediaDetailAdapter.ViewHolder, resources: Resources) {
             if (holder is MediaDetailAdapter.SeasonHeaderViewHolder) {
                 val season = seasonWithProgress.season
@@ -120,8 +120,24 @@ sealed class RowItemModel(val viewType: Int) {
                 } else {
                     holder.txtOverview.visibility = View.GONE
                 }
+
+                holder.icoExpandLess.visibility = View.GONE
+                holder.icoExpandMore.visibility = View.GONE
+                holder.progSeasonLoding.visibility = View.GONE
+
+                when (state) {
+                    SeasonRowItemState.Loading -> holder.progSeasonLoding.visibility = View.VISIBLE
+                    SeasonRowItemState.Expanded -> holder.icoExpandLess.visibility = View.VISIBLE
+                    SeasonRowItemState.Collapsed -> holder.icoExpandMore.visibility = View.VISIBLE
+                }
             }
         }
+    }
+
+    sealed class SeasonRowItemState {
+        object Loading : SeasonRowItemState()
+        object Expanded : SeasonRowItemState()
+        object Collapsed : SeasonRowItemState()
     }
 
 

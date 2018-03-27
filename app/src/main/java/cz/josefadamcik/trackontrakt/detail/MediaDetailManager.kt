@@ -14,6 +14,7 @@ import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
 import retrofit2.Response
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MediaDetailManager @Inject constructor(
@@ -66,6 +67,47 @@ class MediaDetailManager @Inject constructor(
         }
     }
 
+    fun loadShowWatchedProgress(showId: Long): Single<ShowWatchedProgress> {
+        return traktApi.showWatchedProgress(tokenHolder.httpAuth(), showId, specials = true, countSpecials = false)
+                .subscribeOn(rxSchedulers.subscribe)
+                .observeOn(rxSchedulers.observe)
+                .doOnError({ Timber.e(it, "loadShowWatchedProgress error") })
+                .map { t: Response<ShowWatchedProgress> ->
+                    if (!t.isSuccessful)
+                        throw ApiException("Unable to load watched progress", t.code(), t.message())
+                    else t.body()
+                }
+    }
+
+    fun loadShowSeasons(showId: Long): Single<List<Season>> {
+        return loadShowSeasonsInner(showId)
+                .observeOn(rxSchedulers.observe)
+    }
+
+    /**
+     * Loads episodes for seasons and emits a value for each season.
+     */
+    fun loadEpisodesForSeasons(showId: Long, seasons: List<Season>): Observable<SeasonWithProgress> {
+        return Observable.fromIterable(seasons)
+                .subscribeOn(rxSchedulers.subscribe)
+                .flatMap { s -> Observable.zip(
+                        traktApi.showSeasonEpisodes(tokenHolder.httpAuth(), showId, s.number, TraktApi.ExtendedInfo.full).toObservable(),
+                        Observable.just(s),
+                        BiFunction { t1: Response<List<Episode>>, t2: Season -> Pair(t1, t2) }
+                ) }
+                //FIXME: remove after testing
+                .concatMap({ i -> Observable.just(i).delay(4, TimeUnit.SECONDS)})
+                .map { (response, season) ->
+                    if (response.isSuccessful) {
+                        SeasonWithProgress(season, response.body()?.map { ep -> EpisodeWithProgress(ep) } ?: emptyList(), episodesLoaded = true)
+                    } else {
+                        throw ApiException("Unable to load episodes for season $season", response.code(), response.message())
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+
+    }
+
     private fun callCheckin(request: CheckinRequest): Single<Response<CheckinResponse>> {
         return traktApi.checkin(tokenHolder.httpAuth(), request)
             .subscribeOn(rxSchedulers.subscribe)
@@ -80,22 +122,7 @@ class MediaDetailManager @Inject constructor(
                 .doOnError({ Timber.e(it, "addToHistory error") })
     }
 
-    fun loadShowWatchedProgress(showId: Long): Single<ShowWatchedProgress> {
-        return traktApi.showWatchedProgress(tokenHolder.httpAuth(), showId, specials = true, countSpecials = false)
-            .subscribeOn(rxSchedulers.subscribe)
-            .observeOn(rxSchedulers.observe)
-            .doOnError({ Timber.e(it, "loadShowWatchedProgress error") })
-            .map { t: Response<ShowWatchedProgress> ->
-                if (!t.isSuccessful)
-                    throw ApiException("Unable to load watched progress", t.code(), t.message())
-                else t.body()
-            }
-    }
 
-    fun loadShowSeasons(showId: Long): Single<List<Season>> {
-        return loadShowSeasonsInner(showId)
-            .observeOn(rxSchedulers.observe)
-    }
 
     private fun loadShowSeasonsInner(showId: Long): Single<List<Season>> {
         return traktApi.showSeasons(tokenHolder.httpAuth(), showId, TraktApi.ExtendedInfo.full)
@@ -119,25 +146,5 @@ class MediaDetailManager @Inject constructor(
             }
     }
 
-    /**
-     * Loads episodes for seasons and emits a value for each season.
-     */
-    fun loadEpisodesForSeasons(showId: Long, seasons: List<Season>): Observable<SeasonWithProgress> {
-        return Observable.fromIterable(seasons)
-                .subscribeOn(rxSchedulers.subscribe)
-                .flatMap { s -> Observable.zip(
-                            traktApi.showSeasonEpisodes(tokenHolder.httpAuth(), showId, s.number, TraktApi.ExtendedInfo.full).toObservable(),
-                            Observable.just(s),
-                            BiFunction { t1: Response<List<Episode>>, t2: Season -> Pair(t1, t2) }
-                    ) }
-                .map { (response, season) ->
-                    if (response.isSuccessful) {
-                        SeasonWithProgress(season, response.body()?.map { ep -> EpisodeWithProgress(ep) } ?: emptyList())
-                    } else {
-                        throw ApiException("Unable to load episodes for season $season", response.code(), response.message())
-                    }
-                }
-                .observeOn(AndroidSchedulers.mainThread())
 
-    }
 }

@@ -16,7 +16,7 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // For Spoon snapshot, until 2.0.0 is released
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'org.ow2.asm:asm:6.0' //workaround for a conflict between jacoco and fabric, see https://github.com/jacoco/jacoco/issues/639
         classpath 'org.jacoco:org.jacoco.core:0.8.0'

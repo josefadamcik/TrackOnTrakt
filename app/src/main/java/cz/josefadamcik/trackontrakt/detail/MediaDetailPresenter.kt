@@ -149,7 +149,7 @@ class MediaDetailPresenter @Inject constructor(
                 .subscribe(
                     { seasons ->
                         view?.hideLoading()
-                        val seasonsWithProgress = seasons.map { season -> SeasonWithProgress(season = season) }
+                        val seasonsWithProgress = seasons.map { season -> SeasonWithProgress(season = season, episodesLoaded = false) }
                         showModel(model?.copy(seasons = seasonsWithProgress))
                         loadEpisodes(showId, seasons)
                     },
@@ -212,14 +212,12 @@ class MediaDetailPresenter @Inject constructor(
         return original.map { swp ->
             val newSeasonProgress = progress.seasons.find { it.number == swp.season.number }
                 ?: ShowWatchedProgress.SeasonWatchedProgress(number = swp.season.number)
-
-            SeasonWithProgress(
-                season = swp.season,
+            swp.copy(
                 progress = newSeasonProgress,
                 episodes = swp.episodes.map { episodeWithProgress ->
                     episodeWithProgress.copy(
-                        progress = newSeasonProgress.episodes.find { ep -> ep.number == episodeWithProgress.episode.number }
-                            ?: ShowWatchedProgress.EpisodeWatchedProgress(episodeWithProgress.episode.number)
+                            progress = newSeasonProgress.episodes.find { ep -> ep.number == episodeWithProgress.episode.number }
+                                    ?: ShowWatchedProgress.EpisodeWatchedProgress(episodeWithProgress.episode.number)
                     )
                 }
             )

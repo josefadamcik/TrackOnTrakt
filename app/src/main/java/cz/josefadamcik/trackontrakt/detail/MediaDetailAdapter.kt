@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import butterknife.BindDrawable
 import butterknife.BindView
@@ -136,6 +137,9 @@ class MediaDetailAdapter(
     inner class SeasonHeaderViewHolder(itemView: View) : ViewHolder(itemView), View.OnClickListener {
         @BindView(R.id.title) lateinit var txtTitle: TextView
         @BindView(R.id.overview) lateinit var txtOverview: TextView
+        @BindView(R.id.prog_season_loading) lateinit var progSeasonLoding: ProgressBar
+        @BindView(R.id.ico_expand_less) lateinit var icoExpandLess: ImageView
+        @BindView(R.id.ico_expand_more) lateinit var icoExpandMore: ImageView
 
         init {
             itemView.setOnClickListener(this)
