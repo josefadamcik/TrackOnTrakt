@@ -16,6 +16,7 @@ import cz.josefadamcik.trackontrakt.R
 
 class AboutActivity : AppCompatActivity() {
     @BindView(R.id.info) lateinit var infoText: TextView
+    @BindView(R.id.privacy) lateinit var privacyText: TextView
     @BindView(R.id.versionText) lateinit var versionText: TextView
 
 
@@ -32,6 +33,7 @@ class AboutActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         infoText.movementMethod = LinkMovementMethod.getInstance()
+        privacyText.movementMethod = LinkMovementMethod.getInstance()
         versionText.text = getString(R.string.about_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)
     }
 

@@ -48,13 +48,17 @@
     <string name="about">About</string>
     <string name="about_info">
     TrackOnTrakt is an opensource Android application for tracking your watched movies and shows on the <a href="https://trakt.tv">trakt.tv</a> website. You need a trakt.tv account in order to use it.\n\nSource code can be found in <a href="https://github.com/josefadamcik/TrackOnTrakt">a repository on Github</a>.\n\nTrackOnTrakt is developed by <a href="https://josef-adamcik.cz">Josef Adamčík</a>
-
-
   </string>
+    <string name="about_privacy">
+        This application (TrackOnTrakt) on its own does not process, store, nor share any of your personal data. All information accessed by the TrackOnTrakt application ( = watched movies and shows) is obtained via trakt.tv API and accessed only when you, as user, authorizes the application by logging in. All data entered into the TrackOnTrakt application are sent only to the trakt.tv API. Your login and password are handled directly by trakt.tv and are not processed nor captured by this application. <a href="https://trakt.tv/privacy">The Trakt.tv service has its own privacy policy.</a>
+  </string>
+
     <string name="about_licences">This application uses various opensource libraries. Tap for more information about their licences.</string>
     <string name="about_licenses_dialog_title">Open source licenses</string>
     <string name="login_button">Login via trakt.tv</string>
     <string name="welcome_text">TrackOnTrakt is an opensource Android application for tracking your watched movies and shows on the <a href="https://trakt.tv">trakt.tv</a> website. You need a trakt.tv account in order to use it.</string>
     <string name="about_version">Version %s build %d</string>
+    <string name="about_privacy_title">Privacy</string>
+    <string name="about_licences_title">Licenses</string>
 
 </resources>
