@@ -12,7 +12,6 @@ buildscript {
     repositories {
         jcenter()
         google()
-        maven { url 'https://maven.fabric.io/public' }
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // For Spoon snapshot, until 2.0.0 is released
     }
     dependencies {
@@ -22,7 +21,6 @@ buildscript {
         classpath 'org.jacoco:org.jacoco.core:0.8.0'
         // We recommend changing it to the latest version from our changelog:
         // https://docs.fabric.io/android/changelog.html#fabric-gradle-plugin
-        classpath 'io.fabric.tools:gradle:1.25.4'
         classpath "com.jaredsburrows:gradle-spoon-plugin:1.3.0"
         classpath "com.jaredsburrows:gradle-license-plugin:0.8.41"
         classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
