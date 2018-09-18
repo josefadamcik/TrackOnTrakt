@@ -96,7 +96,7 @@ class MediaDetailManager @Inject constructor(
                         BiFunction { t1: Response<List<Episode>>, t2: Season -> Pair(t1, t2) }
                 ) }
                 //FIXME: remove after testing
-                .concatMap({ i -> Observable.just(i).delay(4, TimeUnit.SECONDS)})
+//                .concatMap({ i -> Observable.just(i).delay(4, TimeUnit.SECONDS)})
                 .map { (response, season) ->
                     if (response.isSuccessful) {
                         SeasonWithProgress(season, response.body()?.map { ep -> EpisodeWithProgress(ep) } ?: emptyList(), episodesLoaded = true)
